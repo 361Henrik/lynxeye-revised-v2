@@ -35,8 +35,11 @@ export type MatrixRow = {
 };
 
 export type Question = {
+  number: string;
   question: string;
-  answer: string;
+  thinking: string;
+  recommendedApproach: string;
+  validate: string[];
 };
 
 export type TimelineRow = {
@@ -213,6 +216,16 @@ export const phaseCards: ListCard[] = [
       "Team workflows for client work and pitches.",
       "Version-one playbooks, examples and prototypes.",
       "Value evidence and Phase 3 recommendations.",
+    ],
+  },
+  {
+    number: "3",
+    title: "Phase 3",
+    text: "Use the evidence to decide what should be scaled, automated, integrated with HQ infrastructure or turned into new client offerings.",
+    items: [
+      "Scale what works across people and teams.",
+      "Automate repeatable workflows after value is proven.",
+      "Explore new AI-enabled services and capability.",
     ],
   },
 ];
@@ -427,36 +440,127 @@ export const deliverableRows: MatrixRow[] = [
 
 export const questions: Question[] = [
   {
+    number: "01",
     question: "What does the first session look like?",
-    answer: "A live working session using real Lynxeye work, not a generic AI presentation.",
+    thinking: "The first session should not be a presentation. It should be a working session where we use real Lynxeye work: a live pitch, a client question, a proposal, a piece of research, or something else that already matters.",
+    recommendedApproach: "We create a before-and-after experience. First, we look at how the work would normally happen today. Then we run the same task through a more structured AI-supported way of working. Then we compare the difference: what became faster, what became better, what became uncomfortable, and what could be reused.",
+    validate: [
+      "Can real Lynxeye work improve visibly in one session?",
+      "Can the method be understood without too much theory?",
+      "Can the learning become the first playbook entry?",
+    ],
   },
   {
+    number: "02",
     question: "How do we define changes in ways of working?",
-    answer: "By comparing current behavior with better AI-supported workflows and visible signals.",
+    thinking: "This cannot start with theory. It has to start with how Lynxeye actually works today: where time disappears, where people recreate work, and where senior judgment is used on production instead of direction.",
+    recommendedApproach: "We define a small number of concrete shifts: from blank-page pitches to structured context, from first-draft senior production to senior review and judgment, and from project learning disappearing to reusable lenses, workflows, examples, and prompts.",
+    validate: [
+      "Which workflows are most important to change first?",
+      "Where is the biggest friction today?",
+      "What visible signals show that behavior has actually changed?",
+    ],
   },
   {
+    number: "03",
     question: "How do we integrate theory with practice?",
-    answer: "Keep theory close to the task: frame, apply, review, capture.",
+    thinking: "Theory matters, but it should not float above the work. If we talk about context, we show it inside a real pitch. If we talk about playbooks, we create one from the session.",
+    recommendedApproach: "The theory should never be more than ten minutes ahead of the practice. A good rhythm is: short frame, live work, review, capture. The capture is important. If nothing gets captured, the learning stays in the room.",
+    validate: [
+      "Which concepts actually help people work better?",
+      "What theory is useful, and what becomes noise?",
+      "Can each session leave behind reusable material?",
+    ],
   },
   {
+    number: "04",
     question: "What tools and workflows will we actually use?",
-    answer: "Use ChatGPT, Claude, Atlas, voice, transcripts, Microsoft-connected work and HQ tools where relevant.",
+    thinking: "This is where it is easy to get distracted. The point is not to use as many tools as possible. The point is to define the workflows that matter, and then use the right tools inside them.",
+    recommendedApproach: "I would separate this into two layers. Eraneos/HQ provides the infrastructure layer: platforms, tools, data access, knowledge infrastructure, security, and guardrails. Lynxeye defines the operating layer: how consultants use these tools in pitches, research, synthesis, delivery, client work, and knowledge capture.",
+    validate: [
+      "Which tools are approved or coming from HQ?",
+      "Which workflows should Lynxeye build first?",
+      "Where does human review need to happen?",
+    ],
   },
   {
+    number: "05",
     question: "What do we do with freed-up time?",
-    answer: "Turn it into better work, more capacity, more reusable IP or less pressure — not just more noise.",
+    thinking: "This is not an efficiency question only. It is a leadership question. Freed-up time does not stay freed up unless the company decides what it is for.",
+    recommendedApproach: "There are three healthy uses of freed-up time: better work, more capacity, and more reusable IP. The wrong answer is same people, same stress, more output. That will kill adoption.",
+    validate: [
+      "Where does time actually get freed up?",
+      "Should the gain go into quality, capacity, IP, or relief?",
+      "How does leadership make that choice visible?",
+    ],
   },
   {
-    question: "How do we connect to Eraneos/HQ?",
-    answer: "HQ provides the foundation. Lynxeye defines the working practice.",
+    number: "06",
+    question: "How do we use this as a meaningful incentive for the people experiencing the increased effectiveness?",
+    thinking: "People will notice very quickly whether this is for them or just from them. If AI becomes a way to extract more production from the same people, adoption will slow down quietly.",
+    recommendedApproach: "The incentive should show up in the work itself: less repetitive production, more meaningful thinking, more recognition for creating reusable methods, and more visible contribution to Lynxeye's collective intelligence.",
+    validate: [
+      "What would make this feel useful to consultants?",
+      "How should playbook contribution be recognized?",
+      "How do we avoid making AI feel like a productivity tax?",
+    ],
   },
   {
-    question: "How do we protect the pilot while creating momentum?",
-    answer: "Small core team, visible outputs, later waves and reusable documentation.",
+    number: "07",
+    question: "How do we leverage and combine the infrastructure and tool initiatives that Eraneos/HQ is providing?",
+    thinking: "This question has become more important after hearing more about the Eraneos direction. Lynxeye should not duplicate HQ. But it should also not wait passively.",
+    recommendedApproach: "HQ provides the foundation. Lynxeye builds the practice. After the June 3 session, we should map what Eraneos provides against what Lynxeye needs to define locally. The practical question is not only what tools are available. It is how those tools change the way Lynxeye pitches, researches, delivers, and learns.",
+    validate: [
+      "What exactly comes from Eraneos/HQ?",
+      "What remains local to Lynxeye?",
+      "How do we bridge group infrastructure and local behavior?",
+    ],
   },
   {
+    number: "08",
     question: "How does Lynxeye become a proof case?",
-    answer: "By showing how AI changes high-value strategic consulting work, not by becoming an infrastructure builder.",
+    thinking: "This needs a precise ambition. Lynxeye probably does not need to position itself as the group's leading technical AI implementation unit. The stronger position is different.",
+    recommendedApproach: "Lynxeye can become the clearest proof case for AI-orchestrated strategic consulting: sharper pitches, faster synthesis, better client understanding, more reusable methods, stronger use of senior judgment, less repeated work, and more consistent quality.",
+    validate: [
+      "What type of AI leadership is credible for Lynxeye?",
+      "What proof would matter inside the wider organization?",
+      "What can Lynxeye export back to the group?",
+    ],
+  },
+  {
+    number: "09",
+    question: "How do we scope and price this without scaring people away before they understand the potential?",
+    thinking: "The commitment should grow with the evidence. People do not yet know what they do not know.",
+    recommendedApproach: "Phase 1 creates alignment. Phase 2 proves value through a focused pilot. Phase 3 scales what works.",
+    validate: ["What is the smallest serious version that creates enough proof to justify the next step?"],
+  },
+  {
+    number: "10",
+    question: "How do we protect the pilot while still creating momentum in the wider team?",
+    thinking: "If the pilot is too closed, it can feel secretive. If it is too open, it can become slow and noisy.",
+    recommendedApproach: "Small core team. Visible learning. Later waves. Playbook capture.",
+    validate: ["Who is inside the pilot, who gets visibility, and when do others join?"],
+  },
+  {
+    number: "11",
+    question: "How do we deal with skepticism, fear, and uneven confidence?",
+    thinking: "Adoption is not only a knowledge problem. It is also a confidence, trust, and identity problem.",
+    recommendedApproach: "Do not argue people into adoption. Show them better work using their own tasks.",
+    validate: ["What do people trust, what do they resist, and what changes when they see their own work improved?"],
+  },
+  {
+    number: "12",
+    question: "What should become reusable company intelligence?",
+    thinking: "If the pilot only helps one project move faster, it is useful. If it creates reusable Lynxeye intelligence, the value becomes much bigger.",
+    recommendedApproach: "Every workflow should leave something behind: a prompt, a lens, a pitch pattern, a review checklist, a client question bank, or a reusable example.",
+    validate: ["What did we learn that someone else at Lynxeye should not have to rediscover?"],
+  },
+  {
+    number: "13",
+    question: "Who owns the operating model after the pilot?",
+    thinking: "If the pilot works, Lynxeye needs internal ownership. Otherwise the method depends too much on the external project.",
+    recommendedApproach: "Identify owners for the playbook, workflows, HQ connection, quality standards, rollout rhythm, and next wave.",
+    validate: ["Who keeps improving this after the first pilot is done?"],
   },
 ];
 

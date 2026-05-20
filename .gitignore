@@ -3,3 +3,5 @@ dist
 .DS_Store
 *.tsbuildinfo
 .playwright-mcp
+.playwright-cli
+output
