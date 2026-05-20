@@ -2,57 +2,26 @@ import { useEffect, useState } from "react";
 import {
   deliverableRows,
   mainHeroMetrics,
-  phase3HeroMetrics,
   phase3LoopCards,
   phase3OpportunityCards,
-  phase3PathCards,
   phase3SignalCards,
-  phase3TimelineRows,
   phaseCards,
   questions,
   quickWinCards,
   stakeholderCards,
-  type ListCard,
   type MatrixCell,
   type MiniMetric,
   type Question,
   type SectionIntro,
 } from "./data";
 
-const phase3Nav = [
-  { label: "Back to value map", href: "/" },
-  { label: "Logic", href: "#logic" },
-  { label: "Opportunity areas", href: "#areas" },
-  { label: "Learning loop", href: "#loop" },
-  { label: "Scale signals", href: "#signals" },
-  { label: "Time horizon", href: "#timeline" },
-];
-
-const mainNav = [
-  { label: "Questions", href: "#questions" },
-  { label: "Value", href: "#value" },
-  { label: "Phases", href: "#phases" },
-  { label: "Deliverables", href: "#matrix" },
-  { label: "Phase 3", href: "/phase-3" },
-];
-
-type NavItem = {
-  label: string;
-  href: string;
-};
-
 function App() {
-  const pathname = window.location.pathname.replace(/\/$/, "") || "/";
-  const isPhase3 = pathname === "/phase-3";
+  document.title = "Accelerate Lynxeye with AI — Value & Deliverables Map";
 
-  document.title = isPhase3
-    ? "Accelerate Lynxeye with AI — Phase 3 Opportunity Map"
-    : "Accelerate Lynxeye with AI — Value & Deliverables Map";
-
-  return isPhase3 ? <Phase3Page /> : <MainPage />;
+  return <MainPage />;
 }
 
-function Header({ brand, nav = [], onAbout }: { brand: string; nav?: NavItem[]; onAbout?: () => void }) {
+function Header({ brand, onAbout }: { brand: string; onAbout: () => void }) {
   return (
     <header>
       <div className="nav">
@@ -60,16 +29,9 @@ function Header({ brand, nav = [], onAbout }: { brand: string; nav?: NavItem[]; 
           {brand}
         </a>
         <nav className="navlinks" aria-label={`${brand} navigation`}>
-          {nav.map((item) => (
-            <a key={item.href} href={item.href}>
-              {item.label}
-            </a>
-          ))}
-          {onAbout ? (
-            <button type="button" onClick={onAbout}>
-              About Henrik
-            </button>
-          ) : null}
+          <button type="button" onClick={onAbout}>
+            About Henrik
+          </button>
         </nav>
       </div>
     </header>
@@ -118,7 +80,7 @@ function MainPage() {
 
   return (
     <>
-      <Header brand="Accelerate Lynxeye with AI" nav={mainNav} onAbout={() => setIsAboutOpen(true)} />
+      <Header brand="Accelerate Lynxeye with AI" onAbout={() => setIsAboutOpen(true)} />
       <main>
         <section className="hero">
           <div className="hero-card">
@@ -128,14 +90,6 @@ function MainPage() {
               <p className="hero-lede">
                 A practical project model for helping individuals, teams, clients and Lynxeye capture more value from the intelligence already inside the company — faster work, better outputs, stronger capacity, reusable methods and safer adoption.
               </p>
-              <div className="hero-actions" aria-label="Primary buyer actions">
-                <a className="action-link" href="#matrix">
-                  Review deliverables
-                </a>
-                <a className="action-link action-link-secondary" href="/phase-3">
-                  Open Phase 3 map
-                </a>
-              </div>
             </div>
             <MiniMetrics metrics={mainHeroMetrics} />
           </div>
@@ -437,23 +391,6 @@ function Phase3EmbeddedShowcase() {
       <div className="footer-note">
         The commercial case is not only that Lynxeye can save time. The stronger case is that Lynxeye can turn saved time into better client work, higher delivery capacity, stronger pitches, reusable IP and less dependency on linear hiring every time demand increases.
       </div>
-      <div className="buyer-closeout">
-        <div>
-          <div className="phase-label">Buyer next step</div>
-          <h3>Use the pilot to prove value, then decide what should scale.</h3>
-          <p>
-            The main map shows the concrete pilot deliverables. The full Phase 3 map keeps the later scale, automation and service opportunities visible without overloading the first decision.
-          </p>
-        </div>
-        <div className="closeout-actions">
-          <a className="phase-link" href="/phase-3">
-            Open full Phase 3 map
-          </a>
-          <a className="phase-link phase-link-secondary" href="mailto:henrik@threesixty1.com">
-            Email Henrik
-          </a>
-        </div>
-      </div>
     </section>
   );
 }
@@ -572,171 +509,6 @@ function AboutHenrikModal({ open, onClose }: { open: boolean; onClose: () => voi
   );
 }
 
-function Phase3Page() {
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-
-  return (
-    <>
-      <Header brand="Accelerate Lynxeye with AI — Phase 3" nav={phase3Nav} onAbout={() => setIsAboutOpen(true)} />
-      <main className="phase3-main">
-        <section className="hero">
-          <div className="hero-card">
-            <div>
-              <div className="kicker">Phase 3: scale, automate, build</div>
-              <h1>What becomes possible after the value pilot proves what works.</h1>
-              <p className="hero-lede">
-                Phase 3 should be shaped by the learning from Phase 2: what scales to more people, what works for more teams, what improves client projects, what connects to Eraneos/HQ infrastructure, and what new AI capabilities make possible next.
-              </p>
-            </div>
-            <MiniMetrics metrics={phase3HeroMetrics} />
-          </div>
-
-          <aside className="side-card">
-            <div>
-              <div className="kicker">The strategic shift</div>
-              <h2>From pilot evidence to compounding capability.</h2>
-              <p>
-                Phase 2 creates the proof. Phase 3 turns the proof into a repeatable company capability: wider adoption, deeper systems, smarter automations and new ways to create client value.
-              </p>
-            </div>
-            <div className="curve-box" aria-label="Phase 3 compounding curve">
-              <Phase3Curve />
-              <div className="quote">
-                Do not automate the theory. Automate what Phase 2 proves is valuable, repeatable and safe enough to scale.
-              </div>
-            </div>
-          </aside>
-        </section>
-
-        <section id="logic" className="section">
-          <SectionIntroBlock
-            intro={{
-              kicker: "Phase logic",
-              title: "Phase 3 should be evidence-led, not imagination-led.",
-              text: "The pilot will generate practical learning: where people get value, where teams move faster, where clients respond, where HQ tools help, and where AI capabilities have changed enough to unlock new use cases.",
-            }}
-          />
-          <div className="path-grid">
-            {phase3PathCards.map((card) => (
-              <PhasePathCard card={card} key={card.title} />
-            ))}
-          </div>
-        </section>
-
-        <section id="areas" className="section">
-          <SectionIntroBlock
-            intro={{
-              kicker: "Opportunity areas",
-              title: "Six Phase 3 elements to keep visible.",
-              text: "These are not detailed commitments. They are the next-value territories the pilot can point toward.",
-            }}
-          />
-          <div className="phase3-grid">
-            {phase3OpportunityCards.map((card) => (
-              <article className="phase3-card" key={card.title}>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <CardList items={card.items} />
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="loop" className="section">
-          <SectionIntroBlock
-            intro={{
-              kicker: "The Phase 2 to Phase 3 learning loop",
-              title: "Implement, measure, validate, scale.",
-              text: "Phase 2 should not only observe. When something clearly works, it should be implemented quickly enough to capture value, document proof and decide whether the hypothesis is valid.",
-            }}
-          />
-          <div className="loop-grid">
-            {phase3LoopCards.map((card) => (
-              <article className="loop-step" key={card.title}>
-                <strong>{card.number}</strong>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="signals" className="section">
-          <SectionIntroBlock
-            intro={{
-              kicker: "What Phase 3 should respond to",
-              title: "Four signals from the pilot decide the next move.",
-              text: "The Phase 3 decision should be based on what the pilot shows across individuals, teams, clients and Lynxeye as a company.",
-            }}
-          />
-          <div className="signal-grid">
-            {phase3SignalCards.map((card) => (
-              <article className="signal-card" key={card.title}>
-                <span className="tag">{card.tag}</span>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <CardList items={card.items} />
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="timeline" className="section">
-          <SectionIntroBlock
-            intro={{
-              kicker: "Future horizon",
-              title: "Phase 3 should stay adaptive as AI capability changes.",
-              text: "The current tool landscape is not the destination. New multimodal, analytical, agentic and creation capabilities will keep opening use cases that are difficult to specify fully today.",
-            }}
-          />
-          <div className="compact-table">
-            <div className="compact-head">
-              <div>Horizon</div>
-              <div>Likely focus</div>
-              <div>Strategic question</div>
-            </div>
-            {phase3TimelineRows.map((row) => (
-              <div className="compact-row" key={row.horizon}>
-                <div>{row.horizon}</div>
-                <div>
-                  <p>{row.focus}</p>
-                </div>
-                <div>
-                  <p>{row.question}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="footer-note">
-            Phase 3 should be presented as a value pathway, not a fixed technical roadmap. The point is to let Phase 2 generate the evidence, then scale what works, automate what repeats, integrate what fits HQ infrastructure, and explore new client value as AI capabilities expand.
-          </div>
-          <div className="phase-link-row">
-            <a className="phase-link phase-link-secondary" href="/">
-              Back to the value and deliverables map
-            </a>
-            <a className="phase-link" href="mailto:henrik@threesixty1.com">
-              Email Henrik
-            </a>
-          </div>
-        </section>
-      </main>
-      <AboutHenrikModal open={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
-    </>
-  );
-}
-
-function PhasePathCard({ card }: { card: ListCard }) {
-  return (
-    <article className="path-card">
-      <div className="phase-label">{card.phaseLabel}</div>
-      <h3>{card.title}</h3>
-      <p>{card.text}</p>
-      <CardList items={card.items} />
-    </article>
-  );
-}
-
 function MainCurve() {
   return (
     <svg viewBox="0 0 560 180" role="img">
@@ -753,27 +525,6 @@ function MainCurve() {
       </text>
       <text x="382" y="70" fontSize="15" fill="#706b60">
         Compounding capability
-      </text>
-    </svg>
-  );
-}
-
-function Phase3Curve() {
-  return (
-    <svg viewBox="0 0 560 180" role="img">
-      <path d="M24 145 C110 135, 170 120, 235 92 C300 64, 350 75, 402 43 C450 14, 500 11, 535 22" fill="none" stroke="#28745a" strokeWidth="6" strokeLinecap="round" />
-      <path d="M24 154 C170 150, 290 137, 535 116" fill="none" stroke="#ded5c7" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="120" cy="134" r="8" fill="#28745a" />
-      <circle cx="260" cy="82" r="8" fill="#c69a45" />
-      <circle cx="410" cy="38" r="8" fill="#c69a45" />
-      <text x="20" y="172" fontSize="15" fill="#706b60">
-        Pilot proof
-      </text>
-      <text x="205" y="116" fontSize="15" fill="#706b60">
-        Scaled methods
-      </text>
-      <text x="382" y="70" fontSize="15" fill="#706b60">
-        New value models
       </text>
     </svg>
   );

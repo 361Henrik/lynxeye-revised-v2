@@ -220,12 +220,12 @@ export const phaseCards: ListCard[] = [
   },
   {
     number: "3",
-    title: "Phase 3",
-    text: "Use the evidence to decide what should be scaled, automated, integrated with HQ infrastructure or turned into new client offerings.",
+    title: "Phase 3 not covered here",
+    text: "Phase 3 is shown only as the future direction. It should come after the pilot proves what is worth scaling, automating, integrating or turning into new client offerings.",
     items: [
-      "Scale what works across people and teams.",
-      "Automate repeatable workflows after value is proven.",
-      "Explore new AI-enabled services and capability.",
+      "Not part of the current Scope & Setup or Value Pilot.",
+      "Used to show where the work can head later.",
+      "Decided from evidence, not promised upfront.",
     ],
   },
 ];

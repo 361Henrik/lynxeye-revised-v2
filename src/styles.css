@@ -103,10 +103,6 @@ main {
   margin-bottom: 34px;
 }
 
-.phase3-main .hero {
-  margin-bottom: 38px;
-}
-
 .hero-card,
 .side-card,
 .section-card {
@@ -139,10 +135,6 @@ h1 {
   letter-spacing: 0;
   margin: 0 0 22px;
   max-width: 900px;
-}
-
-.phase3-main h1 {
-  max-width: 940px;
 }
 
 h2 {
@@ -178,45 +170,6 @@ p {
   max-width: 820px;
   margin-bottom: 0;
   line-height: 1.5;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.action-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  border: 1px solid var(--green);
-  border-radius: 999px;
-  background: var(--green);
-  color: #fff;
-  padding: 11px 16px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.action-link:hover {
-  background: var(--green-dark);
-  border-color: var(--green-dark);
-}
-
-.action-link-secondary {
-  background: #fffdf8;
-  color: var(--green-dark);
-  border-color: var(--line);
-}
-
-.action-link-secondary:hover {
-  background: var(--cream);
-  color: var(--ink);
-  border-color: var(--green);
 }
 
 .hero-bottom {
@@ -263,10 +216,6 @@ p {
   border-radius: 12px;
   padding: 24px;
   min-height: 220px;
-}
-
-.phase3-main .curve-box {
-  min-height: 230px;
 }
 
 .curve-box svg {
@@ -319,8 +268,20 @@ p {
   background: var(--gold);
 }
 
+.phase-card:nth-child(3) {
+  background: #efede8;
+  border-color: #c8c1b7;
+  box-shadow: none;
+}
+
+.phase-card:nth-child(3) h3,
+.phase-card:nth-child(3) p,
+.phase-card:nth-child(3) li {
+  color: #615e57;
+}
+
 .phase-card:nth-child(3) .phase-number {
-  background: #1f2b25;
+  background: #9b958b;
 }
 
 .phase-card ul {
@@ -339,10 +300,6 @@ p {
 .section-intro {
   max-width: 980px;
   margin-bottom: 20px;
-}
-
-.phase3-main .section-intro {
-  max-width: 1000px;
 }
 
 .section-card {
@@ -643,7 +600,7 @@ details[open] summary::after {
 .question-group-label span,
 .question-detail span,
 .question-closeout > div:first-child > span {
-  color: var(--question-green);
+  color: var(--gold);
 }
 
 .question-group-label p {
@@ -673,7 +630,7 @@ details[open] summary::after {
 .question-rail {
   align-self: start;
   border-left: 4px solid var(--question-green);
-  color: var(--question-green);
+  color: var(--gold);
   padding-left: 14px;
 }
 
@@ -803,72 +760,6 @@ details[open] summary::after {
   line-height: 1.6;
 }
 
-.phase-link-row {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-end;
-}
-
-.phase-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--green);
-  color: #fff;
-  padding: 12px 16px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.phase-link:hover {
-  background: var(--green-dark);
-}
-
-.phase-link-secondary {
-  background: #fffdf8;
-  color: var(--green-dark);
-}
-
-.phase-link-secondary:hover {
-  background: var(--cream);
-  color: var(--ink);
-}
-
-.buyer-closeout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 24px;
-  align-items: center;
-  margin-top: 34px;
-  padding: 26px;
-  border: 1px solid var(--line);
-  border-left: 5px solid var(--green);
-  border-radius: 12px;
-  background: #fffdf8;
-}
-
-.buyer-closeout h3 {
-  font-size: clamp(22px, 2vw, 30px);
-  line-height: 1.15;
-  margin-bottom: 10px;
-}
-
-.buyer-closeout p {
-  max-width: 820px;
-}
-
-.closeout-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
 .showcase-block {
   margin-top: 28px;
 }
@@ -877,13 +768,6 @@ details[open] summary::after {
   margin-top: 34px;
 }
 
-.path-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.path-card,
 .phase3-card,
 .loop-step,
 .signal-card {
@@ -895,7 +779,6 @@ details[open] summary::after {
   overflow: hidden;
 }
 
-.path-card::after,
 .phase3-card::after,
 .signal-card::after {
   content: "";
@@ -905,18 +788,6 @@ details[open] summary::after {
   height: 5px;
   width: 100%;
   background: var(--gold);
-}
-
-.path-card:nth-child(1)::after {
-  background: var(--green);
-}
-
-.path-card:nth-child(2)::after {
-  background: var(--gold);
-}
-
-.path-card:nth-child(3)::after {
-  background: #1f2b25;
 }
 
 .phase3-grid {
@@ -935,7 +806,6 @@ details[open] summary::after {
 }
 
 .phase3-card ul,
-.path-card ul,
 .signal-card ul {
   margin: 14px 0 0;
   padding-left: 18px;
@@ -1000,45 +870,6 @@ li {
 
 .signal-card:nth-child(4)::after {
   background: #1f2b25;
-}
-
-.compact-table {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--panel);
-  box-shadow: var(--shadow);
-}
-
-.compact-row,
-.compact-head {
-  display: grid;
-  grid-template-columns: 240px 1fr 1fr;
-}
-
-.compact-head > div {
-  background: #e6dfd3;
-  padding: 18px 20px;
-  font-size: 13px;
-  font-weight: 800;
-  border-right: 1px solid var(--line);
-}
-
-.compact-row > div {
-  padding: 18px 20px;
-  border-top: 1px solid var(--line);
-  border-right: 1px solid var(--line);
-  background: #fff;
-  min-height: 90px;
-}
-
-.compact-row > div:first-child {
-  background: var(--cream);
-  font-weight: 800;
-}
-
-.compact-row p {
-  font-size: 13px;
 }
 
 .modal-layer {
@@ -1217,7 +1048,7 @@ li {
 }
 
 .about-contact a {
-  color: var(--green-dark);
+  color: var(--ink);
   font-weight: 800;
   text-decoration: none;
 }
@@ -1244,7 +1075,6 @@ li {
   .roadmap,
   .quickwin-grid,
   .tabs,
-  .path-grid,
   .phase3-grid,
   .signal-grid,
   .modal-grid,
@@ -1270,23 +1100,6 @@ li {
     overflow-x: auto;
   }
 
-  .compact-head,
-  .compact-row {
-    grid-template-columns: 200px repeat(2, minmax(260px, 1fr));
-    width: 840px;
-  }
-
-  .compact-table {
-    overflow-x: auto;
-  }
-
-  .buyer-closeout {
-    grid-template-columns: 1fr;
-  }
-
-  .closeout-actions {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 760px) {
@@ -1317,25 +1130,12 @@ li {
     padding: 28px;
   }
 
-  .hero-actions,
-  .closeout-actions,
-  .phase-link-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .action-link,
-  .phase-link {
-    width: 100%;
-  }
-
   .hero-bottom,
   .tabs,
   .value-grid,
   .roadmap,
   .question-list,
   .quickwin-grid,
-  .path-grid,
   .phase3-grid,
   .signal-grid,
   .loop-grid,
