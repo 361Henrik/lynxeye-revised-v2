@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" />
+  <title>Lynxeye Phase 3 Bridge Preview</title>
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --panel: #ffffff;
+      --ink: #22231f;
+      --muted: #706b60;
+      --line: #ded5c7;
+      --green: #28745a;
+      --green-dark: #1e5e49;
+      --gold: #c69a45;
+      --cream: #fbf6ea;
+      --shadow: 0 18px 55px rgba(44, 36, 24, 0.08);
+      --radius: 18px;
+      --sans: Verdana, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 243, 236, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 17px;
+      text-decoration: none;
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .navlinks a,
+    .navlinks button {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      text-decoration: none;
+      opacity: 0.78;
+    }
+
+    .navlinks a:hover,
+    .navlinks button:hover {
+      color: var(--green);
+      opacity: 1;
+    }
+
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 48px 28px 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 42px;
+    }
+
+    .hero-card,
+    .side-card,
+    .section-card,
+    .simulator-card,
+    .bridge-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      min-height: 430px;
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .side-card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .side-card:before {
+      content: "";
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(198,154,69,0.18), transparent 64%);
+      top: -130px;
+      right: -120px;
+    }
+
+    .kicker {
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 5vw, 78px);
+      line-height: 0.98;
+      margin: 0 0 22px;
+      max-width: 900px;
+    }
+
+    h2 {
+      font-size: clamp(28px, 3vw, 46px);
+      line-height: 1.04;
+      margin: 0 0 14px;
+    }
+
+    h3 {
+      font-size: 21px;
+      line-height: 1.18;
+      margin: 0 0 10px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero-lede {
+      font-size: 20px;
+      color: #4c473f;
+      max-width: 820px;
+      margin-bottom: 28px;
+    }
+
+    .hero-bottom,
+    .metric-grid,
+    .scenario-grid,
+    .bridge-grid,
+    .proof-grid,
+    .modal-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-bottom {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .mini-metric,
+    .metric-card,
+    .scenario-button,
+    .bridge-step,
+    .proof-card,
+    .modal-note {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--cream);
+      padding: 16px;
+    }
+
+    .mini-metric strong,
+    .metric-card strong,
+    .proof-card strong,
+    .modal-note strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .mini-metric span,
+    .metric-card span,
+    .proof-card span,
+    .modal-note span {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .curve-box {
+      position: relative;
+      margin-top: 26px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+      border-radius: 16px;
+      padding: 24px;
+      min-height: 220px;
+    }
+
+    .curve-box svg {
+      width: 100%;
+      height: 150px;
+      display: block;
+    }
+
+    .quote {
+      border-left: 4px solid var(--gold);
+      padding-left: 16px;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 1.25;
+      margin-top: 20px;
+    }
+
+    .section {
+      margin-top: 42px;
+      scroll-margin-top: 100px;
+    }
+
+    .section-intro {
+      max-width: 980px;
+      margin-bottom: 20px;
+    }
+
+    .simulator-card {
+      padding: 24px;
+    }
+
+    .scenario-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 18px;
+    }
+
+    .scenario-button {
+      text-align: left;
+      cursor: pointer;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .scenario-button[aria-pressed="true"] {
+      background: #fffdf8;
+      border-color: var(--gold);
+      box-shadow: inset 0 0 0 2px rgba(198,154,69,0.16);
+    }
+
+    .scenario-button small {
+      display: block;
+      color: var(--gold);
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .scenario-button strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .metric-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .metric-card {
+      background: #fffdf8;
+      min-height: 145px;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .metric-card strong {
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.08;
+      margin-bottom: 10px;
+    }
+
+    .support-note {
+      border-left: 5px solid var(--gold);
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: #fffdf8;
+      color: #4c473f;
+      font-size: 14px;
+    }
+
+    .assumption-toggle,
+    .phase-link,
+    .modal-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--green);
+      color: #fff;
+      padding: 12px 16px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .assumption-toggle {
+      margin-top: 18px;
+    }
+
+    .assumption-panel {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fffdf8;
+    }
+
+    .assumption-panel.is-open {
+      display: block;
+    }
+
+    .slider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    label span {
+      display: block;
+      color: var(--gold);
+      margin-top: 4px;
+      font-size: 16px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--green);
+      margin-top: 10px;
+    }
+
+    .bridge-card {
+      padding: 24px;
+    }
+
+    .bridge-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .bridge-step {
+      position: relative;
+      overflow: hidden;
+      background: #fffdf8;
+      min-height: 180px;
+    }
+
+    .bridge-step:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 5px;
+      width: 100%;
+      background: var(--gold);
+    }
+
+    .bridge-step:first-child:before { background: var(--green); }
+    .bridge-step:last-child:before { background: #1f2b25; }
+
+    .bridge-step .phase {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .bridge-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .phase-link.secondary {
+      background: var(--cream);
+      color: var(--green-dark);
+    }
+
+    .proof-grid,
+    .modal-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    dialog {
+      width: min(860px, calc(100vw - 32px));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 30px 90px rgba(34,35,31,0.24);
+      padding: 0;
+      background: var(--panel);
+      color: var(--ink);
+    }
+
+    dialog::backdrop {
+      background: rgba(34,35,31,0.34);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      background: var(--cream);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .modal-body blockquote {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .metric-grid,
+      .bridge-grid,
+      .proof-grid,
+      .modal-grid,
+      .slider-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      main {
+        padding: 28px 16px 60px;
+      }
+
+      .nav {
+        padding: 14px 16px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero,
+      .hero-bottom,
+      .scenario-grid,
+      .metric-grid,
+      .bridge-grid,
+      .proof-grid,
+      .modal-grid,
+      .slider-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        padding: 28px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a class="brand" href="#top">Accelerate Lynxeye with AI · Preview</a>
+      <nav class="navlinks" aria-label="Preview navigation">
+        <a href="#simulator">Back of the envelope</a>
+        <a href="#phase3-bridge">Phase 3 bridge</a>
+        <button type="button" data-modal="orchestration">Why orchestration</button>
+        <button type="button" data-modal="henrik">About Henrik</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-card">
+        <div>
+          <div class="kicker">Preview addition</div>
+          <h1>From value pilot to evidence-led Phase 3.</h1>
+          <p class="hero-lede">This standalone HTML shows how a compact simulator, an orchestration explanation, and a sharper Phase 3 bridge could support the customer conversation without replacing the current proposal structure.</p>
+        </div>
+        <div class="hero-bottom">
+          <div class="mini-metric"><strong>Discuss value</strong><span>Use simple assumptions to size the opportunity.</span></div>
+          <div class="mini-metric"><strong>Keep control</strong><span>Frame numbers as directional, not proof.</span></div>
+          <div class="mini-metric"><strong>Bridge Phase 3</strong><span>Show what becomes possible after evidence.</span></div>
+          <div class="mini-metric"><strong>Support trust</strong><span>Explain orchestration and Henrik’s fit.</span></div>
+        </div>
+      </div>
+
+      <aside class="side-card">
+        <div>
+          <div class="kicker">Conversation logic</div>
+          <h2>Phase 3 should not be sold before Phase 2 has produced evidence.</h2>
+          <p>The simulator helps quantify the size of the opportunity. The bridge keeps the next step disciplined: scale what works, automate what repeats, and build only where the pilot proves enough value.</p>
+        </div>
+        <div class="curve-box" aria-label="Evidence-led Phase 3 curve">
+          <svg viewBox="0 0 560 180" role="img">
+            <defs>
+              <linearGradient id="goldLine" x1="0" x2="1">
+                <stop offset="0" stop-color="#28745a" />
+                <stop offset="1" stop-color="#c69a45" />
+              </linearGradient>
+            </defs>
+            <path d="M25 145 C120 135, 170 112, 230 92 C300 68, 340 82, 390 47 C430 19, 480 13, 535 24" fill="none" stroke="url(#goldLine)" stroke-width="6" stroke-linecap="round" />
+            <path d="M25 154 C160 152, 260 139, 535 118" fill="none" stroke="#ded5c7" stroke-width="4" stroke-linecap="round" />
+            <circle cx="125" cy="132" r="8" fill="#28745a" />
+            <circle cx="260" cy="82" r="8" fill="#c69a45" />
+            <circle cx="405" cy="38" r="8" fill="#c69a45" />
+            <text x="22" y="171" font-size="15" fill="#706b60">Pilot evidence</text>
+            <text x="208" y="116" font-size="15" fill="#706b60">Validated methods</text>
+            <text x="382" y="70" font-size="15" fill="#706b60">Phase 3 capability</text>
+          </svg>
+          <div class="quote">The question is not “how much AI can Lynxeye add?” The question is “what has enough evidence to become shared capability?”</div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="simulator" class="section">
+      <div class="section-intro">
+        <div class="kicker">Back of the envelope</div>
+        <h2>Potential business value for Lynxeye.</h2>
+        <p>This is not proof. It is a simple way to discuss capacity captured, pitch speed, and what freed-up time could be worth if better AI practice turns into real work.</p>
+      </div>
+
+      <div class="simulator-card">
+        <div class="scenario-grid" role="group" aria-label="Value scenarios">
+          <button class="scenario-button" type="button" data-scenario="conservative" aria-pressed="false">
+            <small>Conservative</small>
+            <strong>Lower lift, lower capture</strong>
+            <p>Useful when adoption is slower or the pilot stays narrow.</p>
+          </button>
+          <button class="scenario-button" type="button" data-scenario="base" aria-pressed="true">
+            <small>Base case</small>
+            <strong>Practical middle view</strong>
+            <p>Default working hypothesis for a credible pilot.</p>
+          </button>
+          <button class="scenario-button" type="button" data-scenario="strong" aria-pressed="false">
+            <small>Strong case</small>
+            <strong>Better capture, stronger reuse</strong>
+            <p>Useful if the pilot finds repeatable work quickly.</p>
+          </button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <div class="metric-label">Captured capacity</div>
+            <strong id="capturedCapacity">9,820 to 13,300 hours</strong>
+            <span id="capturedCapacityNote">Roughly 11,550 hours survives work creep before uncertainty.</span>
+          </article>
+          <article class="metric-card">
+            <div class="metric-label">Gross capacity value</div>
+            <strong id="grossValue">29.5 to 39.8M SEK</strong>
+            <span id="grossValueNote">If captured as billable work at 3,000 SEK/hr.</span>
+          </article>
+          <article class="metric-card">
+            <div class="metric-label">Pitch-equivalent capacity</div>
+            <strong id="pitchCapacity">+3</strong>
+            <span id="pitchCapacityNote">At 12 baseline pitches and 20% compression.</span>
+          </article>
+          <article class="metric-card">
+            <div class="metric-label">Hours returned / consultant / week</div>
+            <strong id="weeklyHours">3.6 hours</strong>
+            <span>Directional view of returned working capacity.</span>
+          </article>
+        </div>
+
+        <button class="assumption-toggle" type="button" id="assumptionToggle" aria-expanded="false">Adjust assumptions</button>
+        <div class="assumption-panel" id="assumptionPanel">
+          <div class="slider-grid">
+            <label>Employees <span id="employeesValue">70</span><input id="employees" type="range" min="30" max="140" value="70" /></label>
+            <label>Billable hours / consultant / year <span id="billableValue">1500</span><input id="billableHours" type="range" min="1000" max="1900" step="50" value="1500" /></label>
+            <label>Average billing rate <span id="rateValue">3000 SEK/hr</span><input id="billingRate" type="range" min="1500" max="4500" step="100" value="3000" /></label>
+            <label>Project delivery compression <span id="projectValue">20%</span><input id="projectCompression" type="range" min="5" max="40" value="20" /></label>
+            <label>Pitch cycle compression <span id="pitchValue">20%</span><input id="pitchCompression" type="range" min="5" max="45" value="20" /></label>
+            <label>Captured time percentage <span id="captureValue">55%</span><input id="captureRate" type="range" min="25" max="80" value="55" /></label>
+          </div>
+        </div>
+
+        <div class="support-note">
+          Conversation support, not proof. Scope & Setup should calibrate the assumptions. The Value Pilot should replace them with Lynxeye evidence.
+        </div>
+      </div>
+    </section>
+
+    <section id="phase3-bridge" class="section">
+      <div class="section-intro">
+        <div class="kicker">Phase 3 bridge</div>
+        <h2>What becomes possible after the value pilot proves what works.</h2>
+        <p>Phase 3 stays interesting without becoming premature. The bridge makes it visible as a value pathway: scale proven behavior, automate repeatable workflows, and build new capability only where evidence is strong enough.</p>
+      </div>
+
+      <div class="bridge-card">
+        <div class="bridge-grid">
+          <article class="bridge-step">
+            <div class="phase">Phase 1</div>
+            <h3>Scope & Setup</h3>
+            <p>Clarify current practice, HQ infrastructure, safety boundaries, pain points, priority people, and the value hypotheses worth testing.</p>
+          </article>
+          <article class="bridge-step">
+            <div class="phase">Phase 2</div>
+            <h3>Value Pilot</h3>
+            <p>Work inside real Lynxeye workflows, coach people and teams, capture examples, and prove where AI improves quality, speed, confidence or capacity.</p>
+          </article>
+          <article class="bridge-step">
+            <div class="phase">Phase 3</div>
+            <h3>Scale, Automate, Build</h3>
+            <p>Scale what works, automate what repeats, connect what fits HQ infrastructure, and explore new AI-enabled client offerings.</p>
+          </article>
+        </div>
+
+        <div class="support-note">
+          Automation should not carry the pilot. Automation belongs after the pilot has shown which workflows are valuable, repeatable, and safe enough to scale.
+        </div>
+
+        <div class="bridge-actions">
+          <a class="phase-link secondary" href="http://127.0.0.1:5175/">Back to value map</a>
+          <a class="phase-link" href="http://127.0.0.1:5175/phase-3">Open the full Phase 3 map</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-intro">
+        <div class="kicker">Optional trust layer</div>
+        <h2>Two small aids for the discussion.</h2>
+        <p>These should stay as modals or expandable cards, so they support the conversation without pulling attention away from the proposal.</p>
+      </div>
+
+      <div class="proof-grid">
+        <article class="proof-card">
+          <strong>Why orchestration</strong>
+          <span>Explain why the work moves beyond isolated chat use toward reusable company capability.</span>
+        </article>
+        <article class="proof-card">
+          <strong>About Henrik</strong>
+          <span>Keep credibility short: people, technology, business, and practical AI adoption.</span>
+        </article>
+        <article class="proof-card">
+          <strong>Later proof points</strong>
+          <span>Add selected verbatims only after the final wording and references are approved.</span>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="orchestration">
+    <button class="modal-close" type="button" data-close>×</button>
+    <div class="modal-body">
+      <div class="kicker">Why orchestration</div>
+      <h2>Two strategies for AI: ping-ponging, or building capability.</h2>
+      <p>Most people start with ping-pong mode: ask, answer, retry, move on. It can be useful, but the value stays personal, inconsistent, and hard to scale.</p>
+      <div class="modal-grid">
+        <article class="modal-note">
+          <strong>Ping-pong with AI chat</strong>
+          <span>One person tries something, gets an answer, edits it, and moves on. The next person starts again from scratch.</span>
+        </article>
+        <article class="modal-note">
+          <strong>Scale and orchestrate with AI</strong>
+          <span>The workflow is designed with context, approved tools, examples, review points, quality checks, and playbooks.</span>
+        </article>
+        <article class="modal-note">
+          <strong>Company capability</strong>
+          <span>Learning becomes shared practice, not hidden individual experimentation.</span>
+        </article>
+      </div>
+      <div class="support-note">HQ and Eraneos create the secure foundation. Lynxeye creates value when that foundation becomes smooth daily use, stronger client projects, faster pitches, and company-owned methods.</div>
+    </div>
+  </dialog>
+
+  <dialog id="henrik">
+    <button class="modal-close" type="button" data-close>×</button>
+    <div class="modal-body">
+      <div class="kicker">About Henrik</div>
+      <h2>People, technology, business, and AI, made practical.</h2>
+      <p>I have spent more than two decades helping people and organizations turn technology into better work, clearer decisions, and stronger business results. This is a focused one-person practice: I do the work myself, close to the people and the problem.</p>
+      <div class="modal-grid">
+        <article class="modal-note">
+          <strong>People</strong>
+          <span>Coach, teach, challenge, and help people build confidence through their real work.</span>
+        </article>
+        <article class="modal-note">
+          <strong>Technology</strong>
+          <span>Understand tools, models, platforms, constraints, and expert perspectives.</span>
+        </article>
+        <article class="modal-note">
+          <strong>Business</strong>
+          <span>Tie the work to outcomes, clients, quality, adoption, and scale.</span>
+        </article>
+      </div>
+      <div class="proof-grid">
+        <article class="proof-card">
+          <blockquote>“He has in-depth knowledge regarding AI combined with a strong business acumen and excellent human capital skills.”</blockquote>
+          <span>Kristin Ruud, Chief People Officer, Telenor</span>
+        </article>
+        <article class="proof-card">
+          <blockquote>“Henrik was our advisor, mentor, and facilitator in developing a pilot model.”</blockquote>
+          <span>Leif Brandeggen, CEO, Studio Sigdal Lørenskog</span>
+        </article>
+        <article class="proof-card">
+          <blockquote>“Henrik has a unique ability to identify opportunities and challenges, and to create real enthusiasm.”</blockquote>
+          <span>Astrid Skaugseth, former CEO, SHE Conference</span>
+        </article>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const scenarios = {
+      conservative: { project: 12, pitch: 12, capture: 40 },
+      base: { project: 20, pitch: 20, capture: 55 },
+      strong: { project: 30, pitch: 30, capture: 70 }
+    };
+
+    const fields = {
+      employees: document.getElementById("employees"),
+      billableHours: document.getElementById("billableHours"),
+      billingRate: document.getElementById("billingRate"),
+      projectCompression: document.getElementById("projectCompression"),
+      pitchCompression: document.getElementById("pitchCompression"),
+      captureRate: document.getElementById("captureRate")
+    };
+
+    const formatNumber = (value) => Math.round(value).toLocaleString("en-US");
+    const formatMillions = (value) => `${(value / 1000000).toFixed(1)}M SEK`;
+    const formatPitch = (value) => `+${value.toFixed(value >= 10 ? 0 : 1).replace(".0", "")}`;
+
+    function readInputs() {
+      return {
+        employees: Number(fields.employees.value),
+        billableHours: Number(fields.billableHours.value),
+        billingRate: Number(fields.billingRate.value),
+        projectCompression: Number(fields.projectCompression.value) / 100,
+        pitchCompression: Number(fields.pitchCompression.value) / 100,
+        captureRate: Number(fields.captureRate.value) / 100
+      };
+    }
+
+    function updateLabels() {
+      document.getElementById("employeesValue").textContent = fields.employees.value;
+      document.getElementById("billableValue").textContent = fields.billableHours.value;
+      document.getElementById("rateValue").textContent = `${fields.billingRate.value} SEK/hr`;
+      document.getElementById("projectValue").textContent = `${fields.projectCompression.value}%`;
+      document.getElementById("pitchValue").textContent = `${fields.pitchCompression.value}%`;
+      document.getElementById("captureValue").textContent = `${fields.captureRate.value}%`;
+    }
+
+    function updateSimulator() {
+      updateLabels();
+      const input = readInputs();
+      const baselineHours = input.employees * input.billableHours;
+      const freedHours = baselineHours * input.projectCompression;
+      const captured = freedHours * input.captureRate;
+      const lowHours = captured * 0.85;
+      const highHours = captured * 1.15;
+      const grossLow = lowHours * input.billingRate;
+      const grossHigh = highHours * input.billingRate;
+      const pitchCapacity = 12 * input.pitchCompression / (1 - input.pitchCompression);
+      const weeklyHours = captured / input.employees / 46;
+
+      document.getElementById("capturedCapacity").textContent = `${formatNumber(lowHours)} to ${formatNumber(highHours)} hours`;
+      document.getElementById("capturedCapacityNote").textContent = `Roughly ${formatNumber(captured)} hours survives work creep before uncertainty.`;
+      document.getElementById("grossValue").textContent = `${formatMillions(grossLow)} to ${formatMillions(grossHigh)}`;
+      document.getElementById("grossValueNote").textContent = `If captured as billable work at ${formatNumber(input.billingRate)} SEK/hr.`;
+      document.getElementById("pitchCapacity").textContent = formatPitch(pitchCapacity);
+      document.getElementById("pitchCapacityNote").textContent = `At 12 baseline pitches and ${Math.round(input.pitchCompression * 100)}% compression.`;
+      document.getElementById("weeklyHours").textContent = `${weeklyHours.toFixed(1)} hours`;
+    }
+
+    document.querySelectorAll("[data-scenario]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const preset = scenarios[button.dataset.scenario];
+        fields.projectCompression.value = preset.project;
+        fields.pitchCompression.value = preset.pitch;
+        fields.captureRate.value = preset.capture;
+        document.querySelectorAll("[data-scenario]").forEach((item) => item.setAttribute("aria-pressed", "false"));
+        button.setAttribute("aria-pressed", "true");
+        updateSimulator();
+      });
+    });
+
+    Object.values(fields).forEach((input) => input.addEventListener("input", updateSimulator));
+
+    document.getElementById("assumptionToggle").addEventListener("click", (event) => {
+      const panel = document.getElementById("assumptionPanel");
+      const isOpen = panel.classList.toggle("is-open");
+      event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.querySelectorAll("[data-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.getElementById(button.dataset.modal).showModal();
+      });
+    });
+
+    document.querySelectorAll("[data-close]").forEach((button) => {
+      button.addEventListener("click", () => button.closest("dialog").close());
+    });
+
+    document.querySelectorAll("dialog").forEach((dialog) => {
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
+
+    updateSimulator();
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/phase-3", "destination": "/" },
+    { "source": "/phase-3/(.*)", "destination": "/" }
+  ]
+}
