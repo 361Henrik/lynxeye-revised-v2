@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   deliverableRows,
   mainHeroMetrics,
-  phase3LoopCards,
   phase3OpportunityCards,
-  phase3SignalCards,
   phaseCards,
   questions,
   quickWinCards,
   stakeholderCards,
+  type ListCard,
   type MatrixCell,
+  type MatrixRow,
   type MiniMetric,
   type Question,
   type SectionIntro,
@@ -22,6 +22,21 @@ function App() {
 }
 
 type ActiveModal = "orchestration" | "about" | null;
+
+type OrchestrationStep = {
+  number: string;
+  title: string;
+  shortValue: string;
+  detail: string;
+  variant: "start" | "current" | "future";
+  x: number;
+  y: number;
+  labelSide: "above" | "below" | "left" | "right";
+  connectorOffset: {
+    x: number;
+    y: number;
+  };
+};
 
 function Header({ brand, onOrchestration, onAbout }: { brand: string; onOrchestration: () => void; onAbout: () => void }) {
   return (
@@ -46,8 +61,8 @@ function Header({ brand, onOrchestration, onAbout }: { brand: string; onOrchestr
 function MiniMetrics({ metrics }: { metrics: MiniMetric[] }) {
   return (
     <div className="hero-bottom">
-      {metrics.map((metric) => (
-        <div className="mini-metric" key={metric.label}>
+      {metrics.map((metric, index) => (
+        <div className={`mini-metric${index === metrics.length - 1 ? " mini-metric-foundation" : ""}`} key={metric.label}>
           <strong>{metric.label}</strong>
           <span>{metric.text}</span>
         </div>
@@ -59,7 +74,7 @@ function MiniMetrics({ metrics }: { metrics: MiniMetric[] }) {
 function SectionIntroBlock({ intro }: { intro: SectionIntro }) {
   return (
     <div className="section-intro">
-      <div className="kicker">{intro.kicker}</div>
+      {intro.kicker ? <div className="kicker">{intro.kicker}</div> : null}
       <h2>{intro.title}</h2>
       <p>{intro.text}</p>
     </div>
@@ -80,8 +95,26 @@ function CardList({ items }: { items?: string[] }) {
   );
 }
 
+function ExpandableItems({ items, openLabel = "See details", closeLabel = "Hide details" }: { items?: string[]; openLabel?: string; closeLabel?: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (!items?.length) {
+    return null;
+  }
+
+  return (
+    <div className={`expandable-items${isOpen ? " is-open" : ""}`}>
+      <button className="detail-toggle" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((current) => !current)}>
+        {isOpen ? closeLabel : openLabel}
+      </button>
+      {isOpen ? <CardList items={items} /> : null}
+    </div>
+  );
+}
+
 function MainPage() {
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
+  const [showStakeholderDetails, setShowStakeholderDetails] = useState(false);
 
   return (
     <>
@@ -91,33 +124,17 @@ function MainPage() {
         onAbout={() => setActiveModal("about")}
       />
       <main>
-        <section className="hero">
+        <section className="hero hero-reset">
           <div className="hero-card">
             <div>
-              <div className="kicker">Dancing, creating value with AI</div>
-              <h1>From scattered AI use to measurable Lynxeye value.</h1>
+              <div className="kicker">"Dancing with AI"</div>
+              <h1>From ping-pong with AI to orchestrating AI that creates accelerated value for Lynxeye, clients, and employees.</h1>
               <p className="hero-lede">
                 A practical project model for helping individuals, teams, clients and Lynxeye capture more value from the intelligence already inside the company — faster work, better outputs, stronger capacity, reusable methods and safer adoption.
               </p>
             </div>
             <MiniMetrics metrics={mainHeroMetrics} />
           </div>
-
-          <aside className="side-card">
-            <div>
-              <div className="kicker">Executive value logic</div>
-              <h2>The investment should pay back in captured value.</h2>
-              <p>
-                Not only lower cost. The stronger case is higher capability, better client value, faster projects, stronger pitches, reduced bottlenecks and a company rhythm that compounds learning over time.
-              </p>
-            </div>
-            <div className="curve-box" aria-label="Value compounding curve">
-              <MainCurve />
-              <div className="quote">
-                The goal is not to use AI more. The goal is to create more value with the people, methods and judgment Lynxeye already has.
-              </div>
-            </div>
-          </aside>
         </section>
 
         <QuestionsSection />
@@ -125,18 +142,23 @@ function MainPage() {
         <section id="value" className="section">
           <SectionIntroBlock
             intro={{
-              kicker: "The value picture",
+              kicker: "",
               title: "Four stakeholder values, one practical project.",
               text: "The three-layer model stays intact: individuals, teams and Lynxeye. The client layer is added as the value test: the work only matters if it improves what clients experience and what the business captures.",
             }}
           />
+          <div className="section-actions">
+            <button className="detail-toggle" type="button" aria-expanded={showStakeholderDetails} onClick={() => setShowStakeholderDetails((current) => !current)}>
+              {showStakeholderDetails ? "Hide details" : "Show all details"}
+            </button>
+          </div>
           <div className="value-grid">
             {stakeholderCards.map((card) => (
-              <article className={`stakeholder-card ${card.className ?? ""}`} key={card.title}>
+              <article className={`stakeholder-card ${showStakeholderDetails ? "is-expanded" : ""}`} key={card.title}>
                 <span className="tag">{card.tag}</span>
                 <h3>{card.title}</h3>
                 <p>{card.text}</p>
-                <CardList items={card.items} />
+                {showStakeholderDetails ? <CardList items={card.items} /> : null}
               </article>
             ))}
           </div>
@@ -145,19 +167,14 @@ function MainPage() {
         <section id="quickwins" className="section">
           <SectionIntroBlock
             intro={{
-              kicker: "Individual easy wins",
+              kicker: "Individual early wins",
               title: "What employees need to master first.",
               text: "For Lynxeye, the first value is not advanced automation. It is helping consultants, strategists and designers become comfortable using AI in the daily work where insight, judgment, synthesis, storytelling and client quality matter most.",
             }}
           />
           <div className="quickwin-grid">
             {quickWinCards.map((card) => (
-              <article className="quickwin-card" key={card.title}>
-                <strong>{card.number}</strong>
-                <h3>{card.title}</h3>
-                <p>{card.text}</p>
-                <CardList items={card.items} />
-              </article>
+              <ExpandableListCard card={card} className="quickwin-card" openLabel="See details" closeLabel="Hide details" key={card.title} />
             ))}
           </div>
         </section>
@@ -177,7 +194,7 @@ function MainPage() {
                 <div>
                   <h3>{card.title}</h3>
                   <p>{card.text}</p>
-                  <CardList items={card.items} />
+                  <ExpandableItems items={card.items} openLabel="See more" closeLabel="Close" />
                 </div>
               </article>
             ))}
@@ -187,27 +204,21 @@ function MainPage() {
         <section id="matrix" className="section">
           <SectionIntroBlock
             intro={{
-              kicker: "Expandable deliverables map",
-              title: "What Lynxeye gets — by value recipient and project phase.",
-              text: "The visible table keeps the big picture simple. Each cell opens into concrete version-one deliverables that can be delivered through sessions, examples, captures and the living web delivery hub.",
+              kicker: "",
+              title: "What Lynxeye gets — by stakeholder value and project phase.",
+              text: "The visible table keeps the big picture simple. Each stakeholder row opens into concrete version-one deliverables that can be delivered through sessions, examples, captures and the living web delivery hub.",
             }}
           />
           <div className="matrix-wrap">
             <div className="matrix-header">
-              <div>Recipient</div>
-              <div>Value lever</div>
-              <div>Scope & Setup deliverables</div>
-              <div>Value Pilot deliverables</div>
-              <div>Evidence / payoff signals</div>
+              <div>Stakeholder</div>
+              <div>Value created</div>
+              <div>Phase 1: Scope & Setup</div>
+              <div>Phase 2: Show Value</div>
+              <div>What success could look like</div>
             </div>
             {deliverableRows.map((row) => (
-              <div className="matrix-row" key={row.recipient.title}>
-                <MatrixCellBlock cell={row.recipient} />
-                <MatrixCellBlock cell={row.valueLever} />
-                <MatrixCellBlock cell={row.scope} />
-                <MatrixCellBlock cell={row.pilot} />
-                <MatrixCellBlock cell={row.payoff} />
-              </div>
+              <DeliverableRow row={row} key={row.recipient.title} />
             ))}
           </div>
         </section>
@@ -221,77 +232,21 @@ function MainPage() {
 }
 
 function QuestionsSection() {
-  const coreQuestions = questions.slice(0, 8);
-  const additionalQuestions = questions.slice(8);
-
   return (
     <section id="questions" className="section section-after-hero">
       <SectionIntroBlock
         intro={{
-          kicker: "Lynxeye AI pilot",
-          title: "The questions shaping the work",
-          text: "These are the questions I hear sitting underneath the conversations so far.",
+          kicker: "",
+          title: "The key questions I hear Christian asking from our conversation.",
+          text: "The shared question is how Lynxeye can turn scattered day-to-day AI use into a better way of working: reducing low-leverage friction, protecting human attention, and freeing employees to spend more time on the work where judgment, creativity, client understanding and strategic thinking create the most value.",
         }}
       />
 
       <div className="question-editorial">
-        <div className="question-preface">
-          <p>
-            Some of them are the questions Christian shared directly. Some have become clearer through the discussions around Eraneos, the June 3 session, central AI infrastructure, and what it would mean for Lynxeye to move fast without turning this into hype.
-          </p>
-          <p>
-            I do not think these questions should be answered as separate points. They belong together. They help us understand what the project needs to validate, what the pilot should prove, and what Lynxeye should have in its hands when the work is done.
-          </p>
-        </div>
-
-        <div className="question-thesis">
-          <span>The question underneath the questions</span>
-          <p>How does Lynxeye turn AI from scattered experimentation into a better way of working?</p>
-        </div>
-
-        <div className="question-group-label">
-          <div>
-            <span>The eight core questions</span>
-            <p>The first six are the original questions. The last two became clearer from the later conversations about Eraneos/HQ and Lynxeye's possible role inside the wider organization.</p>
-          </div>
-        </div>
-
         <div className="question-list">
-          {coreQuestions.map((item) => (
+          {questions.map((item) => (
             <QuestionCard item={item} key={item.number} />
           ))}
-        </div>
-
-        <div className="question-group-label question-group-label-additional">
-          <div>
-            <span>Additional questions we should not ignore</span>
-            <p>These are not necessarily the questions to lead with, but they are important if the work is going to scale in a smart way.</p>
-          </div>
-        </div>
-
-        <div className="question-list">
-          {additionalQuestions.map((item) => (
-            <QuestionCard item={item} key={item.number} />
-          ))}
-        </div>
-
-        <div className="question-closeout">
-          <div>
-            <span>The distinction that matters</span>
-            <h3>Eraneos provides the infrastructure. Lynxeye builds the operating practice.</h3>
-            <p>
-              The work is not about creating a parallel AI setup. It is about translating the group's AI direction into the daily work of a strategy consultancy.
-            </p>
-          </div>
-          <div className="question-practice-list" aria-label="Operating practice areas">
-            <span>Pitches</span>
-            <span>Research</span>
-            <span>Synthesis</span>
-            <span>Delivery</span>
-            <span>Judgment</span>
-            <span>Learning</span>
-            <span>Reusable intelligence</span>
-          </div>
         </div>
       </div>
     </section>
@@ -299,50 +254,77 @@ function QuestionsSection() {
 }
 
 function QuestionCard({ item }: { item: Question }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <article className="question-card">
+    <article className={`question-card ${isOpen ? "is-open" : ""}`}>
       <div className="question-rail" aria-label={`Question ${item.number}`}>
-        <span>Question</span>
         <strong>{item.number}</strong>
       </div>
       <div className="question-body">
-        <h3>{item.question}</h3>
-        <div className="question-detail-grid">
-          <div className="question-detail">
-            <span>How I think about it</span>
-            <p>{item.thinking}</p>
-          </div>
-          <div className="question-detail">
-            <span>My recommended approach</span>
-            <p>{item.recommendedApproach}</p>
-          </div>
-          <div className="question-detail question-validate">
-            <span>What the project needs to validate</span>
-            <ul>
-              {item.validate.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-          </div>
+        <div className="question-summary">
+          <h3>“{item.question}”</h3>
+          <button className="detail-toggle" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((current) => !current)}>
+            {isOpen ? "Close" : "More"}
+          </button>
         </div>
+        {isOpen ? (
+          <div className="question-detail-grid">
+            <div className="question-detail">
+              <span>How I think about it</span>
+              <p>{item.thinking}</p>
+            </div>
+            <div className="question-detail">
+              <span>My recommended approach</span>
+              <p>{item.recommendedApproach}</p>
+            </div>
+          </div>
+        ) : null}
       </div>
     </article>
   );
 }
 
-function MatrixCellBlock({ cell }: { cell: MatrixCell }) {
+function ExpandableListCard({ card, className, openLabel, closeLabel }: { card: ListCard; className: string; openLabel: string; closeLabel: string }) {
+  return (
+    <article className={className}>
+      {card.number ? <strong>{card.number}</strong> : null}
+      {card.tag ? <span className="tag">{card.tag}</span> : null}
+      <h3>{card.title}</h3>
+      <p>{card.text}</p>
+      <ExpandableItems items={card.items} openLabel={openLabel} closeLabel={closeLabel} />
+    </article>
+  );
+}
+
+function MatrixCellBlock({ cell, isOpen = false }: { cell: MatrixCell; isOpen?: boolean }) {
   return (
     <div>
       <h4>{cell.title}</h4>
       <p>{cell.text}</p>
-      {cell.summary && cell.items?.length ? (
-        <details>
-          <summary>{cell.summary}</summary>
-          <div className="details-body">
-            <CardList items={cell.items} />
-          </div>
-        </details>
-      ) : null}
+      {isOpen ? <CardList items={cell.items} /> : null}
+    </div>
+  );
+}
+
+function DeliverableRow({ row }: { row: MatrixRow }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className={`matrix-row-group ${isOpen ? "is-open" : ""}`}>
+      <div className="matrix-row">
+        <div className="matrix-stakeholder-cell">
+          <h4>{row.recipient.title}</h4>
+          <p>{row.recipient.text}</p>
+          <button className="detail-toggle" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((current) => !current)}>
+            {isOpen ? "Close" : "See more"}
+          </button>
+        </div>
+        <MatrixCellBlock cell={row.valueLever} isOpen={isOpen} />
+        <MatrixCellBlock cell={row.scope} isOpen={isOpen} />
+        <MatrixCellBlock cell={row.pilot} isOpen={isOpen} />
+        <MatrixCellBlock cell={row.payoff} isOpen={isOpen} />
+      </div>
     </div>
   );
 }
@@ -352,8 +334,8 @@ function Phase3EmbeddedShowcase() {
     <section id="phase3" className="section phase3-embedded">
       <SectionIntroBlock
         intro={{
-          kicker: "What comes later",
-          title: "Phase 3 is where deeper build-out belongs.",
+          kicker: "",
+          title: "A Phase 3 could look like this.",
           text: "The pilot should not carry the burden of building everything. It should prove which workflows are valuable enough to scale, automate or turn into future services.",
         }}
       />
@@ -365,47 +347,122 @@ function Phase3EmbeddedShowcase() {
             <article className="phase3-card" key={card.title}>
               <h3>{card.title}</h3>
               <p>{card.text}</p>
-              <CardList items={card.items} />
+              <ExpandableItems items={card.items} openLabel="See examples" closeLabel="Hide examples" />
             </article>
           ))}
         </div>
-      </div>
-
-      <div className="showcase-block">
-        <div className="phase-label">The learning loop</div>
-        <div className="loop-grid">
-          {phase3LoopCards.map((card) => (
-            <article className="loop-step" key={card.title}>
-              <strong>{card.number}</strong>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <div className="showcase-block">
-        <div className="phase-label">Signals that decide the next move</div>
-        <div className="signal-grid">
-          {phase3SignalCards.map((card) => (
-            <article className="signal-card" key={card.title}>
-              <span className="tag">{card.tag}</span>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-              <CardList items={card.items} />
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <div className="footer-note">
-        The commercial case is not only that Lynxeye can save time. The stronger case is that Lynxeye can turn saved time into better client work, higher delivery capacity, stronger pitches, reusable IP and less dependency on linear hiring every time demand increases.
       </div>
     </section>
   );
 }
 
 function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const valueMapSteps: OrchestrationStep[] = [
+    {
+      number: "1",
+      title: "Ping-pong",
+      shortValue: "Individual help",
+      detail: "Ask, answer, retry. Useful for one person, but the context and learning disappear after each task.",
+      variant: "start",
+      x: 10,
+      y: 86,
+      labelSide: "right",
+      connectorOffset: {
+        x: 6,
+        y: -7,
+      },
+    },
+    {
+      number: "2",
+      title: "Structured use",
+      shortValue: "Better output",
+      detail: "People use clearer outcomes, better context, examples and review prompts so daily AI work becomes more reliable.",
+      variant: "current",
+      x: 25,
+      y: 83,
+      labelSide: "below",
+      connectorOffset: {
+        x: 0,
+        y: 1,
+      },
+    },
+    {
+      number: "3",
+      title: "Multimodal work",
+      shortValue: "Real-work inputs",
+      detail: "Voice, transcripts, images, documents, data and slides become part of the workflow instead of separate manual steps.",
+      variant: "current",
+      x: 42,
+      y: 72,
+      labelSide: "above",
+      connectorOffset: {
+        x: -7,
+        y: -10,
+      },
+    },
+    {
+      number: "4",
+      title: "Shared playbooks",
+      shortValue: "Learning travels",
+      detail: "Examples, context packs and quality checks turn good individual practice into something teams can repeat.",
+      variant: "current",
+      x: 56,
+      y: 57,
+      labelSide: "below",
+      connectorOffset: {
+        x: -4,
+        y: 10,
+      },
+    },
+    {
+      number: "5",
+      title: "Orchestrated workflows",
+      shortValue: "Repeatable capability",
+      detail: "Skills, approved tools, review points and handoffs turn AI use into a company method.",
+      variant: "current",
+      x: 70,
+      y: 40,
+      labelSide: "below",
+      connectorOffset: {
+        x: 7,
+        y: 5,
+      },
+    },
+    {
+      number: "6",
+      title: "Automations",
+      shortValue: "Capacity freed",
+      detail: "Recurring preparation, synthesis and follow-up can run with human supervision instead of manual restart.",
+      variant: "future",
+      x: 82,
+      y: 21,
+      labelSide: "left",
+      connectorOffset: {
+        x: -11,
+        y: 1,
+      },
+    },
+    {
+      number: "7",
+      title: "Micro-apps",
+      shortValue: "New value",
+      detail: "Internal tools, client prototypes and service components create new value.",
+      variant: "future",
+      x: 93,
+      y: 10,
+      labelSide: "left",
+      connectorOffset: {
+        x: -2,
+        y: 22,
+      },
+    },
+  ];
+  const [activeStepNumber, setActiveStepNumber] = useState("5");
+  const activeStepIndex = valueMapSteps.findIndex((step) => step.number === activeStepNumber);
+  const activeStep = valueMapSteps[activeStepIndex] ?? valueMapSteps[4];
+  const activeSegmentStart = valueMapSteps[Math.max(0, activeStepIndex - 1)] ?? valueMapSteps[0];
+  const valueCurvePath = "M10 86 C20 86, 28 83, 38 76 C50 67, 61 56, 70 40 C78 26, 84 15, 93 10";
+
   useEffect(() => {
     if (!open) {
       return;
@@ -431,16 +488,6 @@ function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () =
     return null;
   }
 
-  const valueMapSteps = [
-    ["1", "Ping-pong chat", "Ask, answer, retry.", "Individual help.", "Most employees do this"],
-    ["2", "Structured use", "Better prompts, files, context and role setup.", "Better personal output.", "Value creation unlock"],
-    ["3", "Multimodal work", "Voice, transcripts, images, documents, data and slides.", "Less friction across real work.", "Value creation unlock"],
-    ["4", "Shared playbooks", "Examples, context packs and quality checks.", "Learning travels across the team.", "Value creation unlock"],
-    ["5", "Orchestrated workflows", "Skills, approved tools, review points and handoffs.", "Repeatable capability.", "Value creation unlock"],
-    ["6", "Automations and agents", "Recurring work runs with human supervision.", "Capacity is freed.", "Value creation unlock"],
-    ["7", "Micro-apps and solutions", "Internal tools, prototypes and service components.", "New ideas, offers and scalable methods.", "Value creation unlock"],
-  ];
-
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
       <section className="modal-panel orchestration-panel" role="dialog" aria-modal="true" aria-labelledby="orchestration-title">
@@ -457,20 +504,80 @@ function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () =
         </p>
 
         <div className="value-map" aria-label="AI value creation map">
-          <div className="axis-label axis-label-y">New value, offers and solutions</div>
-          <div className="axis-label axis-label-x">Individual moments → reusable company capability</div>
-          <div className="value-map-grid">
-            {valueMapSteps.map(([number, stage, change, value, label]) => (
-              <article className={`value-step value-step-${number}`} key={stage}>
-                <div className="step-meta">
-                  <span>{label}</span>
-                  <strong>{number}</strong>
-                </div>
-                <h3>{stage}</h3>
-                <p>{change}</p>
-                <em>{value}</em>
-              </article>
-            ))}
+          <div className="value-plot">
+            <div className="axis-label-y">Reusable company value</div>
+            <div className="axis-label-x">AI maturity / orchestration level</div>
+            <svg className="value-chart" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path className="chart-grid-line" d="M8 70 H96" />
+              <path className="chart-grid-line" d="M8 48 H96" />
+              <path className="chart-grid-line" d="M8 26 H96" />
+              <path className="chart-axis" d="M8 8 V90 H96" />
+              <path className="value-trajectory" d={valueCurvePath} />
+              {activeStepIndex > 0 ? (
+                <line
+                  className="value-active-segment"
+                  x1={activeSegmentStart.x}
+                  y1={activeSegmentStart.y}
+                  x2={activeStep.x}
+                  y2={activeStep.y}
+                />
+              ) : null}
+              {valueMapSteps.map((step) => {
+                const isActive = activeStepNumber === step.number;
+
+                return (
+                  <line
+                    className={`value-connector${isActive ? " is-active" : ""}`}
+                    key={`${step.title}-connector`}
+                    x1={step.x}
+                    y1={step.y}
+                    x2={step.x + step.connectorOffset.x}
+                    y2={step.y + step.connectorOffset.y}
+                  />
+                );
+              })}
+              {valueMapSteps.map((step) => {
+                const isActive = activeStepNumber === step.number;
+
+                return (
+                  <circle
+                    className={`value-point value-point--${step.variant}${isActive ? " is-active" : ""}`}
+                    key={`${step.title}-point`}
+                    cx={step.x}
+                    cy={step.y}
+                    r={isActive ? "1.9" : "1.35"}
+                  />
+                );
+              })}
+            </svg>
+            {valueMapSteps.map((step) => {
+              const isActive = activeStepNumber === step.number;
+              const stepStyle: CSSProperties = {
+                left: `${step.x + step.connectorOffset.x}%`,
+                top: `${step.y + step.connectorOffset.y}%`,
+              };
+
+              return (
+                <button
+                  className={`value-step value-step--${step.variant} value-step--${step.labelSide}${isActive ? " is-active" : ""}`}
+                  type="button"
+                  key={step.title}
+                  aria-pressed={isActive}
+                  style={stepStyle}
+                  onClick={() => setActiveStepNumber(step.number)}
+                  onFocus={() => setActiveStepNumber(step.number)}
+                >
+                  <span className="step-number">{step.number}</span>
+                  <span className="step-title">{step.title}</span>
+                  <span className="step-value">{step.shortValue}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="value-active-summary" aria-live="polite">
+            <span>Level {activeStep.number}</span>
+            <strong>{activeStep.title}</strong>
+            <p>{activeStep.detail}</p>
           </div>
         </div>
 
@@ -604,27 +711,6 @@ function AboutHenrikModal({ open, onClose }: { open: boolean; onClose: () => voi
         </div>
       </section>
     </div>
-  );
-}
-
-function MainCurve() {
-  return (
-    <svg viewBox="0 0 560 180" role="img">
-      <path d="M25 145 C120 135, 170 112, 230 92 C300 68, 340 82, 390 47 C430 19, 480 13, 535 24" fill="none" stroke="#28745a" strokeWidth="6" strokeLinecap="round" />
-      <path d="M25 154 C160 152, 260 139, 535 118" fill="none" stroke="#ded5c7" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="125" cy="132" r="8" fill="#28745a" />
-      <circle cx="260" cy="82" r="8" fill="#c69a45" />
-      <circle cx="405" cy="38" r="8" fill="#c69a45" />
-      <text x="22" y="171" fontSize="15" fill="#706b60">
-        Ad hoc use
-      </text>
-      <text x="208" y="116" fontSize="15" fill="#706b60">
-        Repeatable methods
-      </text>
-      <text x="382" y="70" fontSize="15" fill="#706b60">
-        Compounding capability
-      </text>
-    </svg>
   );
 }
 

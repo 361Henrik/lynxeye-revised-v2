@@ -49,15 +49,17 @@ export type TimelineRow = {
 };
 
 export const mainHeroMetrics: MiniMetric[] = [
-  { label: "More value", text: "per person, project and client interaction." },
-  { label: "More capacity", text: "without only scaling through linear hiring." },
-  { label: "More proof", text: "through sharper pitches and visible prototypes." },
-  { label: "More reuse", text: "through playbooks, examples and captured IP." },
+  { label: "More value", text: "in each employee, project and client interaction." },
+  { label: "More capacity", text: "more output without relying only on linear hiring." },
+  { label: "More capability", text: "shared methods and orchestrated workflows that raise judgment across teams." },
+  { label: "More proof", text: "sharper pitches, clearer prototypes and faster evidence of what works." },
+  { label: "More reuse", text: "playbooks, examples and captured IP that compound after each project." },
+  { label: "Company infrastructure", text: "approved headquarters AI infrastructure is the foundation the five value outcomes depend on: tools, access, governance, security and shared guardrails." },
 ];
 
 export const stakeholderCards: ListCard[] = [
   {
-    tag: "Individuals",
+    tag: "Employees",
     className: "employee",
     title: "Better work with less AI stress.",
     text: "Employees learn how to use AI with control: setup, prompting, context, voice, transcripts, browser workflows, review habits and quality judgment.",
@@ -198,8 +200,8 @@ export const quickWinCards: ListCard[] = [
 export const phaseCards: ListCard[] = [
   {
     number: "1",
-    title: "Scope & Setup",
-    text: "Clarify current AI practice, internal learnings, Eraneos/HQ infrastructure, client movement, pain points, capacity pressure, and priority use cases.",
+    title: "Phase 1 - Scope & Setup",
+    text: "Clarify current AI practice, internal learnings, headquarters AI infrastructure, client movement, pain points, capacity pressure, and priority use cases.",
     items: [
       "What works and fails today?",
       "Where are the strongest value opportunities?",
@@ -209,7 +211,7 @@ export const phaseCards: ListCard[] = [
   },
   {
     number: "2",
-    title: "Value Pilot",
+    title: "Phase 2 - Show Value",
     text: "Coach individuals and teams through real work, capture reusable methods, demonstrate before/after value, and document evidence and recommendations.",
     items: [
       "Personal AI fluency and setup support.",
@@ -220,7 +222,7 @@ export const phaseCards: ListCard[] = [
   },
   {
     number: "3",
-    title: "Phase 3 not covered here",
+    title: "Phase 3 - not covered in this proposal",
     text: "Phase 3 is shown only as the future direction. It should come after the pilot proves what is worth scaling, automating, integrating or turning into new client offerings.",
     items: [
       "Not part of the current Scope & Setup or Value Pilot.",
@@ -395,16 +397,16 @@ export const deliverableRows: MatrixRow[] = [
       summary: "View value logic",
       items: [
         "Turn tacit knowledge into company infrastructure.",
-        "Bridge Eraneos/HQ infrastructure into local consulting practice.",
+        "Bridge headquarters AI infrastructure into local consulting practice.",
         "Identify what could become future services, automations or business models.",
       ],
     },
     scope: {
       title: "Strategic alignment map",
-      text: "Connect local needs with HQ direction and commercial priorities.",
+      text: "Connect local needs with headquarters direction and commercial priorities.",
       summary: "View concrete deliverables",
       items: [
-        "Eraneos/HQ infrastructure and June 3 input review.",
+        "Headquarters AI infrastructure and June 3 input review.",
         "Tool, data, security and platform constraint map.",
         "Success frame: speed, quality, capacity, adoption, reuse, margin, client value.",
         "Phase 2 scope and investment logic.",
@@ -441,126 +443,69 @@ export const deliverableRows: MatrixRow[] = [
 export const questions: Question[] = [
   {
     number: "01",
-    question: "What does the first session look like?",
-    thinking: "The first session should not be a presentation. It should be a working session where we use real Lynxeye work: a live pitch, a client question, a proposal, a piece of research, or something else that already matters.",
-    recommendedApproach: "We create a before-and-after experience. First, we look at how the work would normally happen today. Then we run the same task through a more structured AI-supported way of working. Then we compare the difference: what became faster, what became better, what became uncomfortable, and what could be reused.",
+    question: "Where is friction consuming attention today?",
+    thinking: "Intelligent people are not short on capability. Too much of their attention is consumed by low-leverage work: digging through presentations, summarizing meetings, searching for information, formatting outputs, preparing internal material, analyzing repetitive data, switching between fragmented systems, and rebuilding context. The hidden problem is not talent. It is where human attention gets spent.",
+    recommendedApproach: "Start with pain, not technology. Map the repetitive work that drains energy across pitches, research, synthesis, meetings, delivery, and internal preparation. Use that map to choose a few real workflows where AI can reduce friction and give attention back to higher-value work.",
     validate: [
-      "Can real Lynxeye work improve visibly in one session?",
-      "Can the method be understood without too much theory?",
-      "Can the learning become the first playbook entry?",
+      "Where does time disappear today?",
+      "Which work creates cognitive overload without creating equivalent value?",
+      "Which friction points are common enough to matter?",
     ],
   },
   {
     number: "02",
-    question: "How do we define changes in ways of working?",
-    thinking: "This cannot start with theory. It has to start with how Lynxeye actually works today: where time disappears, where people recreate work, and where senior judgment is used on production instead of direction.",
-    recommendedApproach: "We define a small number of concrete shifts: from blank-page pitches to structured context, from first-draft senior production to senior review and judgment, and from project learning disappearing to reusable lenses, workflows, examples, and prompts.",
+    question: "What repetitive work should AI absorb first?",
+    thinking: "AI should provide relief before automation. Its first role is to absorb repetitive cognitive work: meeting synthesis, information processing, research compression, first-draft preparation, context rebuilding, and operational heavy lifting that does not require Lynxeye's highest level of judgment.",
+    recommendedApproach: "Pick work that is common, painful, and safe to improve. Build focused AI-supported workflows around transcripts, research packs, proposal drafts, knowledge retrieval, and presentation preparation. Keep the pilot practical: fewer workflows, clearer proof.",
     validate: [
-      "Which workflows are most important to change first?",
-      "Where is the biggest friction today?",
-      "What visible signals show that behavior has actually changed?",
+      "Which repeated tasks are most visible to employees?",
+      "Which tasks can be improved without creating quality or confidentiality risk?",
+      "Where can AI create relief quickly?",
     ],
   },
   {
     number: "03",
-    question: "How do we integrate theory with practice?",
-    thinking: "Theory matters, but it should not float above the work. If we talk about context, we show it inside a real pitch. If we talk about playbooks, we create one from the session.",
-    recommendedApproach: "The theory should never be more than ten minutes ahead of the practice. A good rhythm is: short frame, live work, review, capture. The capture is important. If nothing gets captured, the learning stays in the room.",
+    question: "How do we protect human judgment instead of replacing it?",
+    thinking: "The point is not humans versus AI. The employee remains the strategist, thinker, decision-maker, relationship builder, and creative force. AI should become the support layer that clears space for better judgment, not a replacement for it.",
+    recommendedApproach: "Design each workflow with explicit human decision points: briefing, direction, review, critique, client relevance, and final judgment. Use AI for preparation and synthesis, then make Lynxeye's human quality standards more visible, repeatable, and teachable.",
     validate: [
-      "Which concepts actually help people work better?",
-      "What theory is useful, and what becomes noise?",
-      "Can each session leave behind reusable material?",
+      "Where must human judgment remain visible?",
+      "Which outputs need review before reuse or client exposure?",
+      "How do we make quality standards easier to repeat?",
     ],
   },
   {
     number: "04",
-    question: "What tools and workflows will we actually use?",
-    thinking: "This is where it is easy to get distracted. The point is not to use as many tools as possible. The point is to define the workflows that matter, and then use the right tools inside them.",
-    recommendedApproach: "I would separate this into two layers. Eraneos/HQ provides the infrastructure layer: platforms, tools, data access, knowledge infrastructure, security, and guardrails. Lynxeye defines the operating layer: how consultants use these tools in pitches, research, synthesis, delivery, client work, and knowledge capture.",
+    question: "What should freed-up time be used for?",
+    thinking: "This is not only an efficiency question. If friction decreases, people regain attention. That attention can go into deeper client understanding, stronger strategic thinking, better ideas, faster experimentation, sharper facilitation, learning, and reusable IP. If freed-up time is only converted into more pressure, adoption will suffer.",
+    recommendedApproach: "Make the value choice explicit. Decide where the time should go: better quality, more capacity, more client thinking, more reusable methods, or relief from overload. The pilot should show not only what became faster, but what became better because people had more room to think.",
     validate: [
-      "Which tools are approved or coming from HQ?",
-      "Which workflows should Lynxeye build first?",
-      "Where does human review need to happen?",
+      "Where does AI give time back?",
+      "What higher-value work should that time move toward?",
+      "How do we prevent AI from becoming only a productivity tax?",
     ],
   },
   {
     number: "05",
-    question: "What do we do with freed-up time?",
-    thinking: "This is not an efficiency question only. It is a leadership question. Freed-up time does not stay freed up unless the company decides what it is for.",
-    recommendedApproach: "There are three healthy uses of freed-up time: better work, more capacity, and more reusable IP. The wrong answer is same people, same stress, more output. That will kill adoption.",
+    question: "How do we deal with skepticism, fear, and uneven confidence?",
+    thinking: "Adoption is not only a knowledge problem. It is also a confidence, trust, and identity problem. People need to experience AI as relief from frustrating work, not as a signal that their judgment matters less or that more output will simply be extracted from them.",
+    recommendedApproach: "Do not argue people into adoption. Show them better work using their own tasks. Start with visible pain points: meeting follow-up, research compression, proposal preparation, synthesis, and context rebuilding. When people see AI remove friction while keeping them central, confidence grows naturally.",
     validate: [
-      "Where does time actually get freed up?",
-      "Should the gain go into quality, capacity, IP, or relief?",
-      "How does leadership make that choice visible?",
+      "What do people trust, and what do they resist?",
+      "Which tasks would make AI feel useful quickly?",
+      "What changes when people see their own work improved?",
     ],
   },
   {
     number: "06",
-    question: "How do we use this as a meaningful incentive for the people experiencing the increased effectiveness?",
-    thinking: "People will notice very quickly whether this is for them or just from them. If AI becomes a way to extract more production from the same people, adoption will slow down quietly.",
-    recommendedApproach: "The incentive should show up in the work itself: less repetitive production, more meaningful thinking, more recognition for creating reusable methods, and more visible contribution to Lynxeye's collective intelligence.",
+    question: "What should become reusable company capability?",
+    thinking: "If the pilot only helps one person or one project move faster, it is useful but fragile. The larger value appears when learning travels: examples, context packs, review lenses, prompt patterns, workflow routines, and playbooks that others do not have to rediscover.",
+    recommendedApproach: "Every workflow should leave something behind. Capture reusable examples from real work, document what changed, and turn the strongest patterns into shared methods. This is how Lynxeye moves from individual AI help to company capability.",
     validate: [
-      "What would make this feel useful to consultants?",
-      "How should playbook contribution be recognized?",
-      "How do we avoid making AI feel like a productivity tax?",
+      "Which examples should become shared practice?",
+      "What should no one at Lynxeye have to rediscover?",
+      "How does the pilot create capability that compounds?",
     ],
-  },
-  {
-    number: "07",
-    question: "How do we leverage and combine the infrastructure and tool initiatives that Eraneos/HQ is providing?",
-    thinking: "This question has become more important after hearing more about the Eraneos direction. Lynxeye should not duplicate HQ. But it should also not wait passively.",
-    recommendedApproach: "HQ provides the foundation. Lynxeye builds the practice. After the June 3 session, we should map what Eraneos provides against what Lynxeye needs to define locally. The practical question is not only what tools are available. It is how those tools change the way Lynxeye pitches, researches, delivers, and learns.",
-    validate: [
-      "What exactly comes from Eraneos/HQ?",
-      "What remains local to Lynxeye?",
-      "How do we bridge group infrastructure and local behavior?",
-    ],
-  },
-  {
-    number: "08",
-    question: "How does Lynxeye become a proof case?",
-    thinking: "This needs a precise ambition. Lynxeye probably does not need to position itself as the group's leading technical AI implementation unit. The stronger position is different.",
-    recommendedApproach: "Lynxeye can become the clearest proof case for AI-orchestrated strategic consulting: sharper pitches, faster synthesis, better client understanding, more reusable methods, stronger use of senior judgment, less repeated work, and more consistent quality.",
-    validate: [
-      "What type of AI leadership is credible for Lynxeye?",
-      "What proof would matter inside the wider organization?",
-      "What can Lynxeye export back to the group?",
-    ],
-  },
-  {
-    number: "09",
-    question: "How do we scope and price this without scaring people away before they understand the potential?",
-    thinking: "The commitment should grow with the evidence. People do not yet know what they do not know.",
-    recommendedApproach: "Phase 1 creates alignment. Phase 2 proves value through a focused pilot. Phase 3 scales what works.",
-    validate: ["What is the smallest serious version that creates enough proof to justify the next step?"],
-  },
-  {
-    number: "10",
-    question: "How do we protect the pilot while still creating momentum in the wider team?",
-    thinking: "If the pilot is too closed, it can feel secretive. If it is too open, it can become slow and noisy.",
-    recommendedApproach: "Small core team. Visible learning. Later waves. Playbook capture.",
-    validate: ["Who is inside the pilot, who gets visibility, and when do others join?"],
-  },
-  {
-    number: "11",
-    question: "How do we deal with skepticism, fear, and uneven confidence?",
-    thinking: "Adoption is not only a knowledge problem. It is also a confidence, trust, and identity problem.",
-    recommendedApproach: "Do not argue people into adoption. Show them better work using their own tasks.",
-    validate: ["What do people trust, what do they resist, and what changes when they see their own work improved?"],
-  },
-  {
-    number: "12",
-    question: "What should become reusable company intelligence?",
-    thinking: "If the pilot only helps one project move faster, it is useful. If it creates reusable Lynxeye intelligence, the value becomes much bigger.",
-    recommendedApproach: "Every workflow should leave something behind: a prompt, a lens, a pitch pattern, a review checklist, a client question bank, or a reusable example.",
-    validate: ["What did we learn that someone else at Lynxeye should not have to rediscover?"],
-  },
-  {
-    number: "13",
-    question: "Who owns the operating model after the pilot?",
-    thinking: "If the pilot works, Lynxeye needs internal ownership. Otherwise the method depends too much on the external project.",
-    recommendedApproach: "Identify owners for the playbook, workflows, HQ connection, quality standards, rollout rhythm, and next wave.",
-    validate: ["Who keeps improving this after the first pilot is done?"],
   },
 ];
 
@@ -568,7 +513,7 @@ export const roadmapCards: ListCard[] = [
   {
     phaseLabel: "Phase 1",
     title: "Scope & Setup",
-    text: "Understand current practice, internal learning, HQ infrastructure, client movement, pain points and priority use cases.",
+    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, pain points and priority use cases.",
   },
   {
     phaseLabel: "Phase 2",
@@ -585,7 +530,7 @@ export const roadmapCards: ListCard[] = [
 export const phase3HeroMetrics: MiniMetric[] = [
   { label: "Scale", text: "proven methods across individuals, teams and projects." },
   { label: "Automate", text: "repeatable workflows only after value is proven." },
-  { label: "Integrate", text: "with HQ infrastructure, tools and guardrails." },
+  { label: "Integrate", text: "with headquarters infrastructure, tools and guardrails." },
   { label: "Commercialize", text: "new AI-enabled client offerings and services." },
 ];
 
@@ -593,8 +538,8 @@ export const phase3PathCards: ListCard[] = [
   {
     phaseLabel: "Phase 1",
     title: "Scope & Setup",
-    text: "Understand current practice, internal learning, HQ infrastructure, client movement, pain points and priority use cases.",
-    items: ["Current AI use.", "Bridge to Eraneos/HQ.", "Value hypotheses."],
+    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, pain points and priority use cases.",
+    items: ["Current AI use.", "Bridge to headquarters infrastructure.", "Value hypotheses."],
   },
   {
     phaseLabel: "Phase 2",
@@ -605,7 +550,7 @@ export const phase3PathCards: ListCard[] = [
   {
     phaseLabel: "Phase 3",
     title: "Scale, Automate, Build",
-    text: "Use the evidence to decide what should be scaled, automated, integrated with HQ infrastructure or turned into new client offerings.",
+    text: "Use the evidence to decide what should be scaled, automated, integrated with headquarters infrastructure or turned into new client offerings.",
     items: ["Scaled adoption.", "Agentic workflows.", "New service models."],
   },
 ];
@@ -617,9 +562,9 @@ export const phase3OpportunityCards: ListCard[] = [
     items: ["More individuals and teams.", "More client projects and pitches.", "Internal champions and onboarding paths."],
   },
   {
-    title: "2. Connect deeper with Eraneos/HQ infrastructure",
+    title: "2. Connect deeper with headquarters infrastructure",
     text: "Turn central tools, platforms and guardrails into local consulting practice.",
-    items: ["Map proven workflows to approved tools.", "Connect playbooks to knowledge infrastructure.", "Feed Lynxeye learning back to HQ."],
+    items: ["Map proven workflows to approved tools.", "Connect playbooks to knowledge infrastructure.", "Feed Lynxeye learning back to the group."],
   },
   {
     title: "3. Automate repeatable workflows",
@@ -666,7 +611,7 @@ export const phase3LoopCards: ListCard[] = [
   {
     number: "4",
     title: "Scale",
-    text: "Decide what should be rolled out, automated, connected to HQ tools or developed into a service.",
+    text: "Decide what should be rolled out, automated, connected to headquarters tools or developed into a service.",
   },
 ];
 
@@ -692,7 +637,7 @@ export const phase3SignalCards: ListCard[] = [
   {
     tag: "Lynxeye",
     title: "What becomes company capability?",
-    text: "Which methods should become playbooks, automations, HQ-connected workflows or new services?",
+    text: "Which methods should become playbooks, automations, headquarters-connected workflows or new services?",
     items: ["Reusable IP.", "Margin protection.", "Less linear headcount pressure."],
   },
 ];
@@ -705,7 +650,7 @@ export const phase3TimelineRows: TimelineRow[] = [
   },
   {
     horizon: "6 months",
-    focus: "Connect selected workflows to HQ tools, playbooks and shared infrastructure.",
+    focus: "Connect selected workflows to headquarters tools, playbooks and shared infrastructure.",
     question: "What should become standard Lynxeye practice?",
   },
   {
