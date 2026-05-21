@@ -21,7 +21,9 @@ function App() {
   return <MainPage />;
 }
 
-function Header({ brand, onAbout }: { brand: string; onAbout: () => void }) {
+type ActiveModal = "orchestration" | "about" | null;
+
+function Header({ brand, onOrchestration, onAbout }: { brand: string; onOrchestration: () => void; onAbout: () => void }) {
   return (
     <header>
       <div className="nav">
@@ -29,6 +31,9 @@ function Header({ brand, onAbout }: { brand: string; onAbout: () => void }) {
           {brand}
         </a>
         <nav className="navlinks" aria-label={`${brand} navigation`}>
+          <button type="button" onClick={onOrchestration}>
+            Why orchestration
+          </button>
           <button type="button" onClick={onAbout}>
             About Henrik
           </button>
@@ -76,11 +81,15 @@ function CardList({ items }: { items?: string[] }) {
 }
 
 function MainPage() {
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
 
   return (
     <>
-      <Header brand="Accelerate Lynxeye with AI" onAbout={() => setIsAboutOpen(true)} />
+      <Header
+        brand="Accelerate Lynxeye with AI"
+        onOrchestration={() => setActiveModal("orchestration")}
+        onAbout={() => setActiveModal("about")}
+      />
       <main>
         <section className="hero">
           <div className="hero-card">
@@ -205,7 +214,8 @@ function MainPage() {
 
         <Phase3EmbeddedShowcase />
       </main>
-      <AboutHenrikModal open={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      <WhyOrchestrationModal open={activeModal === "orchestration"} onClose={() => setActiveModal(null)} />
+      <AboutHenrikModal open={activeModal === "about"} onClose={() => setActiveModal(null)} />
     </>
   );
 }
@@ -392,6 +402,94 @@ function Phase3EmbeddedShowcase() {
         The commercial case is not only that Lynxeye can save time. The stronger case is that Lynxeye can turn saved time into better client work, higher delivery capacity, stronger pitches, reusable IP and less dependency on linear hiring every time demand increases.
       </div>
     </section>
+  );
+}
+
+function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, onClose]);
+
+  if (!open) {
+    return null;
+  }
+
+  const valueMapSteps = [
+    ["1", "Ping-pong chat", "Ask, answer, retry.", "Individual help.", "Most employees do this"],
+    ["2", "Structured use", "Better prompts, files, context and role setup.", "Better personal output.", "Value creation unlock"],
+    ["3", "Multimodal work", "Voice, transcripts, images, documents, data and slides.", "Less friction across real work.", "Value creation unlock"],
+    ["4", "Shared playbooks", "Examples, context packs and quality checks.", "Learning travels across the team.", "Value creation unlock"],
+    ["5", "Orchestrated workflows", "Skills, approved tools, review points and handoffs.", "Repeatable capability.", "Value creation unlock"],
+    ["6", "Automations and agents", "Recurring work runs with human supervision.", "Capacity is freed.", "Value creation unlock"],
+    ["7", "Micro-apps and solutions", "Internal tools, prototypes and service components.", "New ideas, offers and scalable methods.", "Value creation unlock"],
+  ];
+
+  return (
+    <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
+      <section className="modal-panel orchestration-panel" role="dialog" aria-modal="true" aria-labelledby="orchestration-title">
+        <button className="modal-close" type="button" aria-label="Close why orchestration" onClick={onClose}>
+          ×
+        </button>
+        <div className="kicker">Why orchestration</div>
+        <h2 id="orchestration-title">Two paths: ping-pong with AI, or build reusable capability.</h2>
+        <p className="orchestration-lede">
+          Employees often start with AI in ping-pong mode: ask, answer, retry, move on. That can be useful, but the learning stays personal. The value creation unlock is designing how AI supports the work so context, quality, methods, workflows, automations and small solutions become reusable company capability.
+        </p>
+        <p className="infrastructure-note">
+          Secure, approved infrastructure enables scaling, but value appears when people turn that foundation into daily practice and better ways of working.
+        </p>
+
+        <div className="value-map" aria-label="AI value creation map">
+          <div className="axis-label axis-label-y">New value, offers and solutions</div>
+          <div className="axis-label axis-label-x">Individual moments → reusable company capability</div>
+          <div className="value-map-grid">
+            {valueMapSteps.map(([number, stage, change, value, label]) => (
+              <article className={`value-step value-step-${number}`} key={stage}>
+                <div className="step-meta">
+                  <span>{label}</span>
+                  <strong>{number}</strong>
+                </div>
+                <h3>{stage}</h3>
+                <p>{change}</p>
+                <em>{value}</em>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="value-unlock">
+          <div>
+            <strong>Internal value</strong>
+            <p>Capacity, quality, daily use, project work, pitches and company-owned methods.</p>
+          </div>
+          <div>
+            <strong>External value</strong>
+            <p>Client delivery, AI-enabled offers, service models, prototypes, tools and solutions.</p>
+          </div>
+        </div>
+
+        <div className="orchestration-closeout">
+          The goal is an AI-enabled operating system that frees capacity, builds capability, unlocks new ideas, and creates more company value.
+        </div>
+      </section>
+    </div>
   );
 }
 
