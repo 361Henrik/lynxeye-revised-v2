@@ -1,6 +1,14 @@
 export type MiniMetric = {
   label: string;
   text: string;
+  details?: {
+    intro: string[];
+    sections: {
+      title: string;
+      body?: string[];
+      items?: string[];
+    }[];
+  };
 };
 
 export type ListCard = {
@@ -49,12 +57,58 @@ export type TimelineRow = {
 };
 
 export const mainHeroMetrics: MiniMetric[] = [
-  { label: "More value", text: "in each employee, project and client interaction." },
-  { label: "More capacity", text: "more output without relying only on linear hiring." },
-  { label: "More capability", text: "shared methods and orchestrated workflows that raise judgment across teams." },
-  { label: "More proof", text: "sharper pitches, clearer prototypes and faster evidence of what works." },
-  { label: "More reuse", text: "playbooks, examples and captured IP that compound after each project." },
-  { label: "Company infrastructure", text: "approved headquarters AI infrastructure is the foundation the five value outcomes depend on: tools, access, governance, security and shared guardrails." },
+  { label: "More value", text: "in the work employees do, the output clients see, and the capability Lynxeye keeps." },
+  { label: "More capacity", text: "more progress without making growth depend only on linear hiring." },
+  { label: "More capability", text: "shared methods that help teams use judgment with AI, not hand it away." },
+  { label: "More proof", text: "sharper pitches, clearer prototypes, and faster evidence of what works." },
+  { label: "More reuse", text: "playbooks, examples, quality checks, and captured IP that compound after each project." },
+  {
+    label: "Company infrastructure",
+    text: "Approved headquarters AI infrastructure is the foundation the five value outcomes depend on: tools, access, governance, security and shared guardrails.",
+    details: {
+      intro: [
+        "The approved headquarters AI infrastructure is an important foundation. Without it, AI adoption risks becoming fragmented, unsafe and difficult to scale.",
+        "My initial reflection, based on my background and without yet knowing the full Lynxeye context, is that centrally provided tools often solve the first layer: faster production, easier access and more consistent outputs.",
+        "That matters. A PowerPoint tool that creates a deck from two prompts can reduce friction and help people move faster. But the real value of a strong deck is not only the deck itself. It is the thinking behind it: the problem, audience, tension, story, context, visualization choices, challenge points and what should become reusable for the next project.",
+      ],
+      sections: [
+        {
+          title: "Why the foundation matters",
+          body: [
+            "The question is not whether headquarters infrastructure is useful. It clearly is. The question is how Lynxeye connects that infrastructure with local working practice.",
+          ],
+        },
+        {
+          title: "Where infrastructure helps",
+          items: [
+            "Approved tools and safer access.",
+            "Stronger governance around client material.",
+            "Shared standards across the company.",
+            "Faster baseline production.",
+            "Easier scaling across teams.",
+            "More consistency in how AI is introduced.",
+          ],
+        },
+        {
+          title: "What to watch",
+          items: [
+            "Outputs can become generic if the context is weak.",
+            "One-size-fits-most tools may reduce creative flexibility.",
+            "Black-box workflows can make it harder to challenge or reshape the result.",
+            "Generated outputs may miss deeper narrative, positioning or client nuance.",
+            "Research, translation, interactive demos, alternative formats or custom design logic may require more flexible workflows.",
+            "People still need playbooks for how to think with the tool, not only how to use the tool.",
+          ],
+        },
+        {
+          title: "The Lynxeye layer",
+          body: [
+            "This means building the layer around the tools: playbooks, reusable context, example workflows, review habits, design principles, prompt structures and ways of working that help people turn approved AI access into stronger thinking, better client work and reusable company capability.",
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export const stakeholderCards: ListCard[] = [
@@ -157,10 +211,10 @@ export const quickWinCards: ListCard[] = [
   },
   {
     number: "6",
-    title: "Use browser/context workflows",
+    title: "Use source and browser-context workflows",
     text: "AI becomes more useful when it can work with the context people are already seeing.",
     items: [
-      "Use Atlas/browser context for page review, research and synthesis.",
+      "Use approved browser and source-context workflows for page review, research and synthesis.",
       "Connect source material before asking for conclusions.",
       "Separate source-backed insight from AI-generated speculation.",
     ],
@@ -211,8 +265,8 @@ export const phaseCards: ListCard[] = [
   },
   {
     number: "2",
-    title: "Phase 2 - Show Value",
-    text: "Coach individuals and teams through real work, capture reusable methods, demonstrate before/after value, and document evidence and recommendations.",
+    title: "Phase 2 - Value Pilot",
+    text: "Coach employees and teams through real work, capture reusable methods, demonstrate before/after value, and document evidence and recommendations.",
     items: [
       "Personal AI fluency and setup support.",
       "Team workflows for client work and pitches.",
@@ -222,7 +276,7 @@ export const phaseCards: ListCard[] = [
   },
   {
     number: "3",
-    title: "Phase 3 - not covered in this proposal",
+    title: "Phase 3 - Future Scale / Not Included",
     text: "Phase 3 is shown only as the future direction. It should come after the pilot proves what is worth scaling, automating, integrating or turning into new client offerings.",
     items: [
       "Not part of the current Scope & Setup or Value Pilot.",
@@ -235,8 +289,8 @@ export const phaseCards: ListCard[] = [
 export const deliverableRows: MatrixRow[] = [
   {
     recipient: {
-      title: "Individuals",
-      text: "People become stronger, calmer and more effective AI users.",
+      title: "Employees",
+      text: "Employees become stronger, calmer and more effective AI users.",
     },
     valueLever: {
       title: "Personal AI fluency",
@@ -244,7 +298,7 @@ export const deliverableRows: MatrixRow[] = [
       summary: "View value logic",
       items: [
         "Move from ping-pong prompting to directed orchestration.",
-        "Use ChatGPT, Claude, Atlas, voice and transcripts as working tools, not side experiments.",
+        "Use ChatGPT, Claude, approved browser workflows, voice and transcripts as working tools, not side experiments.",
         "Reduce stress from unclear AI quality and endless answer loops.",
       ],
     },
@@ -253,7 +307,7 @@ export const deliverableRows: MatrixRow[] = [
       text: "Understand how people work now, what they trust, where they get stuck.",
       summary: "View concrete deliverables",
       items: [
-        "Short individual AI practice check-ins.",
+        "Short employee AI practice check-ins.",
         "Inventory of current tools, habits, prompts and pain points.",
         "Confidence and skepticism notes.",
         "Personal setup needs: accounts, browser, voice, files, context, memory.",
@@ -267,7 +321,7 @@ export const deliverableRows: MatrixRow[] = [
         "Personal AI workbench setup notes.",
         "ChatGPT and Claude personalization guidance.",
         "Memory, skills and reusable context examples.",
-        "Atlas/browser workflow examples.",
+        "Approved browser and source-context workflow examples.",
         "Wispr Flow / speech-to-text working routines.",
         "Prompting patterns for research, drafting, review and synthesis.",
         "Examples of how to avoid AI loops and weak generic output.",
@@ -528,7 +582,7 @@ export const roadmapCards: ListCard[] = [
 ];
 
 export const phase3HeroMetrics: MiniMetric[] = [
-  { label: "Scale", text: "proven methods across individuals, teams and projects." },
+  { label: "Scale", text: "proven methods across employees, teams and projects." },
   { label: "Automate", text: "repeatable workflows only after value is proven." },
   { label: "Integrate", text: "with headquarters infrastructure, tools and guardrails." },
   { label: "Commercialize", text: "new AI-enabled client offerings and services." },
@@ -559,7 +613,7 @@ export const phase3OpportunityCards: ListCard[] = [
   {
     title: "1. Scale the proven methods",
     text: "Take the strongest Phase 2 practices beyond the first bridge team.",
-    items: ["More individuals and teams.", "More client projects and pitches.", "Internal champions and onboarding paths."],
+    items: ["More employees and teams.", "More client projects and pitches.", "Internal champions and onboarding paths."],
   },
   {
     title: "2. Connect deeper with headquarters infrastructure",
@@ -617,7 +671,7 @@ export const phase3LoopCards: ListCard[] = [
 
 export const phase3SignalCards: ListCard[] = [
   {
-    tag: "Individuals",
+    tag: "Employees",
     title: "What scales personally?",
     text: "Which personal workflows, setup habits and AI fluency patterns should become standard?",
     items: ["Confidence.", "Reduced friction.", "Better judgment leverage."],

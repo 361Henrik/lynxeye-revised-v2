@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
   deliverableRows,
   mainHeroMetrics,
@@ -38,6 +38,69 @@ type OrchestrationStep = {
   };
 };
 
+function useModalFocus(open: boolean, onClose: () => void, initialFocusRef: { current: HTMLElement | null }) {
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    const focusTimer = window.setTimeout(() => initialFocusRef.current?.focus(), 0);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const dialog = initialFocusRef.current?.closest<HTMLElement>("[role='dialog']");
+      if (!dialog) {
+        return;
+      }
+
+      const focusableElements = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])",
+        ),
+      ).filter((element) => element.offsetParent !== null || element === document.activeElement);
+
+      if (!focusableElements.length) {
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+
+      if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      restoreFocusRef.current?.focus();
+    };
+  }, [open, onClose, initialFocusRef]);
+}
+
 function Header({ brand, onOrchestration, onAbout }: { brand: string; onOrchestration: () => void; onAbout: () => void }) {
   return (
     <header>
@@ -58,15 +121,55 @@ function Header({ brand, onOrchestration, onAbout }: { brand: string; onOrchestr
   );
 }
 
+function MiniMetricDetail({ details }: { details: NonNullable<MiniMetric["details"]> }) {
+  return (
+    <div className="mini-metric-detail">
+      {details.intro.map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+      <div className="mini-metric-detail-grid">
+        {details.sections.map((section) => (
+          <section className="mini-metric-detail-section" key={section.title}>
+            <h4>{section.title}</h4>
+            {section.body?.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {section.items?.length ? <CardList items={section.items} /> : null}
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MiniMetrics({ metrics }: { metrics: MiniMetric[] }) {
+  const [openMetric, setOpenMetric] = useState<string | null>(null);
+
   return (
     <div className="hero-bottom">
-      {metrics.map((metric, index) => (
-        <div className={`mini-metric${index === metrics.length - 1 ? " mini-metric-foundation" : ""}`} key={metric.label}>
-          <strong>{metric.label}</strong>
-          <span>{metric.text}</span>
-        </div>
-      ))}
+      {metrics.map((metric, index) => {
+        const isOpen = openMetric === metric.label;
+
+        return (
+          <div className={`mini-metric${index === metrics.length - 1 ? " mini-metric-foundation" : ""}${isOpen ? " is-open" : ""}`} key={metric.label}>
+            <strong>{metric.label}</strong>
+            <span>{metric.text}</span>
+            {metric.details ? (
+              <div className="mini-metric-action">
+                <button
+                  className="detail-toggle"
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpenMetric((current) => (current === metric.label ? null : metric.label))}
+                >
+                  {isOpen ? "Close" : "Show more"}
+                </button>
+              </div>
+            ) : null}
+            {metric.details && isOpen ? <MiniMetricDetail details={metric.details} /> : null}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -95,7 +198,7 @@ function CardList({ items }: { items?: string[] }) {
   );
 }
 
-function ExpandableItems({ items, openLabel = "See details", closeLabel = "Hide details" }: { items?: string[]; openLabel?: string; closeLabel?: string }) {
+function ExpandableItems({ items, openLabel = "View details", closeLabel = "Hide details" }: { items?: string[]; openLabel?: string; closeLabel?: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!items?.length) {
@@ -128,9 +231,9 @@ function MainPage() {
           <div className="hero-card">
             <div>
               <div className="kicker">"Dancing with AI"</div>
-              <h1>From ping-pong with AI to orchestrating AI that creates accelerated value for Lynxeye, clients, and employees.</h1>
+              <h1>From scattered AI use to orchestrated value for Lynxeye, clients, teams, and employees.</h1>
               <p className="hero-lede">
-                A practical project model for helping individuals, teams, clients and Lynxeye capture more value from the intelligence already inside the company — faster work, better outputs, stronger capacity, reusable methods and safer adoption.
+                A practical project model for turning the intelligence already inside Lynxeye into faster work, stronger outputs, shared capability, reusable methods, and safer adoption.
               </p>
             </div>
             <MiniMetrics metrics={mainHeroMetrics} />
@@ -144,12 +247,12 @@ function MainPage() {
             intro={{
               kicker: "",
               title: "Four stakeholder values, one practical project.",
-              text: "The three-layer model stays intact: individuals, teams and Lynxeye. The client layer is added as the value test: the work only matters if it improves what clients experience and what the business captures.",
+              text: "The three-layer model stays intact: employees, teams and Lynxeye. The client layer is added as the value test: the work only matters if it improves what clients experience and what the business captures.",
             }}
           />
           <div className="section-actions">
             <button className="detail-toggle" type="button" aria-expanded={showStakeholderDetails} onClick={() => setShowStakeholderDetails((current) => !current)}>
-              {showStakeholderDetails ? "Hide details" : "Show all details"}
+              {showStakeholderDetails ? "Hide details" : "View details"}
             </button>
           </div>
           <div className="value-grid">
@@ -167,14 +270,14 @@ function MainPage() {
         <section id="quickwins" className="section">
           <SectionIntroBlock
             intro={{
-              kicker: "Individual early wins",
+              kicker: "Employee early wins",
               title: "What employees need to master first.",
               text: "For Lynxeye, the first value is not advanced automation. It is helping consultants, strategists and designers become comfortable using AI in the daily work where insight, judgment, synthesis, storytelling and client quality matter most.",
             }}
           />
           <div className="quickwin-grid">
             {quickWinCards.map((card) => (
-              <ExpandableListCard card={card} className="quickwin-card" openLabel="See details" closeLabel="Hide details" key={card.title} />
+              <ExpandableListCard card={card} className="quickwin-card" openLabel="View details" closeLabel="Hide details" key={card.title} />
             ))}
           </div>
         </section>
@@ -183,8 +286,8 @@ function MainPage() {
           <SectionIntroBlock
             intro={{
               kicker: "Project path",
-              title: "Scope first, prove value, then scale what works.",
-              text: "The structure should make Christian comfortable: Phase 3 is visible, but it does not carry the pilot. We first understand the current reality, then work inside real Lynxeye workflows to prove what creates value.",
+              title: "Scope first, prove value, then decide what scales.",
+              text: "The structure keeps this proposal focused: Phase 3 is visible, but it does not carry the pilot. We first understand the current reality, then work inside real Lynxeye workflows to prove what creates value.",
             }}
           />
           <div className="tabs">
@@ -194,7 +297,7 @@ function MainPage() {
                 <div>
                   <h3>{card.title}</h3>
                   <p>{card.text}</p>
-                  <ExpandableItems items={card.items} openLabel="See more" closeLabel="Close" />
+                  <ExpandableItems items={card.items} openLabel="View details" closeLabel="Hide details" />
                 </div>
               </article>
             ))}
@@ -214,8 +317,8 @@ function MainPage() {
               <div>Stakeholder</div>
               <div>Value created</div>
               <div>Phase 1: Scope & Setup</div>
-              <div>Phase 2: Show Value</div>
-              <div>What success could look like</div>
+              <div>Phase 2: Value Pilot</div>
+              <div>Success signals</div>
             </div>
             {deliverableRows.map((row) => (
               <DeliverableRow row={row} key={row.recipient.title} />
@@ -237,7 +340,7 @@ function QuestionsSection() {
       <SectionIntroBlock
         intro={{
           kicker: "",
-          title: "The key questions I hear Christian asking from our conversation.",
+          title: "The key questions Lynxeye is likely asking now.",
           text: "The shared question is how Lynxeye can turn scattered day-to-day AI use into a better way of working: reducing low-leverage friction, protecting human attention, and freeing employees to spend more time on the work where judgment, creativity, client understanding and strategic thinking create the most value.",
         }}
       />
@@ -265,7 +368,7 @@ function QuestionCard({ item }: { item: Question }) {
         <div className="question-summary">
           <h3>“{item.question}”</h3>
           <button className="detail-toggle" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((current) => !current)}>
-            {isOpen ? "Close" : "More"}
+            {isOpen ? "Hide details" : "View details"}
           </button>
         </div>
         {isOpen ? (
@@ -277,6 +380,14 @@ function QuestionCard({ item }: { item: Question }) {
             <div className="question-detail">
               <span>My recommended approach</span>
               <p>{item.recommendedApproach}</p>
+            </div>
+            <div className="question-detail question-detail--validate">
+              <span>Validate with</span>
+              <ul>
+                {item.validate.map((prompt) => (
+                  <li key={prompt}>{prompt}</li>
+                ))}
+              </ul>
             </div>
           </div>
         ) : null}
@@ -299,11 +410,11 @@ function ExpandableListCard({ card, className, openLabel, closeLabel }: { card: 
 
 function MatrixCellBlock({ cell, isOpen = false }: { cell: MatrixCell; isOpen?: boolean }) {
   return (
-    <div>
+    <>
       <h4>{cell.title}</h4>
       <p>{cell.text}</p>
       {isOpen ? <CardList items={cell.items} /> : null}
-    </div>
+    </>
   );
 }
 
@@ -313,17 +424,30 @@ function DeliverableRow({ row }: { row: MatrixRow }) {
   return (
     <div className={`matrix-row-group ${isOpen ? "is-open" : ""}`}>
       <div className="matrix-row">
-        <div className="matrix-stakeholder-cell">
+        <div className="matrix-stakeholder-cell" data-label="Stakeholder">
+          <span className="matrix-cell-label">Stakeholder</span>
           <h4>{row.recipient.title}</h4>
           <p>{row.recipient.text}</p>
           <button className="detail-toggle" type="button" aria-expanded={isOpen} onClick={() => setIsOpen((current) => !current)}>
-            {isOpen ? "Close" : "See more"}
+            {isOpen ? "Hide details" : "View details"}
           </button>
         </div>
-        <MatrixCellBlock cell={row.valueLever} isOpen={isOpen} />
-        <MatrixCellBlock cell={row.scope} isOpen={isOpen} />
-        <MatrixCellBlock cell={row.pilot} isOpen={isOpen} />
-        <MatrixCellBlock cell={row.payoff} isOpen={isOpen} />
+        <div className="matrix-cell" data-label="Value created">
+          <span className="matrix-cell-label">Value created</span>
+          <MatrixCellBlock cell={row.valueLever} isOpen={isOpen} />
+        </div>
+        <div className="matrix-cell" data-label="Phase 1: Scope & Setup">
+          <span className="matrix-cell-label">Phase 1: Scope & Setup</span>
+          <MatrixCellBlock cell={row.scope} isOpen={isOpen} />
+        </div>
+        <div className="matrix-cell" data-label="Phase 2: Value Pilot">
+          <span className="matrix-cell-label">Phase 2: Value Pilot</span>
+          <MatrixCellBlock cell={row.pilot} isOpen={isOpen} />
+        </div>
+        <div className="matrix-cell" data-label="Success signals">
+          <span className="matrix-cell-label">Success signals</span>
+          <MatrixCellBlock cell={row.payoff} isOpen={isOpen} />
+        </div>
       </div>
     </div>
   );
@@ -335,8 +459,8 @@ function Phase3EmbeddedShowcase() {
       <SectionIntroBlock
         intro={{
           kicker: "",
-          title: "A Phase 3 could look like this.",
-          text: "The pilot should not carry the burden of building everything. It should prove which workflows are valuable enough to scale, automate or turn into future services.",
+          title: "Phase 3 is the future decision, not the current proposal.",
+          text: "The pilot should not carry the burden of building everything. It should prove which workflows are valuable enough to scale, automate or turn into future services later.",
         }}
       />
 
@@ -347,16 +471,24 @@ function Phase3EmbeddedShowcase() {
             <article className="phase3-card" key={card.title}>
               <h3>{card.title}</h3>
               <p>{card.text}</p>
-              <ExpandableItems items={card.items} openLabel="See examples" closeLabel="Hide examples" />
+              <ExpandableItems items={card.items} openLabel="View examples" closeLabel="Hide examples" />
             </article>
           ))}
         </div>
+      </div>
+      <div className="phase3-closeout">
+        <span>Current proposal boundary</span>
+        <strong>First scope the real work, run the Value Pilot, and use evidence to decide what deserves scale.</strong>
+        <p>
+          Phase 3 should be chosen from proof, not promised upfront: the current proposal is about mapping today, improving real workflows, capturing reusable methods, and making the next investment decision clearer.
+        </p>
       </div>
     </section>
   );
 }
 
 function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const valueMapSteps: OrchestrationStep[] = [
     {
       number: "1",
@@ -463,26 +595,7 @@ function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () =
   const activeSegmentStart = valueMapSteps[Math.max(0, activeStepIndex - 1)] ?? valueMapSteps[0];
   const valueCurvePath = "M10 86 C20 86, 28 83, 38 76 C50 67, 61 56, 70 40 C78 26, 84 15, 93 10";
 
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    const previousOverflow = document.body.style.overflow;
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open, onClose]);
+  useModalFocus(open, onClose, closeButtonRef);
 
   if (!open) {
     return null;
@@ -491,7 +604,7 @@ function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () =
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
       <section className="modal-panel orchestration-panel" role="dialog" aria-modal="true" aria-labelledby="orchestration-title">
-        <button className="modal-close" type="button" aria-label="Close why orchestration" onClick={onClose}>
+        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close why orchestration" onClick={onClose}>
           ×
         </button>
         <div className="kicker">Why orchestration</div>
@@ -601,26 +714,9 @@ function WhyOrchestrationModal({ open, onClose }: { open: boolean; onClose: () =
 }
 
 function AboutHenrikModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    const previousOverflow = document.body.style.overflow;
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open, onClose]);
+  useModalFocus(open, onClose, closeButtonRef);
 
   if (!open) {
     return null;
@@ -629,7 +725,7 @@ function AboutHenrikModal({ open, onClose }: { open: boolean; onClose: () => voi
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
       <section className="modal-panel" role="dialog" aria-modal="true" aria-labelledby="about-henrik-title">
-        <button className="modal-close" type="button" aria-label="Close about Henrik" onClick={onClose}>
+        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close about Henrik" onClick={onClose}>
           ×
         </button>
         <div className="kicker">About Henrik</div>
