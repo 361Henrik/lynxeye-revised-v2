@@ -58,8 +58,8 @@ export type TimelineRow = {
 
 export const mainHeroMetrics: MiniMetric[] = [
   { label: "More value", text: "in the work employees do, the output clients see, and the capability Lynxeye keeps." },
-  { label: "More capacity", text: "more progress without making growth depend only on linear hiring." },
-  { label: "More capability", text: "shared methods that help teams use judgment with AI, not hand it away." },
+  { label: "5x-10x capacity", text: "potential in selected workflows when AI reduces routine work and consultants stay responsible for direction, review and final decisions." },
+  { label: "More capability", text: "shared methodology that helps teams use AI while keeping quality and judgment with people." },
   { label: "More proof", text: "sharper pitches, clearer prototypes, and faster evidence of what works." },
   { label: "More reuse", text: "playbooks, examples, quality checks, and captured IP that compound after each project." },
   {
@@ -254,32 +254,32 @@ export const quickWinCards: ListCard[] = [
 export const phaseCards: ListCard[] = [
   {
     number: "1",
-    title: "Phase 1 - Scope & Setup",
-    text: "Clarify current AI practice, internal learnings, headquarters AI infrastructure, client movement, pain points, capacity pressure, and priority use cases.",
+    title: "Phase 1 - Setup & Early Value",
+    text: "A standalone first engagement to clarify current AI practice, headquarters infrastructure, client movement, proposed client cases, first workflow tests and the evidence needed for the Phase 1 checkpoint.",
     items: [
       "What works and fails today?",
       "Where are the strongest value opportunities?",
       "What is safe, available, approved or unclear?",
-      "Which people and workflows should the pilot focus on?",
+      "Should Lynxeye stop after Phase 1, continue into Phase 2 or adjust the expansion scope?",
     ],
   },
   {
     number: "2",
-    title: "Phase 2 - Value Pilot",
-    text: "Coach employees and teams through real work, capture reusable methods, demonstrate before/after value, and document evidence and recommendations.",
+    title: "Phase 2 - Expand & Create More Value",
+    text: "Optional continuation after Phase 1: deepen coaching through real work, expand client-case workflows, mature reusable methods, demonstrate before/after value, and document evidence and recommendations.",
     items: [
-      "Personal AI fluency and setup support.",
-      "Team workflows for client work and pitches.",
-      "Version-one playbooks, examples and prototypes.",
+      "Expanded personal AI fluency and team support.",
+      "Client-case workflows for real work and pitches.",
+      "Mature playbooks, examples and prototypes.",
       "Value evidence and Phase 3 recommendations.",
     ],
   },
   {
     number: "3",
-    title: "Phase 3 - Future Scale / Not Included",
-    text: "Phase 3 is shown only as the future direction. It should come after the pilot proves what is worth scaling, automating, integrating or turning into new client offerings.",
+    title: "Phase 3 - Scale Across Lynxeye / Not Included",
+    text: "Phase 3 is shown only as the future direction. It is not included in this offer and should only be considered after Phase 2 proves what is worth scaling, automating, integrating or turning into new client offerings.",
     items: [
-      "Not part of the current Scope & Setup or Value Pilot.",
+      "Not part of the current Setup & Early Value or Expand & Create More Value offer.",
       "Used to show where the work can head later.",
       "Decided from evidence, not promised upfront.",
     ],
@@ -297,7 +297,7 @@ export const deliverableRows: MatrixRow[] = [
       text: "Less friction, better prompting, better context, safer use, more confidence.",
       summary: "View value logic",
       items: [
-        "Move from ping-pong prompting to directed orchestration.",
+        "Move from ping-pong prompting to directed methodology.",
         "Use ChatGPT, Claude, approved browser workflows, voice and transcripts as working tools, not side experiments.",
         "Reduce stress from unclear AI quality and endless answer loops.",
       ],
@@ -566,17 +566,17 @@ export const questions: Question[] = [
 export const roadmapCards: ListCard[] = [
   {
     phaseLabel: "Phase 1",
-    title: "Scope & Setup",
-    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, pain points and priority use cases.",
+    title: "Setup & Early Value",
+    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, proposed client cases, first workflow tests and the Phase 1 checkpoint decision.",
   },
   {
     phaseLabel: "Phase 2",
-    title: "Value Pilot",
-    text: "Coach people, improve workflows, capture examples, document playbooks, prove value and recommend next moves.",
+    title: "Expand & Create More Value",
+    text: "Optional after Phase 1: deepen coaching, improve workflows, capture examples, mature playbooks, prove value and recommend next moves.",
   },
   {
     phaseLabel: "Phase 3",
-    title: "Scale, Automate, Build",
+    title: "Scale Across Lynxeye",
     text: "Advanced automations, agentic workflows, coded tools, deeper integrations, broader rollout and new AI-enabled services.",
   },
 ];
@@ -591,19 +591,19 @@ export const phase3HeroMetrics: MiniMetric[] = [
 export const phase3PathCards: ListCard[] = [
   {
     phaseLabel: "Phase 1",
-    title: "Scope & Setup",
-    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, pain points and priority use cases.",
-    items: ["Current AI use.", "Bridge to headquarters infrastructure.", "Value hypotheses."],
+    title: "Setup & Early Value",
+    text: "Understand current practice, internal learning, headquarters infrastructure, client movement, proposed cases, first workflow tests and whether Phase 2 should continue or change.",
+    items: ["Current AI use.", "Bridge to headquarters infrastructure.", "Early use-case proof.", "Phase 1 checkpoint."],
   },
   {
     phaseLabel: "Phase 2",
-    title: "Value Pilot",
-    text: "Coach people, improve real workflows, implement what works quickly, capture examples, document playbooks and prove value.",
+    title: "Expand & Create More Value",
+    text: "Optional after the Phase 1 checkpoint: deepen coaching, improve real workflows, expand what works, capture examples, document playbooks and prove value.",
     items: ["Individual and team fluency.", "Client and pitch workflows.", "Evidence and recommendations."],
   },
   {
     phaseLabel: "Phase 3",
-    title: "Scale, Automate, Build",
+    title: "Scale Across Lynxeye",
     text: "Use the evidence to decide what should be scaled, automated, integrated with headquarters infrastructure or turned into new client offerings.",
     items: ["Scaled adoption.", "Agentic workflows.", "New service models."],
   },
