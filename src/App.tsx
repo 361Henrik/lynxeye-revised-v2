@@ -401,8 +401,8 @@ const journeySteps: JourneyStep[] = [
     horizon: "Operating model",
     title: "Build toward an AI-supported consulting operating model.",
     text:
-      "AI tools, AI thinking and AI-native workflows will not be worse than they are today. Lynxeye can use this project to prepare for compounding capability rather than repeated isolated experiments.",
-    items: ["Agent-supported teams with human judgment in front.", "New service and demo possibilities.", "Reusable firm knowledge harvested from every engagement."],
+      "AI tools, AI thinking and AI-native workflows will keep improving. Lynxeye can use this project to prepare for compounding capability rather than repeated isolated experiments.",
+    items: ["Agent-supported teams where people set direction and review the work.", "New service and demo possibilities.", "Reusable firm knowledge harvested from every engagement."],
   },
 ];
 
@@ -420,7 +420,7 @@ function JourneyContent({ titleId = "journey-title" }: { titleId?: string }) {
         <article>
           <span>Potential upside</span>
           <strong>5x to 10x</strong>
-          <p>capacity improvement in selected workflows when AI removes friction and people keep judgment in front.</p>
+          <p>capacity improvement in selected workflows when AI reduces routine work and consultants stay responsible for direction, review and final decisions.</p>
         </article>
         <article>
           <span>Quality ambition</span>
@@ -1572,7 +1572,7 @@ function ProposedMethodModal({ open, onClose }: { open: boolean; onClose: () => 
             },
             {
               title: "Quality protection",
-              text: "The methodology builds in review, challenge, sources and stop-points so speed does not become AI slop.",
+              text: "The methodology builds in review, challenge, sources and stop-points so speed does not become generic, low-quality AI output.",
             },
             {
               title: "Scale logic",
@@ -1657,7 +1657,7 @@ function ProposedMethodModal({ open, onClose }: { open: boolean; onClose: () => 
           <strong>The goal is not to make Lynxeye more AI-generated.</strong>
           <p>
             The goal is to help Lynxeye become more Lynxeye, with AI as an accelerator: confident people, stronger teams, clearer
-            workflows, reusable company learning, and a rhythm where human intelligence stays in front while AI increases capacity,
+            workflows, reusable company learning, and a rhythm where human intelligence sets the direction while AI increases capacity,
             speed and proof.
           </p>
         </div>

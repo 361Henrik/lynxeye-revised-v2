@@ -133,7 +133,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
       step: 1,
       value: formatPeople(state.cohortSize),
       info:
-        "Assumption: the number of people who become strong AI methodology users during the value pilot. Default: 10. This is the claim, not all 70 people.",
+        "Assumption: the selected group expected to become strong AI methodology users during the value pilot. Default: 10. The estimate is based on this group, not all 70 people.",
     },
     {
       id: "weeklyHours",
@@ -186,7 +186,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
         <div className="kicker">Back of the envelope</div>
         <h2>If 10 of 70 people learn the AI methodology well, the value is already material.</h2>
         <p>
-          This is not a claim that everyone becomes an AI power user. It sizes the value of a focused capability group creating reusable
+          This does not assume everyone becomes an AI power user. It estimates the value of a focused capability group creating reusable
           practice for the wider firm.
         </p>
       </div>
@@ -212,7 +212,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
 
       <div className="simulator-shell">
         <div className="simulator-controls" aria-label="Simulator assumptions">
-          <p className="simulator-label">Cohort claim</p>
+          <p className="simulator-label">Selected group estimate</p>
           <div className="simulator-context-row" aria-label="Company context">
             <span>Total Lynxeye context</span>
             <strong>{formatPeople(state.totalEmployees)}</strong>
@@ -222,8 +222,8 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
           ))}
 
           <div className="simulator-note">
-            <strong>Executive guardrail.</strong> The cohort is the claim. The 70-person number is only the wider context and future scale
-            ceiling after proof.
+            <strong>Executive guardrail.</strong> The estimate is based on the selected group, not all 70 people. The 70-person number is
+            only the wider context and future upside after proof.
           </div>
 
           <details className="simulator-assumptions" open={advancedOpen} onToggle={(event) => setAdvancedOpen(event.currentTarget.open)}>
@@ -254,7 +254,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
           </div>
 
           <div className="simulator-output-head">
-            <p>Cohort-first value signal at current settings</p>
+            <p>Selected-group value signal at current settings</p>
             <button className="detail-toggle simulator-copy-button" type="button" onClick={handleCopy}>
               Copy current model
             </button>
@@ -285,10 +285,10 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
               <Metric
                 label="Company context"
                 value={`${formatPeople(state.cohortSize)} of ${formatPeople(state.totalEmployees)}`}
-                help={`${formatDecimal(state.companyShare, 0)}% of the firm carries the value claim. The remaining ${formatPeople(
+                help={`The estimate is based on ${formatDecimal(state.companyShare, 0)}% of the firm. The remaining ${formatPeople(
                   state.remainingEmployees,
                 )} can benefit from reusable practice without being counted as power users.`}
-                info="Interpretation: the simulator deliberately avoids assuming universal adoption. It shows the size of a focused bridge team inside the 70-person company context."
+                info="Interpretation: the simulator deliberately avoids assuming universal adoption. It shows the size of a selected working group inside the 70-person company context."
               />
             </section>
 
@@ -297,7 +297,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
               <Metric
                 label="Useful hours / methodology user"
                 value={`${formatHours(state.hoursPerOrchestratorYear)} / year`}
-                help="This is the visible behavioral claim per strong AI methodology user."
+                help="This is the visible behavior change per strong AI methodology user."
                 info="Formula: useful hours per person per week x working weeks. Interpretation: the per-person lift the pilot must make believable."
               />
               <Metric
@@ -320,11 +320,11 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
 
           <section className="simulator-scale-ceiling" aria-labelledby="scale-ceiling-title">
             <div>
-              <p className="simulator-section-kicker">Scale ceiling - not the pilot claim</p>
+              <p className="simulator-section-kicker">Future upside, not the pilot claim</p>
               <h3 id="scale-ceiling-title">If the same level later worked across all 70 people...</h3>
               <p>
                 This is future scale after proof. It should stay visible enough to show the size of the opportunity, but secondary enough
-                that the pilot does not sound grandiose.
+                that the pilot stays credible.
               </p>
             </div>
             <div className="simulator-scale-grid">
@@ -349,7 +349,7 @@ export function ValueSimulator({ expansionSignal }: { expansionSignal: Expansion
 
       <div className="simulator-hypothesis">
         <p>
-          <strong>Directional Phase 2 potential.</strong> Useful hours are treated as already captured enough to matter. The pilot must
+          <strong>Directional Phase 2 potential.</strong> The useful hours are a working estimate. The pilot must
           prove the work patterns behind them before the wider scale story becomes credible.
         </p>
       </div>
@@ -476,9 +476,9 @@ function ValueTranslation() {
   const cards = [
     {
       title: "For executives",
-      text: "A material value story without needing to claim universal AI adoption.",
+      text: "A material value story without assuming universal AI adoption.",
       info:
-        "The calculator keeps the main claim small enough to be believable while still showing that a focused group can matter commercially.",
+        "The calculator keeps the main estimate small enough to be believable while still showing that a focused group can matter commercially.",
     },
     {
       title: "For the cohort",

@@ -58,8 +58,8 @@ export type TimelineRow = {
 
 export const mainHeroMetrics: MiniMetric[] = [
   { label: "More value", text: "in the work employees do, the output clients see, and the capability Lynxeye keeps." },
-  { label: "5x-10x capacity", text: "potential in selected workflows when AI removes friction and people keep judgment in front." },
-  { label: "More capability", text: "shared methodology that helps teams use judgment with AI, not hand it away." },
+  { label: "5x-10x capacity", text: "potential in selected workflows when AI reduces routine work and consultants stay responsible for direction, review and final decisions." },
+  { label: "More capability", text: "shared methodology that helps teams use AI while keeping quality and judgment with people." },
   { label: "More proof", text: "sharper pitches, clearer prototypes, and faster evidence of what works." },
   { label: "More reuse", text: "playbooks, examples, quality checks, and captured IP that compound after each project." },
   {
