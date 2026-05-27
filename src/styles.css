@@ -1,17 +1,19 @@
 :root {
   --bg: #f6f3ee;
   --panel: #fffdf8;
-  --ink: #22231f;
-  --muted: #5f5a50;
-  --soft: #e8dfd1;
-  --line: #d8ccba;
+  --ink: #20211e;
+  --muted: #575149;
+  --soft: #e5dccf;
+  --line: #d6c9b7;
   --green: #1f4a3a;
   --green-dark: #17382c;
   --gold: #c9a962;
   --gold-soft: #f5ead5;
   --terracotta: #c35c3c;
   --cream: #fbf7ef;
-  --shadow: 0 14px 38px rgba(44, 36, 24, 0.06);
+  --copy: #48443d;
+  --caption: #6b6257;
+  --shadow: 0 10px 26px rgba(44, 36, 24, 0.045);
   --radius: 8px;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   --display: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -24,7 +26,7 @@
   --type-body: 15px;
   --type-small: 13px;
   --line-heading: 1.12;
-  --line-body: 1.62;
+  --line-body: 1.68;
 }
 
 * {
@@ -254,11 +256,22 @@ p {
   color: var(--muted);
   font-size: var(--type-body);
   line-height: var(--line-body);
+  font-weight: 450;
+}
+
+p + p {
+  margin-top: 10px;
+}
+
+li {
+  color: var(--muted);
+  font-weight: 450;
+  line-height: var(--line-body);
 }
 
 .hero-lede {
   font-size: 17px;
-  color: #4c473f;
+  color: var(--copy);
   max-width: 960px;
   margin-bottom: 0;
   line-height: var(--line-body);
@@ -276,7 +289,7 @@ p {
   background: #fffdf8;
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--green);
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
   font-size: var(--type-small);
@@ -288,7 +301,7 @@ p {
 .context-link:hover,
 .context-link:focus-visible {
   background: var(--cream);
-  border-color: rgba(31, 74, 58, 0.45);
+  border-color: rgba(201, 169, 98, 0.78);
   outline: none;
 }
 
@@ -302,7 +315,7 @@ p {
 .mini-metric {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 15px;
+  padding: 16px;
   background: var(--cream);
   min-width: 0;
 }
@@ -320,6 +333,7 @@ p {
   color: var(--muted);
   font-size: var(--type-body);
   line-height: var(--line-body);
+  font-weight: 450;
 }
 
 .mini-metric-foundation {
@@ -365,9 +379,9 @@ p {
   grid-column: 1 / -1;
   border-top: 1px solid rgba(216, 204, 186, 0.88);
   display: grid;
-  gap: 12px;
+  gap: 14px;
   margin-top: 4px;
-  padding-top: 18px;
+  padding-top: 20px;
 }
 
 .mini-metric-detail p {
@@ -388,7 +402,7 @@ p {
   background: var(--cream);
   border: 1px solid rgba(216, 204, 186, 0.9);
   border-radius: var(--radius);
-  padding: 15px;
+  padding: 16px;
 }
 
 .mini-metric-detail-section h4 {
@@ -537,7 +551,7 @@ p {
 }
 
 .journey-lede {
-  color: #3f463d;
+  color: var(--copy);
   font-size: 18px;
   line-height: 1.58;
   max-width: 980px;
@@ -576,7 +590,7 @@ p {
 }
 
 .journey-upside strong {
-  color: var(--green);
+  color: var(--ink);
   display: block;
   font-family: var(--display);
   font-size: 34px;
@@ -612,7 +626,7 @@ p {
 .journey-step summary::after,
 .ai-team-group summary::after {
   align-self: start;
-  color: var(--green);
+  color: var(--gold);
   font-size: 16px;
   line-height: 1;
 }
@@ -672,9 +686,10 @@ p {
   gap: 8px;
   font-family: inherit;
   font-size: var(--type-small);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
-  padding: 10px 13px;
+  min-height: 38px;
+  padding: 10px 14px;
   transition:
     background 160ms ease,
     border-color 160ms ease,
@@ -684,7 +699,7 @@ p {
 .detail-toggle:hover,
 .detail-toggle:focus-visible {
   background: var(--cream);
-  border-color: #b9aa94;
+  border-color: rgba(201, 169, 98, 0.78);
   outline: none;
 }
 
@@ -707,7 +722,7 @@ p {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #fffdf8;
-  padding: 20px;
+  padding: 22px;
   min-height: 245px;
   position: relative;
   overflow: hidden;
@@ -753,7 +768,7 @@ p {
 
 .stakeholder-card.is-expanded {
   border-color: rgba(31, 74, 58, 0.42);
-  box-shadow: 0 16px 34px rgba(44, 36, 24, 0.08);
+  box-shadow: inset 4px 0 0 var(--green);
 }
 
 .quickwin-grid {
@@ -766,7 +781,7 @@ p {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #fffdf8;
-  padding: 20px;
+  padding: 22px;
   min-height: 220px;
   position: relative;
 }
@@ -816,7 +831,7 @@ p {
 .matrix-row-group.is-open .detail-toggle,
 .question-card.is-open .detail-toggle {
   border-color: rgba(31, 74, 58, 0.5);
-  color: var(--green-dark);
+  color: var(--ink);
 }
 
 .matrix-wrap {
@@ -843,15 +858,16 @@ p {
 
 .matrix-header > div {
   background: #e8dfd1;
+  color: var(--ink);
   padding: 18px 20px;
   font-size: var(--type-small);
-  font-weight: 800;
+  font-weight: 700;
   border-right: 1px solid var(--line);
 }
 
 .matrix-row > div {
   min-height: 150px;
-  padding: 20px;
+  padding: 22px;
   border-right: 1px solid var(--line);
   background: #fff;
 }
@@ -898,7 +914,7 @@ p {
 details {
   border-top: 1px solid rgba(222, 213, 199, 0.75);
   margin-top: 16px;
-  padding-top: 14px;
+  padding-top: 16px;
 }
 
 summary {
@@ -910,11 +926,12 @@ summary {
   display: flex;
   justify-content: space-between;
   gap: 12px;
+  line-height: 1.35;
 }
 
 details[open] {
   border-left: 3px solid var(--green);
-  padding-left: 12px;
+  padding-left: 14px;
 }
 
 summary::-webkit-details-marker {
@@ -931,7 +948,9 @@ details[open] summary::after {
 }
 
 .details-body {
-  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
   color: var(--muted);
   font-size: var(--type-body);
   line-height: var(--line-body);
@@ -981,7 +1000,7 @@ details[open] summary::after {
 }
 
 .question-preface p {
-  color: #4c473f;
+  color: var(--copy);
   font-size: var(--type-body);
   line-height: var(--line-body);
 }
@@ -1043,15 +1062,15 @@ details[open] summary::after {
   display: grid;
   grid-template-columns: 74px minmax(0, 1fr);
   gap: 18px;
-  padding: 18px 0;
+  padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .question-card.is-open {
-  background: rgba(255, 253, 248, 0.62);
+  background: rgba(255, 253, 248, 0.72);
   box-shadow: inset 3px 0 0 var(--green);
-  padding-left: 14px;
-  padding-right: 14px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .question-rail {
@@ -1079,19 +1098,20 @@ details[open] summary::after {
   line-height: var(--line-heading);
   margin-bottom: 0;
   max-width: 1040px;
+  font-weight: 700;
 }
 
 .question-detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr) minmax(220px, 0.82fr);
-  gap: 18px;
-  margin-top: 18px;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .question-detail {
   border-left: 1px solid var(--line);
   min-width: 0;
-  padding-left: 16px;
+  padding-left: 18px;
 }
 
 .question-detail span {
@@ -1102,7 +1122,7 @@ details[open] summary::after {
 .question-detail p {
   color: var(--muted);
   font-size: var(--type-body);
-  line-height: var(--line-body);
+  line-height: 1.72;
 }
 
 .question-detail--validate ul {
@@ -1246,7 +1266,7 @@ details[open] summary::after {
 }
 
 .ai-team-lede {
-  color: #3f463d;
+  color: var(--copy);
   font-size: 18px;
   line-height: 1.58;
 }
@@ -1354,7 +1374,7 @@ details[open] summary::after {
 }
 
 .ai-agent-card strong {
-  color: var(--green-dark);
+  color: var(--ink);
   display: block;
   font-size: var(--type-body);
   line-height: 1.2;
@@ -1398,7 +1418,7 @@ details[open] summary::after {
 
 .proposal-summary-content {
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .proposal-offer-hero,
@@ -1412,13 +1432,13 @@ details[open] summary::after {
   border: 1px solid var(--line);
   border-left: 5px solid var(--green);
   display: grid;
-  gap: 22px;
+  gap: 24px;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 0.3fr);
-  padding: 24px;
+  padding: 26px;
 }
 
 .proposal-offer-lede {
-  color: #3f463d;
+  color: var(--copy);
   font-size: 18px;
   line-height: 1.56;
   max-width: 860px;
@@ -1476,7 +1496,7 @@ details[open] summary::after {
   border-radius: var(--radius);
   color: var(--ink);
   font-size: var(--type-small);
-  font-weight: 800;
+  font-weight: 700;
   min-height: 44px;
   padding: 13px 14px;
   text-decoration: none;
@@ -1497,7 +1517,7 @@ details[open] summary::after {
 .proposal-offer-section {
   background: #fffdf8;
   border: 1px solid var(--line);
-  padding: 22px;
+  padding: 24px;
 }
 
 .proposal-offer-section-soft {
@@ -1524,7 +1544,7 @@ details[open] summary::after {
   border: 1px solid var(--line);
   border-left: 5px solid var(--terracotta);
   border-radius: 0 var(--radius) var(--radius) 0;
-  color: var(--green-dark);
+  color: var(--ink);
   font-family: var(--display);
   font-size: 24px;
   font-weight: 800;
@@ -1558,7 +1578,7 @@ details[open] summary::after {
   background: #fffdf8;
   border: 1px solid rgba(216, 204, 186, 0.9);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 17px;
 }
 
 .proposal-offer-card {
@@ -1615,14 +1635,14 @@ details[open] summary::after {
   border-right: 1px solid var(--line);
   font-size: var(--type-small);
   line-height: 1.5;
-  padding: 13px 14px;
+  padding: 14px 15px;
   text-align: left;
   vertical-align: top;
 }
 
 .proposal-table th {
   background: var(--cream);
-  color: var(--green-dark);
+  color: var(--ink);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -1631,6 +1651,7 @@ details[open] summary::after {
 
 .proposal-table td {
   color: var(--muted);
+  font-weight: 450;
 }
 
 .proposal-table td strong {
@@ -1651,7 +1672,7 @@ details[open] summary::after {
 }
 
 .proposal-detail-block summary {
-  color: var(--green-dark);
+  color: var(--ink);
   cursor: pointer;
   font-size: var(--type-small);
   font-weight: 800;
@@ -1707,7 +1728,7 @@ details[open] summary::after {
 }
 
 .method-lede {
-  color: #3f463d;
+  color: var(--copy);
   font-size: 18px;
   line-height: 1.58;
   max-width: 780px;
@@ -1763,12 +1784,12 @@ details[open] summary::after {
 
 .method-copy {
   display: grid;
-  gap: 13px;
+  gap: 14px;
   max-width: 900px;
 }
 
 .method-copy p {
-  color: #4c473f;
+  color: var(--copy);
 }
 
 .method-copy-split {
@@ -1782,7 +1803,7 @@ details[open] summary::after {
   border: 1px solid var(--line);
   border-left: 5px solid var(--gold);
   border-radius: var(--radius);
-  color: var(--green);
+  color: var(--ink);
   font-family: var(--display);
   font-size: 28px;
   font-weight: 800;
@@ -1799,7 +1820,7 @@ details[open] summary::after {
   display: grid;
   gap: 20px;
   grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-  padding: 22px;
+  padding: 24px;
 }
 
 .method-time h3,
@@ -1875,7 +1896,7 @@ details[open] summary::after {
   background: #fffdf8;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 20px;
+  padding: 22px;
 }
 
 .method-orchestrator {
@@ -1915,9 +1936,9 @@ details[open] summary::after {
 .method-orchestrator-list li {
   border-left: 1px solid var(--line);
   border-top: 1px solid var(--line);
-  color: #4c473f;
+  color: var(--copy);
   font-size: var(--type-body);
-  font-weight: 700;
+  font-weight: 650;
   line-height: 1.35;
   min-height: 72px;
   padding: 18px;
@@ -1936,7 +1957,7 @@ details[open] summary::after {
   border: 1px solid var(--line);
   border-left: 5px solid var(--green);
   border-radius: var(--radius);
-  padding: 22px;
+  padding: 24px;
 }
 
 .method-closeout strong {
@@ -1949,7 +1970,7 @@ details[open] summary::after {
 
 .project-plan-content {
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .project-plan-content > p {
@@ -1969,7 +1990,7 @@ details[open] summary::after {
   background: var(--cream);
   border: 1px solid var(--line);
   border-left: 5px solid var(--green);
-  padding: 20px;
+  padding: 22px;
 }
 
 .project-plan-purpose span,
@@ -2002,7 +2023,7 @@ details[open] summary::after {
 }
 
 .project-plan-purpose strong {
-  color: var(--green);
+  color: var(--ink);
   font-family: var(--display);
   font-size: 23px;
   margin-top: 8px;
@@ -2024,7 +2045,7 @@ details[open] summary::after {
   background: #fffdf8;
   border: 1px solid var(--line);
   border-top: 5px solid var(--green);
-  padding: 20px;
+  padding: 22px;
 }
 
 .project-plan-overview-card h3 {
@@ -2037,7 +2058,7 @@ details[open] summary::after {
 }
 
 .project-plan-overview-card strong {
-  color: var(--green-dark);
+  color: var(--ink);
   font-size: var(--type-body);
 }
 
@@ -2045,7 +2066,7 @@ details[open] summary::after {
   background: #fffdf8;
   border: 1px solid var(--line);
   border-left: 5px solid var(--gold);
-  padding: 18px 20px;
+  padding: 20px 22px;
 }
 
 .project-plan-scale-note strong {
@@ -2140,7 +2161,7 @@ details[open] summary::after {
   display: grid;
   gap: 7px 16px;
   grid-template-columns: minmax(0, 1fr) auto;
-  padding: 17px 18px;
+  padding: 18px 20px;
   text-align: left;
   width: 100%;
 }
@@ -2168,7 +2189,7 @@ details[open] summary::after {
   align-self: center;
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--green);
+  color: var(--gold);
   display: inline-grid;
   font-size: 20px;
   font-weight: 700;
@@ -2188,7 +2209,7 @@ details[open] summary::after {
 
 .project-plan-accordion-panel {
   border-top: 1px solid var(--line);
-  padding: 18px;
+  padding: 20px;
 }
 
 .project-plan-section-body {
@@ -2221,11 +2242,11 @@ details[open] summary::after {
   background: var(--cream);
   border: 1px solid rgba(216, 204, 186, 0.88);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 17px;
 }
 
 .project-plan-workstream h4 {
-  color: var(--green-dark);
+  color: var(--ink);
   font-size: var(--type-body);
   margin-bottom: 7px;
 }
@@ -2243,14 +2264,14 @@ details[open] summary::after {
 }
 
 .project-plan-proof-row span {
-  color: var(--green);
+  color: var(--gold);
   margin-bottom: 8px;
 }
 
 .project-plan-decision-test,
 .project-plan-section-outcome {
   margin-top: 16px;
-  padding: 16px;
+  padding: 18px;
 }
 
 .project-plan-decision-test {
@@ -2266,7 +2287,7 @@ details[open] summary::after {
 }
 
 .project-plan-section-outcome p {
-  color: var(--green-dark);
+  color: var(--ink);
   font-weight: 800;
   line-height: 1.42;
   margin-top: 8px;
@@ -2860,7 +2881,7 @@ li {
 }
 
 .about-detail-block summary {
-  color: var(--green-dark);
+  color: var(--ink);
   padding: 16px 18px;
 }
 
@@ -2873,7 +2894,7 @@ li {
 .proof-card blockquote {
   margin: 0 0 14px;
   color: var(--ink);
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.45;
 }
 
@@ -2934,7 +2955,7 @@ li {
   display: grid;
   gap: 6px;
   min-height: 104px;
-  padding: 18px;
+  padding: 19px;
   text-align: left;
   transition:
     background 160ms ease,
@@ -2948,7 +2969,6 @@ li {
   background: var(--cream);
   border-color: #b9aa94;
   outline: none;
-  transform: translateY(-1px);
 }
 
 .simulator-scenario:focus-visible {
@@ -2988,7 +3008,7 @@ li {
 }
 
 .simulator-controls {
-  padding: 22px;
+  padding: 24px;
 }
 
 .simulator-label,
@@ -3152,9 +3172,9 @@ li {
   box-shadow: 0 14px 30px rgba(44, 36, 24, 0.1);
   color: var(--muted);
   display: none;
-  font-size: 12px;
+  font-size: var(--type-small);
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.65;
   padding: 12px 14px;
   position: absolute;
   right: 0;
@@ -3183,9 +3203,9 @@ li {
   border-left-color: var(--gold);
   color: var(--muted);
   font-size: var(--type-small);
-  line-height: 1.6;
+  line-height: 1.65;
   margin-top: 18px;
-  padding: 14px 16px;
+  padding: 15px 17px;
 }
 
 .simulator-note strong,
@@ -3256,7 +3276,7 @@ li {
 }
 
 .simulator-output {
-  padding: 24px;
+  padding: 26px;
 }
 
 .simulator-print-assumptions {
@@ -3272,9 +3292,10 @@ li {
 }
 
 .simulator-output-head p {
-  color: var(--muted);
+  color: var(--copy);
   font-size: var(--type-small);
   line-height: 1.5;
+  font-weight: 500;
 }
 
 .simulator-copy-button {
@@ -3282,9 +3303,9 @@ li {
 }
 
 .simulator-copy-status {
-  color: var(--muted);
+  color: var(--caption);
   font-size: var(--type-small);
-  font-style: italic;
+  font-style: normal;
   min-height: 20px;
 }
 
@@ -3305,7 +3326,7 @@ li {
   grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
   gap: 18px;
   margin-top: 14px;
-  padding: 18px;
+  padding: 20px;
 }
 
 .simulator-scale-ceiling h3 {
@@ -3314,7 +3335,7 @@ li {
 }
 
 .simulator-scale-ceiling p:not(.simulator-section-kicker) {
-  color: var(--muted);
+  color: var(--caption);
   font-size: var(--type-small);
   line-height: 1.6;
 }
@@ -3358,7 +3379,7 @@ li {
   border: 1px solid rgba(216, 204, 186, 0.82);
   border-radius: var(--radius);
   background: #fffdf8;
-  padding: 18px;
+  padding: 20px;
 }
 
 .simulator-output-group-primary {
@@ -3422,10 +3443,10 @@ li {
 }
 
 .simulator-metric-help {
-  color: var(--muted);
+  color: var(--caption);
   font-size: var(--type-small);
-  line-height: 1.55;
-  margin-top: 5px;
+  line-height: 1.62;
+  margin-top: 7px;
 }
 
 .simulator-capture-bar {
@@ -3492,7 +3513,7 @@ li {
   background: #fffdf8;
   border: 1px solid var(--line);
   border-radius: 999px;
-  color: var(--green);
+  color: var(--ink);
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
@@ -3571,7 +3592,7 @@ li {
   border: 1px solid rgba(216, 204, 186, 0.82);
   border-radius: var(--radius);
   background: #fffdf8;
-  padding: 13px;
+  padding: 14px;
   position: relative;
 }
 
@@ -3590,7 +3611,7 @@ li {
 
 .simulator-translation-item p {
   font-size: var(--type-small);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .simulator-hypothesis {
@@ -3599,7 +3620,7 @@ li {
   font-size: var(--type-small);
   line-height: 1.65;
   margin: 24px 0 18px;
-  padding: 18px 22px;
+  padding: 19px 22px;
 }
 
 .simulator-gap-bridge {
@@ -3631,7 +3652,7 @@ li {
 }
 
 .simulator-secondary-frame summary {
-  padding: 15px 18px;
+  padding: 16px 18px;
 }
 
 .simulator-secondary-grid {
@@ -3639,7 +3660,7 @@ li {
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  padding: 18px;
+  padding: 20px;
 }
 
 .simulator-secondary-item {
