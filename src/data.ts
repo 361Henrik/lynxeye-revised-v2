@@ -24,7 +24,7 @@ export type ListCard = {
 export type SectionIntro = {
   kicker: string;
   title: string;
-  text: string;
+  text?: string;
 };
 
 export type MatrixCell = {

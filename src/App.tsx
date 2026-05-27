@@ -309,7 +309,7 @@ function SectionIntroBlock({ intro }: { intro: SectionIntro }) {
     <div className="section-intro">
       {intro.kicker ? <div className="kicker">{intro.kicker}</div> : null}
       <h2>{intro.title}</h2>
-      <p>{intro.text}</p>
+      {intro.text ? <p>{intro.text}</p> : null}
     </div>
   );
 }
@@ -658,8 +658,7 @@ function QuestionsSection({ expansionSignal }: { expansionSignal: ExpansionSigna
       <SectionIntroBlock
         intro={{
           kicker: "",
-          title: "The key questions Lynxeye is likely asking now.",
-          text: "The shared question is how Lynxeye can turn scattered day-to-day AI use into a better way of working: reducing low-leverage friction, protecting human attention, and freeing employees to spend more time on the work where judgment, creativity, client understanding and strategic thinking create the most value.",
+          title: "The key questions Lynxeye are asking...",
         }}
       />
 
