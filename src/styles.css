@@ -1716,6 +1716,212 @@ details[open] summary::after {
   text-decoration: none;
 }
 
+.agreement-summary-content,
+.agreement-panel-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.agreement-tabs {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.agreement-tab-button {
+  appearance: none;
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--type-small);
+  font-weight: 800;
+  line-height: 1.25;
+  min-height: 50px;
+  padding: 12px 10px;
+  text-align: left;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.agreement-tab-button:hover,
+.agreement-tab-button:focus-visible {
+  border-color: rgba(195, 92, 60, 0.46);
+  color: var(--terracotta);
+  outline: none;
+}
+
+.agreement-tab-button[aria-selected="true"] {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fffdf8;
+}
+
+.agreement-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.phase-status-strip {
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.phase-status-heading {
+  align-items: baseline;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.phase-status-heading span,
+.phase-status-item span {
+  color: var(--gold);
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.phase-status-heading strong {
+  color: var(--ink);
+  font-size: var(--type-body);
+  line-height: var(--line-heading);
+  text-align: right;
+}
+
+.phase-status-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.phase-status-item {
+  background: var(--cream);
+  border: 1px solid rgba(216, 204, 186, 0.88);
+  border-radius: var(--radius);
+  border-top: 4px solid var(--green);
+  padding: 14px;
+}
+
+.phase-status-item-optional {
+  border-top-color: var(--terracotta);
+}
+
+.phase-status-item-excluded {
+  border-top-color: var(--muted);
+}
+
+.phase-status-item-decision {
+  border-top-color: var(--gold);
+}
+
+.phase-status-item strong {
+  color: var(--ink);
+  display: block;
+  font-size: var(--type-body);
+  line-height: var(--line-heading);
+  margin-top: 7px;
+}
+
+.phase-status-item p {
+  color: var(--muted);
+  font-size: var(--type-small);
+  line-height: 1.5;
+  margin-top: 7px;
+}
+
+.agreement-hero {
+  margin-top: 0;
+}
+
+.agreement-responsibility-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.agreement-responsibility-card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.agreement-responsibility-card:nth-child(2) {
+  border-left-color: var(--terracotta);
+}
+
+.agreement-responsibility-card h4 {
+  font-size: var(--type-body);
+  margin-bottom: 10px;
+}
+
+.agreement-responsibility-card li {
+  color: var(--muted);
+  font-size: var(--type-small);
+  line-height: 1.55;
+}
+
+.agreement-checklist {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+}
+
+.agreement-checklist-item {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: var(--type-small);
+  font-weight: 650;
+  line-height: 1.45;
+  padding: 12px 14px;
+}
+
+.agreement-reference-intro {
+  border-left: 5px solid var(--gold);
+}
+
+.agreement-print-heading {
+  background: var(--green);
+  border-radius: var(--radius);
+  color: #fffdf8;
+  padding: 18px 20px;
+}
+
+.agreement-print-heading span {
+  color: var(--gold);
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.agreement-print-heading h2 {
+  color: #fffdf8;
+  font-size: var(--type-card);
+}
+
 .method-panel {
   width: min(1120px, 100%);
 }
@@ -2038,7 +2244,7 @@ details[open] summary::after {
 .project-plan-overview-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .project-plan-overview-card {
@@ -2060,6 +2266,14 @@ details[open] summary::after {
 .project-plan-overview-card strong {
   color: var(--ink);
   font-size: var(--type-body);
+}
+
+.project-plan-overview-card small {
+  color: var(--muted);
+  display: block;
+  font-size: var(--type-small);
+  line-height: 1.5;
+  margin-top: 10px;
 }
 
 .project-plan-scale-note {
@@ -2230,7 +2444,9 @@ details[open] summary::after {
 }
 
 .project-plan-workstream-grid,
-.project-plan-proof-grid {
+.project-plan-proof-grid,
+.project-plan-input-grid,
+.project-plan-checkpoint-grid {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2238,7 +2454,9 @@ details[open] summary::after {
 }
 
 .project-plan-workstream,
-.project-plan-proof-row {
+.project-plan-proof-row,
+.project-plan-input-card,
+.project-plan-checkpoint-card {
   background: var(--cream);
   border: 1px solid rgba(216, 204, 186, 0.88);
   border-radius: var(--radius);
@@ -2252,7 +2470,9 @@ details[open] summary::after {
 }
 
 .project-plan-workstream p,
-.project-plan-proof-row p {
+.project-plan-proof-row p,
+.project-plan-input-card p,
+.project-plan-checkpoint-card p {
   color: var(--muted);
   font-size: var(--type-small);
   line-height: 1.55;
@@ -2263,9 +2483,76 @@ details[open] summary::after {
   margin-top: 12px;
 }
 
+.project-plan-mini-columns {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.project-plan-mini-columns span {
+  color: var(--gold);
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
 .project-plan-proof-row span {
   color: var(--gold);
   margin-bottom: 8px;
+}
+
+.project-plan-input-card strong,
+.project-plan-checkpoint-card strong {
+  color: var(--ink);
+  display: block;
+  font-size: var(--type-body);
+  line-height: var(--line-heading);
+  margin-bottom: 8px;
+}
+
+.project-plan-checkpoint-card {
+  border-left: 4px solid var(--terracotta);
+}
+
+.project-plan-table-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-plan-table {
+  border-collapse: collapse;
+  min-width: 1120px;
+  width: 100%;
+}
+
+.project-plan-table th,
+.project-plan-table td {
+  border: 1px solid var(--line);
+  font-size: var(--type-small);
+  line-height: 1.48;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.project-plan-table th {
+  background: var(--green);
+  color: #fffdf8;
+  font-weight: 800;
+}
+
+.project-plan-table td {
+  background: #fffdf8;
+  color: var(--muted);
+}
+
+.project-plan-table tr:nth-child(even) td {
+  background: var(--cream);
 }
 
 .project-plan-decision-test,
@@ -3960,13 +4247,18 @@ li {
   .modal-grid,
   .proof-grid,
   .proposal-offer-nav,
+  .agreement-tabs,
   .proposal-card-grid-three,
   .proposal-card-grid-five,
   .proposal-detail-grid,
+  .agreement-checklist,
+  .phase-status-grid,
   .project-plan-overview-grid,
   .project-plan-timeline-list,
   .project-plan-workstream-grid,
-  .project-plan-proof-grid {
+  .project-plan-proof-grid,
+  .project-plan-input-grid,
+  .project-plan-checkpoint-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -3981,9 +4273,10 @@ li {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-.proposal-offer-hero,
-.proposal-two-col,
-.proposal-next-step {
+  .proposal-offer-hero,
+  .proposal-two-col,
+  .proposal-next-step,
+  .agreement-responsibility-grid {
     grid-template-columns: 1fr;
   }
 
@@ -4129,6 +4422,9 @@ li {
   .proposal-detail-block,
   .proposal-table-wrap,
   .proposal-next-step,
+  .agreement-panel,
+  .agreement-responsibility-card,
+  .agreement-checklist-item,
   .method-credibility,
   .method-time,
   .method-flow-step,
@@ -4161,8 +4457,11 @@ li {
   .tabs,
   .phase3-grid,
   .proposal-offer-nav,
+  .agreement-tabs,
   .proposal-card-grid,
   .proposal-detail-grid,
+  .agreement-checklist,
+  .phase-status-grid,
   .project-plan-overview-grid,
   .project-plan-timeline-list,
   .project-plan-workstream-grid,
@@ -4181,6 +4480,7 @@ li {
   .proposal-offer-hero,
   .proposal-two-col,
   .proposal-next-step,
+  .agreement-responsibility-grid,
   .simulator-scale-ceiling,
   .simulator-shell,
   .simulator-hiring-grid,
@@ -4425,17 +4725,83 @@ li {
   .modal-grid,
   .proof-grid,
   .proposal-offer-nav,
+  .agreement-tabs,
   .proposal-card-grid,
   .proposal-detail-grid,
   .proposal-offer-hero,
   .proposal-two-col,
   .proposal-next-step,
+  .agreement-responsibility-grid,
+  .agreement-checklist,
+  .phase-status-grid,
   .project-plan-overview-grid,
   .project-plan-timeline-list,
   .project-plan-workstream-grid,
   .project-plan-proof-grid,
+  .project-plan-input-grid,
+  .project-plan-checkpoint-grid,
+  .project-plan-mini-columns,
   .project-plan-timeline-head {
     grid-template-columns: 1fr;
+  }
+
+  .phase-status-heading {
+    align-items: start;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .phase-status-heading strong {
+    text-align: left;
+  }
+
+  .project-plan-table-wrap {
+    overflow: visible;
+  }
+
+  .project-plan-table,
+  .project-plan-table thead,
+  .project-plan-table tbody,
+  .project-plan-table tr,
+  .project-plan-table th,
+  .project-plan-table td {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .project-plan-table thead {
+    display: none;
+  }
+
+  .project-plan-table tr {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .project-plan-table td {
+    border: 0;
+    border-top: 1px solid var(--line);
+    padding: 11px 13px;
+  }
+
+  .project-plan-table td:first-child {
+    border-top: 0;
+  }
+
+  .project-plan-table td::before {
+    color: var(--gold);
+    content: attr(data-label);
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    text-transform: uppercase;
   }
 
   .method-copy-split,
