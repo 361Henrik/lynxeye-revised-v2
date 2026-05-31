@@ -22,21 +22,21 @@ function App() {
   return <MainPage />;
 }
 
-type ActiveModal = "journey" | "method" | "proposal" | "projectPlan" | "aiTeam" | "about" | null;
+type ActiveModal = "journey" | "method" | "agreement" | "projectPlan" | "aiTeam" | "about" | null;
 
 type ExpansionSignal = {
   action: "expand" | "collapse";
   version: number;
 };
 
-type TopBarIcon = "journey" | "method" | "proposal" | "plan" | "team" | "henrik";
+type TopBarIcon = "journey" | "method" | "agreement" | "plan" | "team" | "henrik";
 
 const topBarItems: { label: string; icon: TopBarIcon; modal: NonNullable<ActiveModal> }[] = [
   { label: "Journey", icon: "journey", modal: "journey" },
   { label: "Methodology", icon: "method", modal: "method" },
-  { label: "Proposal", icon: "proposal", modal: "proposal" },
-  { label: "Project plan", icon: "plan", modal: "projectPlan" },
-  { label: "AI team", icon: "team", modal: "aiTeam" },
+  { label: "Agreement", icon: "agreement", modal: "agreement" },
+  { label: "Project Plan", icon: "plan", modal: "projectPlan" },
+  { label: "AI Team", icon: "team", modal: "aiTeam" },
   { label: "About Henrik", icon: "henrik", modal: "about" },
 ];
 
@@ -187,7 +187,7 @@ function PremiumIcon({ icon }: { icon: TopBarIcon }) {
           <path d="M5.3 6.4 4 5.1" />
         </svg>
       );
-    case "proposal":
+    case "agreement":
       return (
         <svg className="premium-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M7 4.5h7.2L18 8.3v11.2H7V4.5Z" />
@@ -592,7 +592,7 @@ function MainPage() {
             intro={{
               kicker: "Project path",
               title: "Set up, create early value, then decide what scales.",
-              text: "The structure keeps this proposal focused: Phase 1 can stand alone, Phase 2 is an optional expansion after the checkpoint, and Phase 3 stays visible as a separate future decision.",
+              text: "The structure keeps this agreement focused: Phase 1 can stand alone, Phase 2 is an optional expansion after the checkpoint, and Phase 3 stays visible as a separate future decision.",
             }}
           />
           <div className="tabs">
@@ -634,13 +634,13 @@ function MainPage() {
         <ValueSimulator expansionSignal={expansionSignal} />
         <AiTeamSection />
         <Phase3EmbeddedShowcase expansionSignal={expansionSignal} />
-        <ProposalPrintSection onDownloadPdf={handleDownloadPdf} />
+        <AgreementPrintSection onDownloadPdf={handleDownloadPdf} />
         <ProjectPlanPrintSection />
       </main>
       <JourneyModal open={activeModal === "journey"} onClose={() => setActiveModal(null)} />
       <ProposedMethodModal open={activeModal === "method"} onClose={() => setActiveModal(null)} />
-      <ProposalModal
-        open={activeModal === "proposal"}
+      <AgreementModal
+        open={activeModal === "agreement"}
         onClose={() => setActiveModal(null)}
         onDownloadPdf={handleDownloadPdf}
         onNavigate={() => setActiveModal(null)}
@@ -861,7 +861,7 @@ function AgentCard({ agent }: { agent: AiAgent }) {
 function AiTeamContent({ titleId = "ai-team-title" }: { titleId?: string }) {
   return (
     <div className="ai-team-content">
-      <div className="kicker">AI team concept</div>
+      <div className="kicker">AI Team concept</div>
       <h2 id={titleId}>Not a tool you reach for. A team you direct.</h2>
       <p className="ai-team-lede">
         Most firms use AI like a vending machine: ask, receive, repeat. The method-led firm runs a standing team of AI teammates, each
@@ -931,7 +931,7 @@ function AiTeamModal({ open, onClose }: { open: boolean; onClose: () => void }) 
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
       <section className="modal-panel ai-team-panel" role="dialog" aria-modal="true" aria-labelledby="ai-team-modal-title">
-        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close AI team" onClick={onClose}>
+        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close AI Team" onClick={onClose}>
           ×
         </button>
         <AiTeamContent titleId="ai-team-modal-title" />
@@ -964,10 +964,10 @@ function Phase3EmbeddedShowcase({ expansionSignal }: { expansionSignal: Expansio
         </div>
       </div>
       <div className="phase3-closeout">
-        <span>Current proposal boundary</span>
+        <span>Current agreement boundary</span>
         <strong>First set up the real work, create early value, and use evidence to decide what deserves scale.</strong>
         <p>
-          Phase 3 should be chosen from proof, not promised upfront: the current proposal lets Lynxeye start with Phase 1, decide after the checkpoint whether Phase 2 should continue or change, and make the next investment decision clearer.
+          Phase 3 should be chosen from proof, not promised upfront: the current agreement lets Lynxeye start with Phase 1, decide after the checkpoint whether Phase 2 should continue or change, and make the next investment decision clearer.
         </p>
       </div>
     </section>
@@ -1168,6 +1168,154 @@ const proposalFutureCards: ProposalCard[] = [
   { title: "Create client offerings", text: "Turn proven internal capability into potential AI-enabled client services where the evidence is strong enough." },
 ];
 
+type AgreementTabId = "overview" | "scope" | "success" | "responsibilities" | "exclusions" | "commercial" | "original";
+
+const agreementTabs: { id: AgreementTabId; label: string }[] = [
+  { id: "overview", label: "Agreement overview" },
+  { id: "scope", label: "Scope & deliverables" },
+  { id: "success", label: "Success criteria" },
+  { id: "responsibilities", label: "Responsibilities" },
+  { id: "exclusions", label: "Exclusions" },
+  { id: "commercial", label: "Commercial terms" },
+  { id: "original", label: "Original proposal" },
+];
+
+const agreementStatusCards: ProposalCard[] = [
+  {
+    label: "Included",
+    title: "Phase 1 - Setup & Early Value",
+    text: "5 weeks. 350,000 to 390,000 NOK, excluding agreed travel and third-party tools. The committed starting point and standalone value proof.",
+  },
+  {
+    label: "Optional",
+    title: "Phase 2 - Expand & Create More Value",
+    text: "Approx. 8 weeks. 460,000 to 540,000 NOK, excluding agreed travel and third-party tools. Starts only after written confirmation following the Phase 1 checkpoint.",
+    variant: "accent",
+  },
+  {
+    label: "Not included",
+    title: "Phase 3 - Scale Across Lynxeye",
+    text: "Separately scoped after evidence. May include scale, automation, integrations, agentic flows, broader rollout or new client-facing services.",
+    variant: "muted",
+  },
+];
+
+const agreementScopeRows: ProposalTableRow[] = [
+  {
+    cells: [
+      "Phase 1: Setup & Early Value",
+      "5 weeks",
+      "350,000 to 390,000 NOK, excluding agreed travel and third-party tools.",
+      "Five-stakeholder map; current AI practice map; HQ infrastructure alignment notes; client movement scan; proposed client, pitch or workflow case review; anchor case brief; participant setup baseline; early coaching and workflow tests; early before/after examples; reusable methods v1; living delivery hub v1; Phase 1 checkpoint recommendation.",
+    ],
+  },
+  {
+    cells: [
+      "Optional Phase 2: Expand & Create More Value",
+      "Approx. 8 weeks",
+      "460,000 to 540,000 NOK, excluding agreed travel and third-party tools. Starts only after written confirmation.",
+      "Expanded coaching and team sessions; deeper client-case workflow work; stronger before/after examples; mature prompts, playbooks and quality routines; expanded living delivery hub; success signals and evidence summary; Phase 3 recommendation report.",
+    ],
+  },
+  {
+    cells: [
+      "Phase 3: Scale Across Lynxeye",
+      "Separately scoped",
+      "Not included in this agreement.",
+      "May include scale, automation, integrations, agentic flows, broader rollout or new client-facing services, but only after enough evidence exists.",
+    ],
+  },
+];
+
+const agreementSuccessRows: ProposalTableRow[] = [
+  { cells: ["Employee confidence", "Participants use AI repeatedly without heavy support and know when to stop the AI loop.", "Participant reflections, examples and observed workflow change.", "Does not guarantee organization-wide adoption or individual usage levels after the engagement."] },
+  { cells: ["Workflow speed", "Selected workflows move faster without reducing quality.", "Before/after process snapshots and time-saved estimates where sensible.", "Does not guarantee fixed productivity gains, capacity savings or financial return."] },
+  { cells: ["Output quality", "Outputs become clearer, sharper and better structured.", "Output comparisons, review prompts and quality criteria.", "Does not replace Lynxeye's final review, validation or client-facing approval."] },
+  { cells: ["Team rhythm", "Teams reuse shared methods instead of each person improvising separately.", "Reusable workflows, meeting-to-output examples and shared templates.", "Does not guarantee full change management adoption across every team."] },
+  { cells: ["Client impact", "Client-facing material becomes more tangible earlier.", "Pitch fragments, prototypes, synthesis examples or client-ready options.", "Does not guarantee client wins, revenue impact or client acceptance."] },
+  { cells: ["HQ alignment", "Local methods fit approved tools, infrastructure and guardrails.", "Tool map, constraints list and adoption recommendations.", "Does not constitute legal, security, procurement or compliance approval."] },
+  { cells: ["Scale readiness", "Lynxeye can decide what should be scaled, automated or developed further.", "Prioritized Phase 3 roadmap with rationale.", "Does not include Phase 3 rollout, automation or implementation work."] },
+];
+
+const agreementResponsibilityColumns = [
+  {
+    title: "Henrik / threesixty1 provides",
+    items: [
+      "Structure and project framing.",
+      "Facilitation and coaching.",
+      "Workflow design.",
+      "Practical examples from real work.",
+      "Documentation and reusable methods.",
+      "Before/after evidence capture.",
+      "Recommendations and checkpoint input.",
+      "Living delivery hub content.",
+    ],
+  },
+  {
+    title: "Lynxeye provides",
+    items: [
+      "Access to selected participants.",
+      "Relevant real work examples.",
+      "Approved tools, policies and boundaries.",
+      "HQ, security and governance clarification.",
+      "Decision-maker availability.",
+      "Timely feedback and prioritization.",
+      "Internal adoption support.",
+      "Final review, approval and client-facing quality control.",
+      "Business decisions and implementation after sessions.",
+    ],
+  },
+];
+
+const agreementExclusions = [
+  "Production-grade automation.",
+  "Custom software development.",
+  "Integrations with internal systems.",
+  "Full organization-wide rollout.",
+  "Broad change management program.",
+  "Legal, compliance or procurement review.",
+  "Data processing agreement drafting.",
+  "Guaranteed productivity improvements.",
+  "Guaranteed revenue, margin, pitch-win or client-success outcomes.",
+  "Final approval of client-facing material.",
+  "Purchase or payment for third-party tools.",
+  "Travel costs unless explicitly included.",
+  "More participants than agreed.",
+  "More anchor cases than agreed.",
+  "Additional in-person days.",
+  "Additional executive reporting.",
+  "Phase 3 scaling work.",
+];
+
+const agreementCommercialDetails: ProposalDetail[] = [
+  {
+    title: "Phase 1 fee",
+    body: "350,000 to 390,000 NOK, excluding agreed travel and third-party tools. Phase 1 is the committed starting point and can stand alone.",
+  },
+  {
+    title: "Optional Phase 2 fee",
+    body: "460,000 to 540,000 NOK, excluding agreed travel and third-party tools. Phase 2 is not booked or payable unless confirmed in writing after the Phase 1 checkpoint.",
+  },
+  {
+    title: "Combined range",
+    body: "If Lynxeye selects both phases, the combined Phase 1 and Phase 2 professional fee range is 810,000 to 930,000 NOK, excluding agreed travel and third-party tools.",
+  },
+  {
+    title: "Phase 2 notice",
+    body: "If Lynxeye does not want to continue into Phase 2, Lynxeye should give at least 7 calendar days' written notice before the agreed Phase 2 start date.",
+  },
+  {
+    title: "Change request triggers",
+    items: [
+      "More participants or anchor cases.",
+      "Deeper prototypes, automation or integration work.",
+      "Additional in-person days, extra travel or extra executive reporting.",
+      "Additional documentation or client-facing packaging beyond scope.",
+      "Material scope changes after the Phase 1 checkpoint.",
+    ],
+  },
+];
+
 function ProposalCardGrid({ cards, columns = "three" }: { cards: ProposalCard[]; columns?: "two" | "three" | "five" }) {
   return (
     <div className={`proposal-card-grid proposal-card-grid-${columns}`}>
@@ -1217,7 +1365,7 @@ function ProposalDetailBlock({ detail }: { detail: ProposalDetail }) {
   );
 }
 
-function ProposalContent({
+function OriginalProposalContent({
   onDownloadPdf,
   onNavigate,
   titleId = "proposal-title",
@@ -1412,15 +1560,325 @@ function ProposalContent({
   );
 }
 
-function ProposalPrintSection({ onDownloadPdf }: { onDownloadPdf: () => void }) {
+function AgreementOverviewPanel({ titleId }: { titleId: string }) {
   return (
-    <section id="proposal" className="section proposal-summary proposal-print-section" aria-labelledby="proposal-title">
-      <ProposalContent onDownloadPdf={onDownloadPdf} />
+    <div className="agreement-panel-stack">
+      <div className="proposal-offer-hero agreement-hero">
+        <div>
+          <div className="kicker">Agreement overview</div>
+          <h2 id={titleId}>Plain-English agreement summary</h2>
+          <p className="proposal-offer-lede">
+            This agreement frames a practical AI enablement engagement for Lynxeye. Phase 1 creates standalone value and evidence. After the
+            Phase 1 checkpoint, Lynxeye can stop, continue into Phase 2, or adjust the next step based on what the first five weeks prove.
+          </p>
+          <p>
+            The work is advisory, enablement, coaching, workflow design and documentation. It is designed to create practical value in real
+            Lynxeye workflows while clarifying scope, responsibilities, decision points and success evidence.
+          </p>
+        </div>
+        <aside className="proposal-offer-status">
+          <span>Agreement frame</span>
+          <strong>Phase 1 starts the work</strong>
+          <p>Phase 2 is optional after written confirmation. Phase 3 is excluded and separately scoped after evidence.</p>
+        </aside>
+      </div>
+
+      <ProposalCardGrid cards={agreementStatusCards} />
+
+      <section className="proposal-offer-section proposal-offer-section-soft">
+        <span>Basis for signature</span>
+        <h3>Commercial summary, not final legal wording</h3>
+        <p>
+          This page is a commercial agreement summary and Statement of Work basis. Final legal wording, privacy terms and any required data
+          processing agreement should be reviewed before signature.
+        </p>
+      </section>
+
+      <section className="proposal-offer-section">
+        <span>AI responsibility</span>
+        <h3>Human review remains part of the work</h3>
+        <p>
+          AI-assisted outputs may contain inaccuracies, omissions or unsuitable suggestions. Lynxeye is responsible for reviewing, validating
+          and approving all AI-assisted material before internal or client-facing use.
+        </p>
+      </section>
+    </div>
+  );
+}
+
+function AgreementScopePanel() {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section">
+        <span>Scope and deliverables</span>
+        <h3>What is included, optional and excluded</h3>
+        <p>
+          Phase 1 is the committed starting point. Phase 2 is optional after written confirmation following the checkpoint. Phase 3 is shown
+          only as a future direction and is not part of this agreement.
+        </p>
+        <ProposalTable headers={["Phase", "Duration", "Commercial frame", "Deliverables and boundary"]} rows={agreementScopeRows} />
+      </section>
+      <ProposalCardGrid cards={agreementStatusCards} />
+    </div>
+  );
+}
+
+function AgreementSuccessPanel() {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section proposal-offer-section-soft">
+        <span>Success criteria</span>
+        <h3>Practical evidence, not guaranteed outcomes</h3>
+        <p>
+          The project will measure practical evidence of value. Success is visible when selected people and teams use AI-supported methods
+          with more confidence, better structure and clearer quality control in real work. These signals support Lynxeye's decision-making,
+          but they do not guarantee specific revenue, productivity, client-win or organization-wide adoption outcomes.
+        </p>
+        <ProposalTable headers={["Value area", "Success signal", "Evidence to capture", "What this does not guarantee"]} rows={agreementSuccessRows} />
+      </section>
+    </div>
+  );
+}
+
+function AgreementResponsibilitiesPanel() {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section">
+        <span>Responsibility split</span>
+        <h3>Value is created when Lynxeye applies the methods in real work</h3>
+        <p>
+          The consultant is responsible for structure, coaching, examples, documentation and recommendations. Lynxeye is responsible for
+          internal adoption, implementation, final review and business decisions.
+        </p>
+        <div className="agreement-responsibility-grid">
+          {agreementResponsibilityColumns.map((column) => (
+            <article className="agreement-responsibility-card" key={column.title}>
+              <h4>{column.title}</h4>
+              <CardList items={column.items} />
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AgreementExclusionsPanel() {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section">
+        <span>Not included unless separately agreed</span>
+        <h3>Clear boundaries protect both sides</h3>
+        <p>
+          The engagement includes enablement, coaching, workflow design, practical examples, documentation and recommendations. The following
+          items require separate agreement, scope and pricing.
+        </p>
+        <div className="agreement-checklist">
+          {agreementExclusions.map((item) => (
+            <div className="agreement-checklist-item" key={item}>
+              {item}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AgreementCommercialPanel() {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section proposal-offer-section-soft">
+        <span>Commercial terms</span>
+        <h3>Phase 1 committed, Phase 2 optional</h3>
+        <p>
+          All amounts are stated in Norwegian kroner (NOK) and exclude agreed travel and third-party tools. Phase 2 is not booked or payable
+          unless confirmed in writing after the Phase 1 checkpoint. If Lynxeye does not want to continue into Phase 2, Lynxeye should give at
+          least 7 calendar days' written notice before the agreed Phase 2 start date.
+        </p>
+        <ProposalCardGrid cards={proposalPriceCards} />
+        <div className="proposal-detail-grid">
+          {agreementCommercialDetails.map((detail) => (
+            <ProposalDetailBlock detail={detail} key={detail.title} />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AgreementOriginalProposalPanel({
+  onDownloadPdf,
+  onNavigate,
+  titleId,
+}: {
+  onDownloadPdf: () => void;
+  onNavigate?: () => void;
+  titleId: string;
+}) {
+  return (
+    <div className="agreement-panel-stack">
+      <section className="proposal-offer-section agreement-reference-intro">
+        <span>Original proposal reference</span>
+        <h3>Commercial proposal reference</h3>
+        <p>
+          This is the original customer-facing proposal framing. It is preserved here for reference. The Agreement tabs above translate the
+          proposal into clearer scope, responsibilities, success criteria, exclusions and commercial terms.
+        </p>
+      </section>
+      <OriginalProposalContent onDownloadPdf={onDownloadPdf} onNavigate={onNavigate} titleId={titleId} />
+    </div>
+  );
+}
+
+function AgreementPanel({
+  tab,
+  onDownloadPdf,
+  onNavigate,
+  titleId,
+}: {
+  tab: AgreementTabId;
+  onDownloadPdf: () => void;
+  onNavigate?: () => void;
+  titleId: string;
+}) {
+  switch (tab) {
+    case "overview":
+      return <AgreementOverviewPanel titleId={titleId} />;
+    case "scope":
+      return <AgreementScopePanel />;
+    case "success":
+      return <AgreementSuccessPanel />;
+    case "responsibilities":
+      return <AgreementResponsibilitiesPanel />;
+    case "exclusions":
+      return <AgreementExclusionsPanel />;
+    case "commercial":
+      return <AgreementCommercialPanel />;
+    case "original":
+      return <AgreementOriginalProposalPanel onDownloadPdf={onDownloadPdf} onNavigate={onNavigate} titleId={titleId} />;
+  }
+}
+
+const phaseStatusStripItems = [
+  {
+    label: "Phase 1",
+    status: "Committed",
+    text: "Starts if the Agreement is approved.",
+    variant: "committed",
+  },
+  {
+    label: "Phase 2",
+    status: "Optional",
+    text: "Only after written confirmation after the checkpoint.",
+    variant: "optional",
+  },
+  {
+    label: "Phase 3",
+    status: "Excluded",
+    text: "Separately scoped after evidence.",
+    variant: "excluded",
+  },
+  {
+    label: "Next decision",
+    status: "Phase 1 checkpoint",
+    text: "Stop, continue, adjust or pause.",
+    variant: "decision",
+  },
+];
+
+function PhaseStatusStrip() {
+  return (
+    <section className="phase-status-strip" aria-label="Agreement and project status">
+      <div className="phase-status-heading">
+        <span>Status layer</span>
+        <strong>What is agreed, optional, excluded and still open.</strong>
+      </div>
+      <div className="phase-status-grid">
+        {phaseStatusStripItems.map((item) => (
+          <article className={`phase-status-item phase-status-item-${item.variant}`} key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.status}</strong>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
 
-function ProposalModal({
+function AgreementContent({
+  onDownloadPdf,
+  onNavigate,
+  titleId = "agreement-title",
+  printMode = false,
+}: {
+  onDownloadPdf: () => void;
+  onNavigate?: () => void;
+  titleId?: string;
+  printMode?: boolean;
+}) {
+  const [activeTab, setActiveTab] = useState<AgreementTabId>("overview");
+  const visibleTabs = printMode ? agreementTabs : agreementTabs.filter((tab) => tab.id === activeTab);
+
+  return (
+    <div className="agreement-summary-content">
+      {!printMode ? (
+        <nav className="agreement-tabs" role="tablist" aria-label="Agreement sections">
+          {agreementTabs.map((tab) => (
+            <button
+              className="agreement-tab-button"
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`${titleId}-${tab.id}`}
+              id={`${titleId}-${tab.id}-tab`}
+              onClick={() => setActiveTab(tab.id)}
+              key={tab.id}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      ) : null}
+
+      <PhaseStatusStrip />
+
+      {visibleTabs.map((tab) => (
+        <section
+          className="agreement-panel"
+          role={!printMode ? "tabpanel" : undefined}
+          aria-labelledby={!printMode ? `${titleId}-${tab.id}-tab` : undefined}
+          id={`${titleId}-${tab.id}`}
+          key={tab.id}
+        >
+          {printMode && tab.id !== "overview" ? (
+            <div className="agreement-print-heading">
+              <span>Agreement section</span>
+              <h2>{tab.label}</h2>
+            </div>
+          ) : null}
+          <AgreementPanel
+            tab={tab.id}
+            onDownloadPdf={onDownloadPdf}
+            onNavigate={onNavigate}
+            titleId={tab.id === "overview" ? titleId : `${titleId}-${tab.id}`}
+          />
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function AgreementPrintSection({ onDownloadPdf }: { onDownloadPdf: () => void }) {
+  return (
+    <section id="agreement" className="section proposal-summary proposal-print-section agreement-print-section" aria-labelledby="agreement-title">
+      <AgreementContent onDownloadPdf={onDownloadPdf} printMode />
+    </section>
+  );
+}
+
+function AgreementModal({
   open,
   onClose,
   onDownloadPdf,
@@ -1441,11 +1899,11 @@ function ProposalModal({
 
   return (
     <div className="modal-layer" role="presentation" onMouseDown={(event) => event.currentTarget === event.target && onClose()}>
-      <section className="modal-panel proposal-panel" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
-        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close proposal" onClick={onClose}>
+      <section className="modal-panel proposal-panel agreement-panel-shell" role="dialog" aria-modal="true" aria-label="Agreement">
+        <button ref={closeButtonRef} className="modal-close" type="button" aria-label="Close agreement" onClick={onClose}>
           ×
         </button>
-        <ProposalContent onDownloadPdf={onDownloadPdf} onNavigate={onNavigate} titleId="proposal-modal-title" />
+        <AgreementContent onDownloadPdf={onDownloadPdf} onNavigate={onNavigate} titleId="agreement-modal-title" />
       </section>
     </div>
   );
@@ -1665,239 +2123,363 @@ function ProposedMethodModal({ open, onClose }: { open: boolean; onClose: () => 
   );
 }
 
-type ProjectPlanOverviewCard = {
+type OperationalPhaseCard = {
   phase: string;
+  status: string;
   duration: string;
   purpose: string;
-  outcome: string;
+  activation: string;
 };
 
-type ProjectPlanTimelineItem = {
-  timing: string;
+type OperationalWeek = {
+  week: string;
   focus: string;
-  milestone: string;
+  activities: string[];
+  henrik: string;
+  lynxeye: string;
+  outputs: string[];
+  evidence: string;
+  followUp: string;
 };
 
-type ProjectPlanWorkstream = {
+type OperationalWorkstream = {
   title: string;
-  text: string;
-  deliverables: string[];
+  purpose: string;
+  activities: string[];
+  outputs: string[];
 };
 
-type ProjectPlanProofPoint = {
-  label: string;
-  text: string;
+type OperationalTableRow = {
+  cells: string[];
 };
 
-type ProjectPlanAccordionSection = {
+type OperationalAccordionSection = {
   id: string;
   eyebrow: string;
   title: string;
   body?: string;
-  items?: string[];
-  workstreams?: ProjectPlanWorkstream[];
-  proofPoints?: ProjectPlanProofPoint[];
-  questions?: string[];
-  outcome?: string;
-  defaultOpen?: boolean;
+  headers?: string[];
+  rows?: OperationalTableRow[];
+  workstreams?: OperationalWorkstream[];
+  inputs?: { item: string; purpose: string }[];
+  evidence?: { category: string; capturedAs: string }[];
+  checkpointQuestions?: string[];
+  decisions?: { title: string; text: string }[];
+  note?: string;
 };
 
-const projectPlanOverviewCards: ProjectPlanOverviewCard[] = [
+const operationalPhaseCards: OperationalPhaseCard[] = [
   {
-    phase: "Phase 1 - Setup & Early Value",
+    phase: "Phase 1: Setup & Early Value",
+    status: "Committed if agreement is approved",
     duration: "5 weeks",
-    purpose: "Set up the workbench, live cases, stakeholders, current AI practice, infrastructure, boundaries and first value proof.",
-    outcome: "Phase 1 standalone value, participant readiness, early workflow evidence and a checkpoint decision on Phase 2.",
+    purpose: "Create standalone value and decision-ready evidence.",
+    activation: "Decision point: Phase 1 checkpoint.",
   },
   {
-    phase: "Phase 2 - Expand & Create More Value",
+    phase: "Phase 2: Expand & Create More Value",
+    status: "Optional",
     duration: "Approx. 8 weeks",
-    purpose: "Optional Phase 2 continuation after Phase 1: deepen coaching, expand client-case work, capture evidence and mature reusable methods.",
-    outcome: "Evidence, playbooks, examples, recommendations and a scale decision.",
+    purpose: "Deepen value creation through real work.",
+    activation: "Only after written confirmation following the Phase 1 checkpoint.",
+  },
+  {
+    phase: "Phase 3: Scale Across Lynxeye",
+    status: "Not included",
+    duration: "Separately scoped",
+    purpose: "Future scale, automation, integration or new client-facing service development.",
+    activation: "Separate decision after evidence.",
   },
 ];
 
-const projectPlanTimeline: ProjectPlanTimelineItem[] = [
+const operationalWeeks: OperationalWeek[] = [
   {
-    timing: "Jun 1-5",
-    focus: "Kickoff and workbench readiness",
-    milestone: "Confirm ambition, people, tool access, working rhythm and immediate setup needs.",
+    week: "Week 1",
+    focus: "Kickoff, scope confirmation and workbench setup",
+    activities: [
+      "Kickoff meeting.",
+      "Confirm ambition, success criteria, selected participants and headquarters involvement.",
+      "Confirm approved AI tools, data boundaries, candidate cases, delivery hub structure and meeting rhythm.",
+    ],
+    henrik: "Lead kickoff, shape delivery hub v1, define evidence checklist and working rhythm.",
+    lynxeye: "Confirm sponsor, participants, tool boundaries, candidate cases and communication channel.",
+    outputs: ["Confirmed project rhythm.", "Participant list.", "Delivery hub v1.", "Case candidate list.", "Success evidence checklist."],
+    evidence: "Baseline expectations, tool/data notes and initial case options.",
+    followUp: "Confirm anchor case direction and who must attend Week 2 sessions.",
   },
   {
-    timing: "Jun 8-19",
-    focus: "Current practice and live case setup",
-    milestone: "Map friction, headquarters alignment, client movement, selected cases and first workflow candidates.",
+    week: "Week 2",
+    focus: "Current practice, stakeholder map and HQ alignment",
+    activities: [
+      "Map current AI use, friction, confidence gaps and unclear use patterns.",
+      "Map employees, teams, clients, Lynxeye and headquarters.",
+      "Review headquarters infrastructure, security, governance and adoption constraints.",
+    ],
+    henrik: "Run mapping sessions, synthesize friction and opportunity list, document HQ alignment notes.",
+    lynxeye: "Provide access to relevant people, current examples, HQ input and practical constraints.",
+    outputs: ["Current AI practice map.", "Five-stakeholder map.", "HQ infrastructure alignment notes.", "Friction and opportunity list."],
+    evidence: "Current practice patterns, blockers and alignment constraints.",
+    followUp: "Confirm friction areas for Week 3 and proposed client, pitch or workflow case shortlist.",
   },
   {
-    timing: "Jun 22-Jul 3",
-    focus: "Early value proof",
-    milestone: "Run first workflow tests, capture before/after signals and decide whether Phase 2 should continue, change or pause.",
+    week: "Week 3",
+    focus: "Client movement scan and anchor case selection",
+    activities: [
+      "Review what clients are asking, expecting or already doing around AI.",
+      "Review proposed client, pitch or workflow cases.",
+      "Select one primary anchor case, or two cases if scope allows.",
+      "Define what better output should look like.",
+    ],
+    henrik: "Create client movement scan, case review and before/after evaluation frame.",
+    lynxeye: "Provide client-facing context, case options and decision input on anchor case selection.",
+    outputs: ["Client movement scan.", "Proposed case review.", "Anchor case brief.", "Before/after evaluation frame.", "Updated delivery hub content."],
+    evidence: "Client relevance, selected learning context and quality criteria.",
+    followUp: "Confirm anchor case and participants for Week 4 workflow testing.",
   },
   {
-    timing: "Summer",
-    focus: "Continuity and reflection",
-    milestone: "Keep light continuity, capture reflections and prepare post-summer value work without forcing heavy workshops.",
+    week: "Week 4",
+    focus: "Early workflow tests and participant setup",
+    activities: [
+      "Run early coaching and workflow tests in actual work.",
+      "Test prompting, context, review, voice, transcript or browser-context workflows.",
+      "Create first before/after examples and identify reusable method v1.",
+    ],
+    henrik: "Coach participants, run workflow tests, draft quality/review habits and capture before/after examples.",
+    lynxeye: "Make participants available, bring real work material and review early outputs.",
+    outputs: ["Early workflow test notes.", "Participant setup baseline.", "Early before/after examples.", "Reusable methods v1 draft.", "Quality and review habits draft."],
+    evidence: "Workflow changes, participant reactions, output comparisons and reusable patterns.",
+    followUp: "Choose examples for checkpoint and identify whether Phase 2 should deepen coaching, client-case work or team practice.",
   },
   {
-    timing: "Aug-Sep",
-    focus: "Value expansion and scale decision",
-    milestone: "Deepen live workflow coaching, document reusable methods and present the scale recommendation.",
+    week: "Week 5",
+    focus: "Evidence summary and Phase 1 checkpoint",
+    activities: [
+      "Summarize learnings, deliverables, success signals and visible value.",
+      "Review what did not yet prove value.",
+      "Recommend whether Phase 2 should continue, change or pause.",
+      "Define optional Phase 2 adjustment points.",
+    ],
+    henrik: "Prepare checkpoint recommendation, evidence summary and Phase 2 recommendation.",
+    lynxeye: "Attend checkpoint, review evidence and confirm stop, continue, adjust or pause decision.",
+    outputs: ["Phase 1 checkpoint recommendation.", "Phase 1 deliverables summary.", "Success signal evidence.", "Phase 2 recommendation.", "Updated delivery hub v1."],
+    evidence: "Decision-ready summary of value, uncertainty, risks and next-step logic.",
+    followUp: "Stop after Phase 1, continue into Phase 2 as planned, continue into adjusted Phase 2, or pause and revisit later.",
   },
 ];
 
-const projectPlanAccordionSections: ProjectPlanAccordionSection[] = [
+const operationalPhase2Workstreams: OperationalWorkstream[] = [
   {
-    id: "phase-1",
-    eyebrow: "Phase 1",
-    title: "Setup & Early Value",
-    body:
-      "Phase 1 creates the foundation and starts value creation as a standalone first engagement. The goal is to avoid generic AI activity by agreeing what is being tested, who is involved, what cases matter and what evidence should decide whether Phase 2 continues or changes.",
-    items: [
-      "Confirm project ambition and leadership expectations.",
-      "Map current AI usage, friction points and confidence levels.",
-      "Understand headquarters AI infrastructure, approved tools, governance and security boundaries.",
-      "Identify priority use cases across individuals, teams, clients and Lynxeye as a company.",
-      "Set up participant workbenches, voice workflows, browser context and safe-use habits.",
-      "Select one or two live cases for practical learning.",
-      "Run first workflow tests before Phase 2 expansion.",
-      "Define baseline success measures.",
-      "Confirm participants, review points and project cadence.",
-      "Create the project scope and expansion charter.",
-      "Create the stakeholder and participant map.",
-      "Create the current AI practice map.",
-      "Create the priority use case shortlist.",
-      "Create the baseline success scorecard.",
-      "Create working guardrails for tools, data, review and escalation.",
-      "Create the Phase 1 checkpoint recommendation: stop, continue into Phase 2 or adjust Phase 2 scope.",
-    ],
-    outcome: "Lynxeye has a clear project frame, ready participants, first evidence and the option to stop after Phase 1 or continue into adjusted expansion.",
+    title: "Workstream 1: Expanded Coaching",
+    purpose: "Deepen capability among selected employees and teams.",
+    activities: ["1:1 coaching.", "Group sessions.", "Setup refinement.", "Prompt, context and review habits.", "Safe use and quality control."],
+    outputs: ["Improved participant workflows.", "Reusable coaching patterns.", "Participant examples.", "Confidence and adoption signals."],
   },
   {
-    id: "phase-2",
-    eyebrow: "Phase 2",
-    title: "Expand & Create More Value",
-    body:
-      "Phase 2 is optional after the Phase 1 checkpoint. It expands AI-supported ways of working inside real Lynxeye workflows, deepens what started in Phase 1, matures reusable methods and produces evidence for the later scale decision.",
-    workstreams: [
-      {
-        title: "1. Individual AI fluency",
-        text: "Help selected people become stronger, calmer and more effective AI users in daily work.",
-        deliverables: [
-          "Individual coaching sessions.",
-          "Practical AI working habits.",
-          "Prompting and context examples.",
-          "Guidance for voice, transcripts, browser workflows and review habits.",
-        ],
-      },
-      {
-        title: "2. Team workflow improvement",
-        text: "Work with teams on shared AI-supported workflows.",
-        deliverables: [
-          "Team workflow maps.",
-          "Meeting-to-output workflow.",
-          "Research and synthesis workflow.",
-          "Pitch/proposal support workflow.",
-          "Before/after examples.",
-        ],
-      },
-      {
-        title: "3. Client-facing value proof",
-        text: "Use AI-supported methods to improve the quality, speed and tangibility of client-facing work.",
-        deliverables: [
-          "Improved pitch or proposal examples.",
-          "Client-work prototype examples where relevant.",
-          "Review checkpoints for quality and judgment.",
-          "Evidence of faster, clearer output.",
-        ],
-      },
-      {
-        title: "4. Reusable Lynxeye capability",
-        text: "Capture what works so it becomes company capability, not only individual experimentation.",
-        deliverables: [
-          "First set of Lynxeye AI playbooks.",
-          "Prompt and context library.",
-          "Guardrails for safe and effective use.",
-          "Reusable examples from real work.",
-          "Recommendations for what should scale.",
-        ],
-      },
-      {
-        title: "5. Prototype or micro-tool recommendation",
-        text: "Identify whether one repeated workflow should become a more structured tool rather than remain in chat.",
-        deliverables: [
-          "Prototype opportunity assessment.",
-          "Lightweight prototype, mockup or build brief.",
-          "Recommendation: build, test further, automate later or leave as workflow.",
-        ],
-      },
-    ],
+    title: "Workstream 2: Team Workflow Development",
+    purpose: "Turn individual AI use into shared team methods.",
+    activities: ["Meeting-to-output workflows.", "Research and synthesis workflows.", "Pitch material workflows.", "Review and red-team routines.", "Shared templates and playbooks."],
+    outputs: ["Team workflow examples.", "Reusable templates.", "Quality routines.", "Shared method documentation."],
   },
   {
-    id: "success",
-    eyebrow: "Success",
-    title: "What Lynxeye should see",
-    proofPoints: [
-      { label: "Time and capacity", text: "Less drag in preparation, synthesis, documentation and pitch support." },
-      { label: "Output quality", text: "Better first drafts, clearer options and stronger review conversations." },
-      { label: "Confidence", text: "Selected users work with AI more consistently and safely." },
-      { label: "Reuse", text: "Playbooks, prompts and examples can be used beyond the first group." },
-      { label: "Client impact", text: "Faster proof, clearer thinking and more tangible client-facing material." },
-      { label: "Company leverage", text: "Better basis for deciding what to scale, automate or commercialize." },
-    ],
+    title: "Workstream 3: Client Case and Pitch Work",
+    purpose: "Make AI-supported work visible in client-facing outputs.",
+    activities: ["Expand selected anchor case work.", "Create sharper pitch fragments.", "Create prototype or synthesis examples.", "Test before/after quality.", "Review client-facing readiness."],
+    outputs: ["Client-case examples.", "Pitch fragments.", "Prototype or synthesis examples.", "Quality review notes."],
   },
   {
-    id: "assumptions",
-    eyebrow: "Boundaries",
-    title: "Assumptions and constraints",
-    items: [
-      "Phase 1 is 5 weeks.",
-      "Phase 2 is approximately 8 weeks.",
-      "July includes summer vacation and should be treated as a lower-intensity reflection and continuity period.",
-      "The work depends on access to selected participants, real workflows and relevant examples.",
-      "Approved AI tools, data boundaries and security expectations must be clarified before live testing.",
-      "The plan should stay flexible if priorities, participants, timing or client opportunities change.",
-    ],
-  },
-  {
-    id: "flexibility",
-    eyebrow: "Adjustment mechanism",
-    title: "Built-in flexibility",
-    items: [
-      "Weekly or biweekly check-ins with the bridge team.",
-      "Use cases can be refined if early evidence shows higher-value opportunities.",
-      "Deliverables can shift from prototype to prototype brief if timing or complexity requires it.",
-      "July can be used for reflection, light async capture and preparation rather than heavy delivery.",
-      "Final recommendations distinguish between what to scale now, what to test further and what to leave alone.",
-    ],
-    questions: [
-      "Does it improve the value proof?",
-      "Does it fit the project timeline?",
-      "Does it help Lynxeye make a better scale decision?",
-    ],
-  },
-  {
-    id: "outcome",
-    eyebrow: "Final outcome",
-    title: "What Lynxeye has at the end",
-    items: [
-      "A clear picture of where AI creates practical value in real work.",
-      "Tested workflows for individuals, teams and client-facing output.",
-      "Reusable playbooks, examples and guardrails.",
-      "Evidence of time, quality, confidence and reuse.",
-      "A leadership-ready recommendation on what to scale, automate, refine or stop.",
-    ],
-    outcome: "Phase 3 stays visible, but not included. It comes after Lynxeye has seen what Phase 2 actually proves.",
+    title: "Workstream 4: Evidence, Hub and Scale Recommendation",
+    purpose: "Capture reusable capability and prepare the next decision.",
+    activities: ["Mature delivery hub.", "Capture examples and playbooks.", "Summarize evidence.", "Identify what should scale, wait, automate or become a client offering.", "Prepare Phase 3 recommendation report."],
+    outputs: ["Mature prompts, playbooks and quality routines.", "Expanded living delivery hub.", "Success signals and evidence summary.", "Phase 3 recommendation report."],
   },
 ];
 
-function ProjectPlanAccordionPanel({
-  section,
-  forceExpanded = false,
-}: {
-  section: ProjectPlanAccordionSection;
-  forceExpanded?: boolean;
-}) {
-  const [isOpen, setIsOpen] = useState(section.defaultOpen ?? false);
+const operationalDeliverables = [
+  ["Five-stakeholder map", "Phase 1", "Henrik", "Planned", "Sponsor, participants and HQ context.", "Map", "Stakeholder needs and blockers.", "Week 2", "Connects Agreement responsibilities to delivery."],
+  ["Current AI practice map", "Phase 1", "Henrik", "Planned", "Current usage examples and participant input.", "Map", "Friction, confidence and unsafe/unclear patterns.", "Week 2", "Baseline for practical support."],
+  ["HQ infrastructure alignment notes", "Phase 1", "Shared", "Planned", "Approved tools, governance and security expectations.", "Notes", "Tool and data boundaries.", "Week 2", "Prevents unsafe testing."],
+  ["Client movement scan", "Phase 1", "Henrik", "Planned", "Client questions, examples and market context.", "Scan", "Client relevance signals.", "Week 3", "Links internal work to client value."],
+  ["Proposed client/pitch/workflow case review", "Phase 1", "Shared", "Planned", "Candidate cases.", "Review", "Case fit and constraints.", "Week 3", "Feeds anchor case choice."],
+  ["Anchor case brief", "Phase 1", "Henrik", "Planned", "Confirmed case and desired output quality.", "Brief", "Learning spine and evaluation frame.", "Week 3", "Avoids abstract training."],
+  ["Participant setup baseline", "Phase 1", "Henrik", "Planned", "Participant access and current setup.", "Baseline", "Readiness and setup gaps.", "Week 4", "Supports coaching."],
+  ["Early workflow tests", "Phase 1", "Henrik", "Planned", "Live work material.", "Test notes", "Workflow changes and limitations.", "Week 4", "First proof of practical value."],
+  ["Early before/after examples", "Phase 1", "Henrik", "Planned", "Original and improved outputs.", "Examples", "Quality, speed or clarity comparison.", "Week 4", "Checkpoint material."],
+  ["Reusable methods v1", "Phase 1", "Henrik", "Planned", "Strong workflow tests.", "Playbook draft", "Prompts, review habits and patterns.", "Week 4", "Starts reusable capability."],
+  ["Living delivery hub v1", "Phase 1", "Henrik", "Planned", "Examples, decisions and notes.", "Delivery hub", "Shared project memory.", "Week 5", "Maintained during follow-up."],
+  ["Phase 1 checkpoint recommendation", "Phase 1", "Henrik", "Planned", "Evidence and decision-maker review.", "Recommendation", "Stop, continue, adjust or pause logic.", "Week 5", "Required before Phase 2."],
+  ["Expanded coaching and team sessions", "Phase 2", "Shared", "Optional", "Written Phase 2 confirmation.", "Sessions", "Adoption and confidence signals.", "Phase 2", "Not automatic."],
+  ["Deeper client-case workflow work", "Phase 2", "Shared", "Optional", "Confirmed anchor case continuation.", "Workflow examples", "Client-facing quality and speed.", "Phase 2", "Adjusted after checkpoint."],
+  ["Stronger before/after examples", "Phase 2", "Henrik", "Optional", "Live material and review access.", "Examples", "Improved outputs.", "Phase 2", "Supports scale recommendation."],
+  ["Mature prompts, playbooks and quality routines", "Phase 2", "Henrik", "Optional", "Tested methods and team feedback.", "Playbooks", "Reuse and quality patterns.", "Phase 2", "Reusable Lynxeye capability."],
+  ["Expanded living delivery hub", "Phase 2", "Henrik", "Optional", "Ongoing examples and decisions.", "Delivery hub", "Project memory and reusable assets.", "Phase 2", "Keeps learning visible."],
+  ["Success signals and evidence summary", "Phase 2", "Henrik", "Optional", "Examples, reflections and observations.", "Evidence summary", "Decision support, not guarantees.", "Phase 2", "Prepares next decision."],
+  ["Phase 3 recommendation report", "Phase 2", "Henrik", "Optional", "Phase 2 evidence.", "Report", "What to scale, wait, automate or commercialize.", "Phase 2 close", "Phase 3 remains separate."],
+];
+
+const operationalDecisionRows = [
+  ["Participant group confirmed", "Lynxeye", "Needed to schedule and focus the work.", "Locks first participant group.", "Enables Week 1/2 rhythm.", "No change.", "Confirm attendance."],
+  ["Anchor case selected", "Shared", "Creates practical learning context.", "Focuses workflow tests.", "Needed before Week 4.", "No change unless extra cases are added.", "Prepare case material."],
+  ["Approved AI tool boundaries confirmed", "Lynxeye/HQ", "Protects safe use.", "May limit workflow choices.", "Needed before live testing.", "No change.", "Document boundaries in hub."],
+  ["Phase 2 continuation confirmed", "Lynxeye", "Phase 2 cannot start automatically.", "Activates optional workstreams.", "Sets Phase 2 start.", "Activates optional fee range.", "Confirm written approval."],
+  ["Additional participant added", "Lynxeye", "Broader adoption need.", "Adds coaching surface.", "May require adjustment.", "Review if material.", "Update plan and tracker."],
+  ["Additional anchor case added", "Shared", "More value proof needed.", "Expands case work.", "May reduce depth elsewhere.", "Review if material.", "Confirm trade-off."],
+  ["Phase 2 scope adjusted", "Shared", "Checkpoint evidence points elsewhere.", "Changes workstream priority.", "Rebaseline Phase 2.", "Review if material.", "Update delivery plan."],
+  ["Phase 3 opportunity identified", "Shared", "Visible future scale option.", "Not included now.", "No current delivery impact.", "Separately scoped.", "Capture for recommendation report."],
+];
+
+const operationalRiskRows = [
+  ["Participants do not have enough time", "Live workflow support depends on real availability.", "Confirm calendar blocks early and reduce case count if needed.", "Lynxeye", "Watch"],
+  ["Tool access is unclear", "Testing stalls or moves into unsafe tools.", "Confirm approved AI tools before Week 4.", "Lynxeye/HQ", "Open"],
+  ["Client data boundaries are unclear", "Sensitive material may be mishandled.", "Document what can and cannot be used.", "Lynxeye/HQ", "Open"],
+  ["HQ infrastructure rules limit some use cases", "Some workflows may not be feasible.", "Review constraints and choose compatible cases.", "Shared", "Watch"],
+  ["Too many cases are selected", "The plan loses depth and evidence quality.", "Prioritize one anchor case, two only if scope allows.", "Shared", "Watch"],
+  ["Success criteria are read as guaranteed outcomes", "Evidence supports decisions but does not guarantee business results.", "Repeat non-guarantee wording in evidence and checkpoint sections.", "Henrik", "Managed"],
+  ["Phase 2 is assumed before checkpoint evidence", "Commercial and responsibility boundary becomes unclear.", "Require written confirmation after Phase 1.", "Lynxeye", "Managed"],
+  ["AI outputs are used without human review", "Quality and confidentiality risk increases.", "Build review habits into every workflow.", "Shared", "Watch"],
+  ["Delivery hub is not maintained", "Learning disappears between sessions.", "Treat hub updates as a recurring output.", "Henrik", "Watch"],
+  ["Internal adoption does not continue after sessions", "Capability remains event-based.", "Capture reusable routines and owner handoff notes.", "Lynxeye", "Watch"],
+];
+
+const operationalInputs = [
+  { item: "Confirmed internal sponsor", purpose: "Clear ownership and decision path." },
+  { item: "Participant list", purpose: "Scheduling, coaching and baseline mapping." },
+  { item: "Calendar availability", purpose: "Protects delivery rhythm." },
+  { item: "Approved AI tools", purpose: "Keeps workflow testing inside safe boundaries." },
+  { item: "Security and data handling rules", purpose: "Clarifies client-material use." },
+  { item: "Relevant client, pitch or workflow examples", purpose: "Makes the work practical." },
+  { item: "HQ infrastructure information", purpose: "Aligns local practice with company guardrails." },
+  { item: "Existing AI usage examples", purpose: "Shows current habits, gaps and early wins." },
+  { item: "Access to relevant team members", purpose: "Enables mapping and live workflow support." },
+  { item: "Feedback on early outputs", purpose: "Improves quality and checkpoint evidence." },
+  { item: "Decision-maker availability for checkpoint", purpose: "Prevents Phase 2 ambiguity." },
+];
+
+const operationalEvidence = [
+  { category: "Before/after examples", capturedAs: "Original and improved outputs with short notes on what changed." },
+  { category: "Participant confidence reflections", capturedAs: "Short reflections from selected users before and after practical testing." },
+  { category: "Workflow speed observations", capturedAs: "Observed time, friction or step reductions where sensible." },
+  { category: "Output quality comparisons", capturedAs: "Review notes on clarity, structure, relevance and human judgment." },
+  { category: "Reuse of prompts, templates and playbooks", capturedAs: "Examples added to the delivery hub and reused by more than one person." },
+  { category: "Team rhythm changes", capturedAs: "Meeting-to-output, review and collaboration patterns." },
+  { category: "Client-facing tangibility", capturedAs: "Pitch fragments, prototypes, synthesis examples or clearer client-ready options." },
+  { category: "HQ alignment constraints", capturedAs: "Documented tool, data, security and governance notes." },
+  { category: "Scale readiness signals", capturedAs: "Evidence for what should scale, wait, automate or become a client offering." },
+];
+
+const operationalCheckpointQuestions = [
+  "What did we learn?",
+  "What value was visible?",
+  "What did not yet prove value?",
+  "What should be stopped?",
+  "What should continue?",
+  "What should change before Phase 2?",
+  "Is Phase 2 recommended?",
+  "Should Phase 2 continue as planned, continue with changes, pause or stop?",
+  "What Phase 3 opportunities are visible but not yet included?",
+];
+
+const operationalCheckpointDecisions = [
+  { title: "Stop after Phase 1", text: "Use the Phase 1 deliverables as standalone value and do not activate Phase 2." },
+  { title: "Continue into Phase 2 as planned", text: "Activate the optional expansion after written confirmation." },
+  { title: "Continue into adjusted Phase 2", text: "Refocus Phase 2 based on evidence, capacity or case priorities." },
+  { title: "Pause and revisit later", text: "Keep the evidence and delivery hub, then return when timing or ownership is clearer." },
+];
+
+const operationalSections: OperationalAccordionSection[] = [
+  {
+    id: "phase-1-plan",
+    eyebrow: "Phase 1 delivery",
+    title: "Week-by-week Phase 1 plan",
+    body: "Phase 1 is the committed starting point if the agreement is approved. It creates standalone value and the evidence needed for the checkpoint.",
+    headers: ["Week", "Focus", "Key activities", "Henrik / Threesixty1 responsibilities", "Lynxeye responsibilities", "Outputs", "Evidence captured", "Decision or follow-up needed"],
+    rows: operationalWeeks.map((week) => ({
+      cells: [week.week, week.focus, week.activities.join(" "), week.henrik, week.lynxeye, week.outputs.join(" "), week.evidence, week.followUp],
+    })),
+  },
+  {
+    id: "phase-2-workstreams",
+    eyebrow: "Optional Phase 2",
+    title: "Optional Phase 2 workstreams",
+    body: "Phase 2 should not look automatic. It starts only after written confirmation following the Phase 1 checkpoint.",
+    workstreams: operationalPhase2Workstreams,
+  },
+  {
+    id: "deliverables-tracker",
+    eyebrow: "Follow-up tool",
+    title: "Deliverables tracker",
+    body: "A practical tracker for follow-up calls and delivery reviews.",
+    headers: ["Deliverable", "Phase", "Owner", "Status", "Input needed from Lynxeye", "Output format", "Evidence linked", "Due point", "Notes"],
+    rows: operationalDeliverables.map((cells) => ({ cells })),
+  },
+  {
+    id: "decision-log",
+    eyebrow: "Governance",
+    title: "Decision log",
+    body: "A lightweight log for decisions that affect scope, timing, price or follow-up.",
+    headers: ["Decision", "Owner", "Reason", "Impact on scope", "Impact on timeline", "Impact on price", "Follow-up needed"],
+    rows: operationalDecisionRows.map((cells) => ({ cells })),
+  },
+  {
+    id: "risks",
+    eyebrow: "Dependencies",
+    title: "Risk and dependency tracker",
+    headers: ["Risk", "Why it matters", "Preventive action", "Owner", "Status"],
+    rows: operationalRiskRows.map((cells) => ({ cells })),
+  },
+  {
+    id: "inputs",
+    eyebrow: "Lynxeye responsibilities",
+    title: "Lynxeye input checklist",
+    body: "These inputs connect directly to the Agreement responsibilities section. Without them, delivery quality and evidence capture become weaker.",
+    inputs: operationalInputs,
+  },
+  {
+    id: "evidence",
+    eyebrow: "Value proof",
+    title: "Evidence capture framework",
+    body: "This evidence supports decision-making. It does not guarantee revenue, productivity, client wins or organization-wide adoption.",
+    evidence: operationalEvidence,
+  },
+  {
+    id: "checkpoint",
+    eyebrow: "Phase 1 checkpoint",
+    title: "Checkpoint view",
+    body: "The checkpoint turns the first five weeks into a clear decision about what should stop, continue, change or wait.",
+    checkpointQuestions: operationalCheckpointQuestions,
+    decisions: operationalCheckpointDecisions,
+    note: "Phase 3 opportunities can be named here, but they remain outside the current scope until separately decided.",
+  },
+];
+
+function OperationalProjectPlanTable({ headers, rows }: { headers: string[]; rows: OperationalTableRow[] }) {
+  return (
+    <div className="project-plan-table-wrap">
+      <table className="project-plan-table">
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={`${row.cells[0]}-${rowIndex}`}>
+              {row.cells.map((cell, cellIndex) => (
+                <td data-label={headers[cellIndex]} key={`${headers[cellIndex]}-${cell}`}>
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function OperationalProjectPlanSection({ section, forceExpanded = false }: { section: OperationalAccordionSection; forceExpanded?: boolean }) {
+  const [isOpen, setIsOpen] = useState(forceExpanded || section.id === "phase-1-plan");
   const isExpanded = forceExpanded || isOpen;
 
   return (
@@ -1918,47 +2500,77 @@ function ProjectPlanAccordionPanel({
       {isExpanded ? (
         <div className="project-plan-accordion-panel">
           {section.body ? <p className="project-plan-section-body">{section.body}</p> : null}
-
-          {section.items ? <CardList items={section.items} /> : null}
+          {section.rows && section.headers ? <OperationalProjectPlanTable headers={section.headers} rows={section.rows} /> : null}
 
           {section.workstreams ? (
             <div className="project-plan-workstream-grid">
               {section.workstreams.map((workstream) => (
                 <article className="project-plan-workstream" key={workstream.title}>
                   <h4>{workstream.title}</h4>
-                  <p>{workstream.text}</p>
-                  <CardList items={workstream.deliverables} />
+                  <p>{workstream.purpose}</p>
+                  <div className="project-plan-mini-columns">
+                    <div>
+                      <span>Activities</span>
+                      <CardList items={workstream.activities} />
+                    </div>
+                    <div>
+                      <span>Outputs</span>
+                      <CardList items={workstream.outputs} />
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
           ) : null}
 
-          {section.proofPoints ? (
+          {section.inputs ? (
+            <div className="project-plan-input-grid">
+              {section.inputs.map((input) => (
+                <article className="project-plan-input-card" key={input.item}>
+                  <strong>{input.item}</strong>
+                  <p>{input.purpose}</p>
+                </article>
+              ))}
+            </div>
+          ) : null}
+
+          {section.evidence ? (
             <div className="project-plan-proof-grid">
-              {section.proofPoints.map((proofPoint) => (
-                <article className="project-plan-proof-row" key={proofPoint.label}>
-                  <span>{proofPoint.label}</span>
-                  <p>{proofPoint.text}</p>
+              {section.evidence.map((evidence) => (
+                <article className="project-plan-proof-row" key={evidence.category}>
+                  <span>{evidence.category}</span>
+                  <p>{evidence.capturedAs}</p>
                 </article>
               ))}
             </div>
           ) : null}
 
-          {section.questions ? (
+          {section.checkpointQuestions ? (
             <div className="project-plan-decision-test">
-              <span>Scope change test</span>
+              <span>Checkpoint questions</span>
               <ol>
-                {section.questions.map((question) => (
+                {section.checkpointQuestions.map((question) => (
                   <li key={question}>{question}</li>
                 ))}
               </ol>
             </div>
           ) : null}
 
-          {section.outcome ? (
+          {section.decisions ? (
+            <div className="project-plan-checkpoint-grid">
+              {section.decisions.map((decision) => (
+                <article className="project-plan-checkpoint-card" key={decision.title}>
+                  <strong>{decision.title}</strong>
+                  <p>{decision.text}</p>
+                </article>
+              ))}
+            </div>
+          ) : null}
+
+          {section.note ? (
             <div className="project-plan-section-outcome">
-              <span>Outcome</span>
-              <p>{section.outcome}</p>
+              <span>Boundary</span>
+              <p>{section.note}</p>
             </div>
           ) : null}
         </div>
@@ -1971,57 +2583,45 @@ function ProjectPlanContent({ titleId = "project-plan-title", expanded = false }
   return (
     <div className="project-plan-content">
       <div className="kicker">Lynxeye AI project plan</div>
-      <h2 id={titleId}>Set up, create early value, then decide what to scale.</h2>
+      <h2 id={titleId}>A practical follow-up plan for delivering the Agreement.</h2>
       <p>
-        Help Lynxeye move from scattered AI use to practical, repeatable AI-supported ways of working across individuals, teams, client
-        work and company capability.
+        The Project Plan translates the Agreement into a practical delivery rhythm. It shows what happens each week, what Lynxeye needs to
+        provide, what outputs are created, what evidence is captured, and how the Phase 1 checkpoint determines whether Phase 2 should
+        continue, change or pause.
       </p>
 
+      <PhaseStatusStrip />
+
       <div className="project-plan-purpose">
-        <span>Project purpose</span>
-        <strong>Standalone Phase 1 proof before deciding whether Phase 2 should continue, change or pause.</strong>
+        <span>Connection to Agreement</span>
+        <strong>Agreement defines the commitment. Project Plan manages the work.</strong>
         <p>
-          The project is designed so Lynxeye can choose Phase 1 first, then use real evidence to decide whether Phase 2 should continue and
-          what should later deserve broader rollout, automation or future commercialization.
+          Agreement answers what is included, excluded, commercially framed and responsibility-bound. This plan operationalizes that scope
+          without duplicating the commercial terms.
         </p>
       </div>
 
-      <div className="project-plan-overview-grid" aria-label="Overall project structure">
-        {projectPlanOverviewCards.map((phase) => (
+      <div className="project-plan-overview-grid" aria-label="Phase status">
+        {operationalPhaseCards.map((phase) => (
           <article className="project-plan-overview-card" key={phase.phase}>
-            <span>{phase.phase}</span>
-            <h3>{phase.duration}</h3>
-            <p>{phase.purpose}</p>
-            <strong>{phase.outcome}</strong>
+            <span>{phase.status}</span>
+            <h3>{phase.phase}</h3>
+            <p>{phase.duration}</p>
+            <strong>{phase.purpose}</strong>
+            <small>{phase.activation}</small>
           </article>
         ))}
       </div>
 
       <div className="project-plan-scale-note">
-        <span>Future boundary</span>
-        <strong>Phase 3 scales across Lynxeye after evidence.</strong>
-        <p>Scale, automation, integration and new services should follow what Lynxeye has proven through Phase 2, not overload this offer.</p>
-      </div>
-
-      <div className="project-plan-timeline">
-        <div className="project-plan-timeline-head">
-          <span>Indicative timeline</span>
-          <strong>Exact calendar dates to confirm</strong>
-        </div>
-        <div className="project-plan-timeline-list">
-          {projectPlanTimeline.map((item) => (
-            <article className="project-plan-timeline-item" key={`${item.timing}-${item.focus}`}>
-              <span>{item.timing}</span>
-              <strong>{item.focus}</strong>
-              <p>{item.milestone}</p>
-            </article>
-          ))}
-        </div>
+        <span>Evidence boundary</span>
+        <strong>Evidence supports decisions. It is not a guarantee.</strong>
+        <p>This evidence does not guarantee revenue, productivity, client wins or organization-wide adoption.</p>
       </div>
 
       <div className="project-plan-accordion-stack">
-        {projectPlanAccordionSections.map((section) => (
-          <ProjectPlanAccordionPanel section={section} forceExpanded={expanded} key={section.id} />
+        {operationalSections.map((section) => (
+          <OperationalProjectPlanSection section={section} forceExpanded={expanded} key={section.id} />
         ))}
       </div>
     </div>
@@ -2031,7 +2631,7 @@ function ProjectPlanContent({ titleId = "project-plan-title", expanded = false }
 function ProjectPlanPrintSection() {
   return (
     <section className="section project-plan-print-section" aria-labelledby="project-plan-title">
-      <ProjectPlanContent />
+      <ProjectPlanContent expanded />
     </section>
   );
 }
